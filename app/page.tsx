@@ -31,7 +31,9 @@ export default async function Home() {
       paragraphs={[
         "I started my journey in the programming and development world at my 3rd Year, curious about various technologies and technology domains. I began with Python, then Java a little bit and then hit the ground with Javascript world which led me to build simple websites, which eventually evolved into creating products that solve real-world problems",
         "Over time, I am still learning and exploring new domains of technology, and I am currently focused on building products that are user-friendly and solve real-world problems. I am also interested in Application Development, and I am currently learning about it.",
+        "Here is my Resume, if you want to know more about me.",
       ]}
+      href="https://drive.google.com/file/d/1j1Hz7dTROGTTWADqDcCfjf4EdqRpjA1I/view?usp=share_link"
       />
 
   <Projects
