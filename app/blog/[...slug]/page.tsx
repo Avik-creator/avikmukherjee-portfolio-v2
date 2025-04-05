@@ -1,12 +1,18 @@
 import { notFound } from "next/navigation"
 import { getAllPosts, getPostBySlug } from "@/lib/mdx"
-import type { Metadata } from "next"
+
 import BlogLayout from "@/components/blog-layout"
 import "./prism-theme.css"
 
-export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string[] };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const {slug} = await params;
   try {
-    const slugPath = params.slug.join("/")
+    const slugPath = slug.join("/")
     const post = await getPostBySlug(slugPath)
 
     if (!post) {
