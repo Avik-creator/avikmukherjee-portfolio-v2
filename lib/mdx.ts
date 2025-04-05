@@ -1,9 +1,7 @@
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
-import { remark } from "remark"
-import html from "remark-html"
-import remarkGfm from "remark-gfm"
+
 
 const postsDirectory = path.join(process.cwd(), "content/blog")
 
@@ -23,7 +21,7 @@ function getAllMarkdownFiles(dir: string, files: string[] = []): string[] {
     const fullPath = path.join(dir, entry.name)
     if (entry.isDirectory()) {
       getAllMarkdownFiles(fullPath, files)
-    } else if (entry.isFile() && fullPath.endsWith(".md")) {
+    } else if (entry.isFile() && fullPath.endsWith(".mdx")) {
       files.push(fullPath)
     }
   }
@@ -31,6 +29,7 @@ function getAllMarkdownFiles(dir: string, files: string[] = []): string[] {
   return files
 }
 
+// Remove remark-html processing since we're using MDX components
 export async function getAllPosts(): Promise<Post[]> {
   const filePaths = getAllMarkdownFiles(postsDirectory)
 
@@ -39,23 +38,16 @@ export async function getAllPosts(): Promise<Post[]> {
       const fileContents = fs.readFileSync(fullPath, "utf8")
       const matterResult = matter(fileContents)
 
-      const processedContent = await remark()
-        .use(remarkGfm)
-        .use(html, { sanitize: false })
-        .process(matterResult.content)
-
-      const content = processedContent.toString()
-
       // Generate slug based on relative path from postsDirectory
       const relativePath = path.relative(postsDirectory, fullPath)
-      const slug = relativePath.replace(/\.md$/, "").replace(/\\/g, "/")
+      const slug = relativePath.replace(/\.mdx$/, "").replace(/\\/g, "/")
 
       return {
         slug,
         title: matterResult.data.title,
         date: matterResult.data.publishDate,
         excerpt: matterResult.data.description || "",
-        content,
+        content: matterResult.content, // Keep as raw MDX content
       }
     })
   )
@@ -65,36 +57,24 @@ export async function getAllPosts(): Promise<Post[]> {
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   try {
-    // Get all .md file paths in subfolders
     const filePaths = getAllMarkdownFiles(postsDirectory)
-
-    // Try to find the full path that matches the given slug
     const targetPath = filePaths.find((fullPath) => {
       const relativePath = path.relative(postsDirectory, fullPath)
-      const currentSlug = relativePath.replace(/\.md$/, "").replace(/\\/g, "/")
+      const currentSlug = relativePath.replace(/\.mdx$/, "").replace(/\\/g, "/")
       return currentSlug === slug
     })
 
-    if (!targetPath) {
-      return null
-    }
+    if (!targetPath) return null
 
     const fileContents = fs.readFileSync(targetPath, "utf8")
     const matterResult = matter(fileContents)
-
-    const processedContent = await remark()
-      .use(remarkGfm)
-      .use(html, { sanitize: false })
-      .process(matterResult.content)
-
-    const content = processedContent.toString()
 
     return {
       slug,
       title: matterResult.data.title,
       date: matterResult.data.publishDate,
       excerpt: matterResult.data.description || "",
-      content,
+      content: matterResult.content, // Keep as raw MDX content
     }
   } catch (error) {
     console.error("Error getting post by slug:", error)

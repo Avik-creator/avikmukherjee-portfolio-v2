@@ -2,7 +2,8 @@ import { notFound } from "next/navigation"
 import { getAllPosts, getPostBySlug } from "@/lib/mdx"
 
 import BlogLayout from "@/components/blog-layout"
-import "./prism-theme.css"
+
+import { CustomMDX } from "@/components/mdx";
 
 export async function generateMetadata({
   params,
@@ -63,7 +64,7 @@ export default async function Page({ params }: { params: Promise<{slug: string[]
         </header>
 
         <article className="prose prose-invert prose-sm max-w-none blog-content">
-          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          <CustomMDX source={post.content}/>
         </article>
       </BlogLayout>
     )

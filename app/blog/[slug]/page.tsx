@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation"
 import { getAllPosts, getPostBySlug } from "@/lib/mdx"
 import BlogLayout from "@/components/blog-layout"
-import "./prism-theme.css"
+import { CustomMDX } from "@/components/mdx";
+
 
 export async function generateMetadata({ params }: {params: Promise<{slug: string}>}) {
     const {slug} = await params;
-    console.log("Generating metadata for slug:", slug)
+
   try {
     const post = await getPostBySlug(slug)
 
@@ -49,6 +50,8 @@ const {slug} = await params;
       notFound()
     }
 
+    console.log("Rendering blog post:", post.content)
+
     return (
       <BlogLayout backLink="/blog" backText="← back to all posts">
         <header className="mb-8">
@@ -57,7 +60,7 @@ const {slug} = await params;
         </header>
 
         <article className="prose prose-invert prose-sm max-w-none blog-content">
-          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          <CustomMDX source={post.content}/>
         </article>
       </BlogLayout>
     )
