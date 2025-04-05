@@ -3,7 +3,7 @@ export const projects = [
       title: "FormCraftAI",
       year: "2025",
       description:
-      "Build professional forms in seconds with AI. Whether it is surveys, registrations, or feedback, describe your need and get a smart, user-friendly form instantly. Hosted on Vercel (click Advance > Proceed).",
+      "Build professional forms in seconds with AI. Whether it is surveys, registrations, or feedback, describe your need and get a smart, user-friendly form instantly. Hosted on Vercel.",
       demoUrl: "https://formcraftai-delta.vercel.app/",
       githubUrl: "https://github.com/Avik-creator/avikmukherjee.tech",
     },
