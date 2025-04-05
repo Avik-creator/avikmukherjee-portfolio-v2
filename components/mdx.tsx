@@ -1,10 +1,17 @@
-
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Image from "next/image";
 import Link from "next/link";
 import { highlight } from "sugar-high";
+import remarkGfm from "remark-gfm";
+
+const options = {
+  mdxOptions: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [],
+  },
+};
 
 function Blockquote(props: any) {
   return (
@@ -16,14 +23,12 @@ function Blockquote(props: any) {
 }
 
 function Code({ children, ...props }: any) {
-  let codeHTML = highlight(children);
-
+  const codeHTML = highlight(children);
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
 }
 
 function CustomLink(props: any) {
-  let href = props.href;
-
+  const href = props.href;
   if (href.startsWith("/")) {
     return (
       <Link href={href} {...props}>
@@ -31,11 +36,9 @@ function CustomLink(props: any) {
       </Link>
     );
   }
-
   if (href.startsWith("#")) {
     return <a {...props} />;
   }
-
   return <a target="_blank" rel="noopener noreferrer" {...props} />;
 }
 
@@ -55,8 +58,7 @@ function slugify(str: string) {
 
 function createHeading(level: number) {
   const Heading = ({ children }: any) => {
-    let slug = slugify(children);
-
+    const slug = slugify(children);
     return React.createElement(
       `h${level}`,
       { id: slug },
@@ -70,59 +72,67 @@ function createHeading(level: number) {
       children
     );
   };
-
   Heading.displayName = `Heading${level}`;
   return Heading;
 }
 
-function Table(props: any) {
+function Table({ children, ...props }: any) {
   return (
     <div className="overflow-x-auto my-6">
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700" {...props} />
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700" {...props}>
+        {children}
+      </table>
     </div>
   );
 }
 
-function TableHead(props: any) {
+function TableHead({ children, ...props }: any) {
   return (
-    <thead className="bg-gray-50 dark:bg-gray-800">
-      <tr {...props} />
+    <thead className="bg-gray-50 dark:bg-gray-800" {...props}>
+      {children}
     </thead>
   );
 }
 
-function TableBody(props: any) {
+function TableBody({ children, ...props }: any) {
   return (
-    <tbody className="divide-y divide-gray-200 dark:divide-gray-700" {...props} />
+    <tbody className="divide-y divide-gray-200 dark:divide-gray-700" {...props}>
+      {children}
+    </tbody>
   );
 }
 
-function TableRow(props: any) {
-  return <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50" {...props} />;
+function TableRow({ children, ...props }: any) {
+  return <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50" {...props}>{children}</tr>;
 }
 
-function TableHeader(props: any) {
+function TableHeader({ children, ...props }: any) {
   return (
     <th
       className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
       {...props}
-    />
+    >
+      {children}
+    </th>
   );
 }
 
-function TableCell(props: any) {
+function TableCell({ children, ...props }: any) {
   return (
-    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200" {...props} />
+    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200" {...props}>
+      {children}
+    </td>
   );
 }
-let components = {
+
+const components = {
   h1: createHeading(1),
   h2: createHeading(2),
   h3: createHeading(3),
   h4: createHeading(4),
   h5: createHeading(5),
   h6: createHeading(6),
-  Image: RoundedImage,
+  img: RoundedImage,
   a: CustomLink,
   code: Code,
   blockquote: Blockquote,
@@ -132,12 +142,6 @@ let components = {
   tr: TableRow,
   th: TableHeader,
   td: TableCell,
-  // Add wrapper divs for better spacing
-  p: (props: any) => <p className="my-4" {...props} />,
-  ul: (props: any) => <ul className="list-disc pl-6 my-4" {...props} />,
-  ol: (props: any) => <ol className="list-decimal pl-6 my-4" {...props} />,
-  li: (props: any) => <li className="my-1" {...props} />,
-
 };
 
 export function CustomMDX(props: any) {
@@ -145,6 +149,7 @@ export function CustomMDX(props: any) {
     <MDXRemote
       {...props}
       components={{ ...components, ...(props.components || {}) }}
+      options={options}
     />
   );
 }

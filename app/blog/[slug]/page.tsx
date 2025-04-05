@@ -4,6 +4,8 @@ import BlogLayout from "@/components/blog-layout"
 import { CustomMDX } from "@/components/mdx";
 
 
+
+
 export async function generateMetadata({ params }: {params: Promise<{slug: string}>}) {
     const {slug} = await params;
 
@@ -50,7 +52,7 @@ const {slug} = await params;
       notFound()
     }
 
-    console.log("Rendering blog post:", post.content)
+
 
     return (
       <BlogLayout backLink="/blog" backText="← back to all posts">
