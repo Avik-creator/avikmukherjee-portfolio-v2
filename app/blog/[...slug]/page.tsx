@@ -7,8 +7,7 @@ import "./prism-theme.css"
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string[] };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{slug: string[]}>;
 }) {
   const {slug} = await params;
   try {
