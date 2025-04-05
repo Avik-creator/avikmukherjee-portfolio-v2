@@ -3,7 +3,7 @@ import { getAllPosts, getPostBySlug } from "@/lib/mdx"
 import BlogLayout from "@/components/blog-layout"
 import "./prism-theme.css"
 
-export async function generateMetadata({ params }: {params: {slug: string}}) {
+export async function generateMetadata({ params }: {params: Promise<{slug: string}>}) {
     const {slug} = await params;
     console.log("Generating metadata for slug:", slug)
   try {
