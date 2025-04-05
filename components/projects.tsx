@@ -12,9 +12,10 @@ interface ProjectData {
 interface ProjectsProps {
   intro: string
   projects: ProjectData[]
+  showViewAllProjects?: boolean
 }
 
-export default function Projects({ intro, projects }: ProjectsProps) {
+export default function Projects({ intro, projects, showViewAllProjects= true }: ProjectsProps) {
 
   return (
     <section className="mb-12">
@@ -32,11 +33,11 @@ export default function Projects({ intro, projects }: ProjectsProps) {
         />
       ))}
 
-<div className="mt-4">
+{showViewAllProjects && <div className="mt-4">
         <Link href="/projects" className="text-white/70 text-sm underline">
           view all Projects →
         </Link>
-      </div>
+      </div>}
     </section>
   )
 }

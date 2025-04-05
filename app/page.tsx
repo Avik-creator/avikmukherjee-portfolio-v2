@@ -6,13 +6,16 @@ import Writing from "@/components/writing"
 import Contact from "@/components/Contact"
 import Layout from "@/components/layout"
 import { getAllPosts } from "@/lib/mdx"
-import { projects } from "@/lib/data"
+import { projects, Experience } from "@/lib/data"
+import Experiences from "@/components/experiences"
 
 export default async function Home() {
   const posts = await getAllPosts()
   const recentPosts = posts.slice(0, 3)
 
   const recentProjects = projects.slice(0, 3)
+
+  const recentExperiences = Experience.slice(0, 3)
 
 
 
@@ -40,6 +43,12 @@ export default async function Home() {
     intro="Interactive experiments and projects exploring the intersection of design and technology."
     projects={recentProjects}
   />
+
+<Experiences
+    intro="I have worked on various projects and internships, where I have learned a lot and gained valuable experience."
+    experiences={recentExperiences}
+  />
+
 
 
       <Writing

@@ -1,15 +1,16 @@
+import Experiences from "@/components/experiences";
 import ProjectLayout from "@/components/projectLayout";
-import Projects from "@/components/projects";
-import { projects } from "@/lib/data";
+
+import { Experience } from "@/lib/data";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Projects",
-    description: "See my Projects.",
+    description: "See my Experience.",
     openGraph: {
-      title: "Projects | Avik",
-      description: "Projects of Avik Mukherjee.",
-      url: "https://www.avikmukherjee.tech/projects",
+      title: "Experience | Avik",
+      description: "Experience of Avik Mukherjee.",
+      url: "https://www.avikmukherjee.tech/experience",
       images: ["https://www.avikmukherjee.tech/og-image.jpg"],
       siteName: "Avik Mukherjee",
       locale: "en_US",
@@ -19,17 +20,17 @@ export const metadata: Metadata = {
       title: "Projects | Avik",
       card: "summary_large_image",
       images: ["https://www.avikmukherjee.tech/og-image.jpg"],
-      description: "Projects of Avik Mukherjee.",
+      description: "Experiences of Avik Mukherjee.",
     },
   };
 
 export default function Page() {
     return(
         <ProjectLayout>
-            <Projects
-            intro="Here you can find all my projects, experiments and things I have built."
-            projects={projects}
-            showViewAllProjects={false} // Set to false to hide the "view all" link
+            <Experiences
+            intro="Here you can find all my experiences, internships and projects I have worked on."
+            experiences={Experience}
+            showViewAllExperiences={false} // Set to false to hide the "view all" link
           />
         </ProjectLayout>
     )
