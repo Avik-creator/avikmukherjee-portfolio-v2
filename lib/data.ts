@@ -1,4 +1,11 @@
 export const projects = [
+  {
+    title: "AI PPT Generator",
+    year: "2025",
+    description: "AI-powered web application that generates fully customizable PowerPoint presentations from user input. Built with Next.js and FastAPI, it uses Google’s Gemini AI to create slide content tailored to a specific audience. Hosted on Vercel and AWS EC2.",
+    demoUrl: "https://aipptgenerator.vercel.app/",
+    githubUrl: "https://github.com/Avik-creator/aipptgenerator"
+  },
     {
       title: "FormCraftAI",
       year: "2025",
