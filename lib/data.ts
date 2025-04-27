@@ -1,5 +1,12 @@
 export const projects = [
   {
+    title:"WebTracker",
+    year:"2025",
+    description:"It is a powerful, privacy-focused web analytics platform that helps you to visualize the website's reach. Built it due to Vercel Analytics Quota exhaustion.",
+    demoUrl:"https://webtracker.avikmukherjee.tech",
+    githubUrl:"https://github.com/Avik-creator/webtracker"
+  },
+  {
     title: "AI PPT Generator",
     year: "2025",
     description: "AI-powered web application that generates fully customizable PowerPoint presentations from user input. Built with Next.js and FastAPI, it uses Google’s Gemini AI to create slide content tailored to a specific audience. Hosted on Vercel and AWS EC2.",
