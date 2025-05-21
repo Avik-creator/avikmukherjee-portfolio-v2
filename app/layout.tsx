@@ -27,10 +27,10 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Avik Mukherjee",
     locale: "en_US",
-    url: "https://www.avikmukherjee.tech",
+    url: "https://avikmukherjee.me/",
     images: [
       {
-        url: "https://www.avikmukherjee.tech/og-image.jpg",
+        url: "https://avikmukherjee.me/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Avik Mukherjee",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     title: "Avik Mukherjee",
     images: [
       {
-        url: "https://www.avikmukherjee.tech/og-image.jpg",
+        url: "https://avikmukherjee.me/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Avik Mukherjee",
