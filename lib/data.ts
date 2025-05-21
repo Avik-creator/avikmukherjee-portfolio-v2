@@ -3,7 +3,7 @@ export const projects = [
     title:"WebTracker",
     year:"2025",
     description:"It is a powerful, privacy-focused web analytics platform that helps you to visualize the website's reach. Built it due to Vercel Analytics Quota exhaustion.",
-    demoUrl:"https://webtracker.avikmukherjee.tech",
+    demoUrl:"https://webtracker.avikmukherjee.me",
     githubUrl:"https://github.com/Avik-creator/webtracker"
   },
   {
@@ -26,7 +26,7 @@ export const projects = [
       year: "2025",
       description:
       "Play Sudoku with your friends in real-time. Different difficulty levels available.",
-      demoUrl: "https://sudoku.avikmukherjee.tech/",
+      demoUrl: "https://sudoku.avikmukherjee.me/",
       githubUrl: "https://github.com/Avik-creator/soduku-realtime",
     },
     {
