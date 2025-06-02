@@ -36,7 +36,7 @@ export default async function Home() {
         "Over time, I am still learning and exploring new domains of technology, and I am currently focused on building products that are user-friendly and solve real-world problems. I am also interested in Application Development, and I am currently learning about it.",
         "Here is my Resume, if you want to know more about me.",
       ]}
-      href="https://drive.google.com/file/d/1j1Hz7dTROGTTWADqDcCfjf4EdqRpjA1I/view?usp=share_link"
+      href="https://docs.google.com/document/d/1KZ0hvzUtQV_F0gGc8Bw6j5E-RsyaFhx6OXhyzdu_r5Y/edit?usp=sharing"
       />
 
   <Projects
