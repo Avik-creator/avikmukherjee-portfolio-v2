@@ -1,6 +1,6 @@
-import Experiences from "@/components/experiences";
-import ProjectLayout from "@/components/projectLayout";
 
+import BackNavigation from "@/components/back-navigation";
+import ExperienceItem from "@/components/ExperienceItem";
 import { Experience } from "@/lib/data";
 import { Metadata } from "next";
 
@@ -25,13 +25,20 @@ export const metadata: Metadata = {
   };
 
 export default function Page() {
+    const allExperiences = Experience;
     return(
-        <ProjectLayout>
-            <Experiences
-            intro="Here you can find all my experiences, internships and projects I have worked on."
-            experiences={Experience}
-            showViewAllExperiences={false} // Set to false to hide the "view all" link
-          />
-        </ProjectLayout>
+        <>
+        <BackNavigation href="/">back</BackNavigation>
+        <h1 className="text-2xl font-bold mb-4 mt-4">Experience</h1>
+            {allExperiences.map((experience, index) => (
+                <ExperienceItem
+                    key={index}
+                    title={experience.title}
+                    year={experience.year}
+                    description={experience.description}
+                    companySite={experience.companySite}
+                />
+            ))}
+        </>
     )
 }

@@ -14,18 +14,16 @@ interface WritingProps {
 
 export default function Writing({ intro, posts }: WritingProps) {
   return (
-    <section className="mb-12">
-      <h2 className="text-sm mb-4">writing</h2>
-      <p className="mb-6 leading-relaxed">{intro}</p>
-
-      {posts.map((post, index) => (
-        <BlogPostPreview key={index} title={post.title} date={post.date} slug={post.slug} />
-      ))}
-
-      <div className="mt-4">
-        <Link href="/blog" className="text-white/70 text-sm underline">
-          view all posts →
-        </Link>
+    <section className="mt-12">
+      <Link href="/blog">
+        <h2 className="text-neutral-100">writing</h2>
+      </Link>
+      <p className="mt-2 text-neutral-400">{intro}</p>
+      
+      <div className="py-4">
+        {posts.map((post, index) => (
+          <BlogPostPreview key={index} title={post.title} date={post.date} slug={post.slug} />
+        ))}
       </div>
     </section>
   )

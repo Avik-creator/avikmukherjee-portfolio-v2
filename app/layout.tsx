@@ -1,20 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Script from 'next/script'; 
+import Footer from "@/components/footer/footer";
+import { Instrument_Serif } from "next/font/google";
+import { GeistMono } from 'geist/font/mono';
+import { cn } from "@/lib/utils";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-instrument-serif",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.avikmukherjee.tech"),
+  metadataBase: new URL("https://www.avikmukherjee.me"),
   title: {
     default: "Avik Mukherjee",
     template: "%s | Avik Mukherjee",
@@ -22,40 +20,41 @@ export const metadata: Metadata = {
   description: "My personal site to showcase my developer work and projects.",
   keywords: ["developer", "web", "software", "engineer", "react", "next", "Avik", "Mukherjee", "Avik Mukherjee", "portfolio", "projects", "blog"],
   openGraph: {
-    description: "My personal site to showcase my developer work and projects.",
     title: "Avik Mukherjee",
-    type: "website",
+    description: "My personal site to showcase my developer work and projects.",
+    url: "https://www.avikmukherjee.me",
     siteName: "Avik Mukherjee",
+    images: [
+      {
+        url: "https://www.avikmukherjee.me/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Avik Mukherjee",
+      },
+    ],
     locale: "en_US",
-    url: "https://avikmukherjee.me/",
-    images: [
-      {
-        url: "https://avikmukherjee.me/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Avik Mukherjee",
-      },
-    ]
+    type: "website",
   },
-  twitter:{
-    card: "summary_large_image",
-    description: "My personal site to showcase my developer work and projects.",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  twitter: {
     title: "Avik Mukherjee",
-    images: [
-      {
-        url: "https://avikmukherjee.me/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Avik Mukherjee",
-      },
-    ]
+    card: "summary_large_image",
   },
-  icons:{
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-  }
+  verification: {
+    google: "eZSdmzAXlLkKhNJzfgwDqWORghxnJ8qR9_CHdAh5-xw",
+    yandex: "14d2e73487fa6c71",
+  },
 };
-
 
 export default function RootLayout({
   children,
@@ -63,18 +62,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <Script
-        defer
-        data-domain="avikmukherjee.tech"
-        src="https://webtracker.avikmukherjee.tech/tracking-script.js"
-        />
-      </head>
+    <html lang="en" className={instrumentSerif.variable}>
+      <head />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+        className={cn(
+          GeistMono.variable,
+          'flex min-h-screen mx-auto flex-col bg-neutral-950 font-mono text-neutral-100 text-sm'
+        )}>
+        <main className="flex-1 pt-24">{children}</main>
+        <Footer />
       </body>
     </html>
   );

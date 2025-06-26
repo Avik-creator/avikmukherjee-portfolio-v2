@@ -1,15 +1,30 @@
+import { ArrowRightIcon } from "lucide-react"
+import Anchor from "./Anchor"
+
 interface HeaderProps {
-    name: string
-    location: string
-  }
-  
-  export default function Header({ name, location }: HeaderProps) {
-    return (
-      <header className="mb-12">
-        <h1 className="text-xl font-medium mb-1">{name}</h1>
-        <p className="text-white/70">{location}</p>
-      </header>
-    )
-  }
-  
-  
+  name: string
+  location: string
+  resumeUrl?: string
+}
+
+export default function Header({ name, location, resumeUrl }: HeaderProps) {
+  return (
+    <header className="mb-6">
+      <div className="flex items-center justify-between">
+        <h1 className='text-xl font-serif font-medium text-stone-100 [font-feature-setting:"kern","calt","case"]'>
+          {name}
+        </h1>
+        {resumeUrl && (
+          
+            <Anchor href={resumeUrl} target="_blank" className="text-stone-100 font-serif flex items-center gap-1">
+              resume 
+              <ArrowRightIcon className="w-4 h-4 text-stone-100" />
+            </Anchor>
+            
+         
+        )}
+      </div>
+      <p className="text-neutral-500 mt-1">{location}</p>
+    </header>
+  )
+} 

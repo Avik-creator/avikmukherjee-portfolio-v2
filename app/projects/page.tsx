@@ -1,5 +1,5 @@
-import ProjectLayout from "@/components/projectLayout";
-import Projects from "@/components/projects";
+import BackNavigation from "@/components/back-navigation";
+import ProjectItem from "@/components/ProjectItem";
 import { projects } from "@/lib/data";
 import { Metadata } from "next";
 
@@ -25,12 +25,19 @@ export const metadata: Metadata = {
 
 export default function Page() {
     return(
-        <ProjectLayout>
-            <Projects
-            intro="Here you can find all my projects, experiments and things I have built."
-            projects={projects}
-            showViewAllProjects={false} // Set to false to hide the "view all" link
-          />
-        </ProjectLayout>
+        <>
+            <BackNavigation href="/">back</BackNavigation>
+            <h1 className="text-2xl font-bold mb-4 mt-4">Projects</h1>
+            {projects.map((project, index) => (
+                <ProjectItem
+                    key={index}
+                    title={project.title}
+                    year={project.year}
+                    description={project.description}
+                    demoUrl={project.demoUrl}
+                    githubUrl={project.githubUrl}
+                />
+            ))}
+        </>
     )
 }
