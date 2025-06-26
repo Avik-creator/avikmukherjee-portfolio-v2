@@ -29,8 +29,6 @@ export const metadata = {
   },
 };
 
-export const revalidate = 30;
-
 export default function Home() {
   const recentExperiences = Experience.slice(0, 3);
   const recentProjects = projects.slice(0, 3);
