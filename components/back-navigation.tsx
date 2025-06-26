@@ -2,9 +2,7 @@ import { Undo2 } from 'lucide-react';
 import Link, { LinkProps } from 'next/link';
 import { PropsWithChildren } from 'react';
 
-interface Props extends PropsWithChildren<LinkProps> {}
-
-export default function BackNavigation({ children, ...props }: Props) {
+export default function BackNavigation({ children, ...props }: PropsWithChildren<LinkProps>) {
   return (
     <Link
       {...props}
