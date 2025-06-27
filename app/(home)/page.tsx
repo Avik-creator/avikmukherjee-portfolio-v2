@@ -68,9 +68,9 @@ export default function Home() {
           <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
           <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
         </div>
-        <h3 className="grow font-medium text-gray-800 dark:text-neutral-200 underline decoration-gray-400 dark:decoration-neutral-400/50 underline-offset-[3px] transition-colors">
+        <h2 className="grow text-lg font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-[4px] transition-colors">
           work
-        </h3>
+        </h2>
         </Link>
         <p className="mt-2 text-gray-600 dark:text-neutral-400">
           Batteleground of my personal projects that I&apos;ve built to learn new technologies.
@@ -110,9 +110,9 @@ export default function Home() {
           <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
           <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
         </div>
-        <h3 className="grow font-medium text-gray-800 dark:text-neutral-200 underline decoration-gray-400 dark:decoration-neutral-400/50 underline-offset-[3px] transition-colors">
+        <h2 className="grow text-lg font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-[4px] transition-colors">
           experience
-        </h3>
+        </h2>
         </Link>
         <p className="mt-2 text-gray-600 dark:text-neutral-400">
           Companies I&apos;ve worked with to deliver software solutions and drive technical growth of the company.
@@ -153,9 +153,9 @@ export default function Home() {
           <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
           <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
         </div>
-        <h3 className="grow font-medium text-gray-800 dark:text-neutral-200 underline decoration-gray-400 dark:decoration-neutral-400/50 underline-offset-[3px] transition-colors">
+        <h2 className="grow text-lg font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-[4px] transition-colors">
           writing
-        </h3>
+        </h2>
         </Link>
         <p className="mt-2 text-gray-600 dark:text-neutral-400">
           I write about development techniques, project insights, and lessons learned building software.
@@ -166,7 +166,7 @@ export default function Home() {
       </section>
 
       <section className="mt-12">
-        <h2 className="text-gray-900 dark:text-neutral-100">about</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-neutral-100">about</h2>
         <p className="mt-2 text-gray-600 dark:text-neutral-400">
           I started my programming journey in my 3rd year of college, beginning with Python and Java before diving deep into the JavaScript ecosystem. What began as building simple websites evolved into creating products that solve real-world problems.
         </p>
@@ -179,7 +179,7 @@ export default function Home() {
       </section>
 
       <section className="mt-12">
-        <h2 className="text-gray-900 dark:text-neutral-100">reach</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-neutral-100">reach</h2>
         <div className="mt-2 flex flex-wrap gap-2">
           <span className="whitespace-nowrap text-gray-700 dark:text-neutral-400">
             <span>connect on </span>
