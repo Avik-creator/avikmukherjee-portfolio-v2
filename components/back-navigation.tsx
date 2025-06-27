@@ -6,7 +6,7 @@ export default function BackNavigation({ children, ...props }: PropsWithChildren
   return (
     <Link
       {...props}
-      className="flex items-center gap-2 text-[13px] text-neutral-500 italic">
+      className="flex items-center gap-2 text-[13px] text-gray-600 dark:text-neutral-500 italic">
       <Undo2 width={13} height={13} className="mb-[2px]" />
       {children}
     </Link>

@@ -2,7 +2,7 @@
 @import 'tailwindcss';
 
 
-@variant dark (&:is(.dark *));
+
 
 @theme {
   --breakpoint-2xl: 768px;
