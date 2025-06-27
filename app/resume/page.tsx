@@ -1,11 +1,122 @@
 'use client'
 
-import { useState } from 'react'
-import { DownloadIcon, PrinterIcon } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { DownloadIcon, PrinterIcon, GithubIcon, GlobeIcon, LinkedinIcon, UserIcon } from 'lucide-react'
 import BackNavigation from '@/components/back-navigation'
+import Link from 'next/link'
+import PeerlistIcon from "@/public/Peerlist.svg"
+import Image from 'next/image'
 
 export default function ResumePage() {
   const [isPrinting, setIsPrinting] = useState(false)
+
+  // Add print styles without styled-jsx to avoid auto-generated class names
+  useEffect(() => {
+    const printStyles = `
+      @media print {
+        body {
+          background: white !important;
+          color: black !important;
+        }
+        .print\\:hidden {
+          display: none !important;
+        }
+        
+        footer {
+          display: none !important;
+        }
+        
+        * {
+          -webkit-print-color-adjust: exact !important;
+          color-adjust: exact !important;
+        }
+        
+        .text-stone-100,
+        .text-neutral-100,
+        .text-neutral-200,
+        .text-neutral-400,
+        .text-neutral-500 {
+          color: black !important;
+        }
+        
+        a {
+          color: #2563eb !important;
+        }
+        
+        h1 {
+          font-size: 24px !important;
+          font-weight: bold !important;
+          text-align: center !important;
+          margin-bottom: 16px !important;
+        }
+        
+        h2 {
+          font-size: 16px !important;
+          font-weight: bold !important;
+          border-bottom: 1px solid #d1d5db !important;
+          padding-bottom: 4px !important;
+          margin-bottom: 16px !important;
+          margin-top: 24px !important;
+        }
+        
+        h3 {
+          font-size: 14px !important;
+          font-weight: 600 !important;
+        }
+        
+        p, li {
+          font-size: 12px !important;
+          line-height: 1.4 !important;
+        }
+        
+        .space-y-12 > * + * {
+          margin-top: 24px !important;
+        }
+        
+        .space-y-8 > * + * {
+          margin-top: 16px !important;
+        }
+        
+        .space-y-6 > * + * {
+          margin-top: 12px !important;
+        }
+        
+        .space-y-2 > * + * {
+          margin-top: 4px !important;
+        }
+        
+        .space-y-1 > * + * {
+          margin-top: 2px !important;
+        }
+        
+        @page {
+          margin: 0.5in;
+          size: A4;
+        }
+        
+        .max-w-4xl {
+          max-width: none !important;
+        }
+        
+        .mx-auto {
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+        }
+        
+        .mb-32 {
+          margin-bottom: 0 !important;
+        }
+      }
+    `
+
+    const styleElement = document.createElement('style')
+    styleElement.textContent = printStyles
+    document.head.appendChild(styleElement)
+
+    return () => {
+      document.head.removeChild(styleElement)
+    }
+  }, [])
 
   const handlePrint = () => {
     setIsPrinting(true)
@@ -60,14 +171,34 @@ export default function ResumePage() {
         <header className="text-center">
           <h1 className="text-3xl font-serif font-medium text-stone-100 mb-4">AVIK MUKHERJEE</h1>
           <div className="space-y-2 text-neutral-400">
-            <p>Kolkata, West Bengal | +919668066031 | avikm744@gmail.com</p>
+            <p>Kolkata, West Bengal | <Link href="tel:+919668066031" className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200">+919668066031</Link> | <Link href="mailto:avikm744@gmail.com" className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200">avikm744@gmail.com</Link></p>
             <p>
-              <span className="mr-4">
-                Github: <a href="https://github.com/Avik-creator" className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200">github.com/Avik-creator</a>
-              </span>
-              <span>
-                Portfolio: <a href="https://avikmukherjee.me" className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200">avikmukherjee.me</a>
-              </span>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <span>
+                  <Link href="https://github.com/Avik-creator" className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 flex items-center gap-1">
+                    <GithubIcon className="w-4 h-4" />
+                    Github
+                  </Link>
+                </span>
+                <span>
+                 <Link href="https://avikmukherjee.me" className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 flex items-center gap-1">
+                   <GlobeIcon className="w-4 h-4" />
+                   Portfolio
+                 </Link>
+                </span>
+                <span>
+                  <Link href="https://www.linkedin.com/in/avik-mukherjee-8ab9911bb/" className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 flex items-center gap-1">
+                    <LinkedinIcon className="w-4 h-4" />
+                    Linkedin
+                  </Link>
+                </span>
+                <span>
+                  <Link href="https://peerlist.io/avikmukherjee/" className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 flex items-center gap-1">
+                    <Image src={PeerlistIcon} alt="Peerlist" className="w-4 h-4" />
+                    Peerlist
+                  </Link>
+                </span>
+              </div>
             </p>
           </div>
         </header>
@@ -256,108 +387,6 @@ export default function ResumePage() {
           </div>
         </section>
       </div>
-
-      {/* Print-specific styles */}
-      <style jsx global>{`
-        @media print {
-          body {
-            background: white !important;
-            color: black !important;
-          }
-          .print\\:hidden {
-            display: none !important;
-          }
-          
-          /* Hide footer when printing */
-          footer {
-            display: none !important;
-          }
-          
-          * {
-            -webkit-print-color-adjust: exact !important;
-            color-adjust: exact !important;
-          }
-          
-          /* Convert all text to black for printing */
-          .text-stone-100,
-          .text-neutral-100,
-          .text-neutral-200,
-          .text-neutral-400,
-          .text-neutral-500 {
-            color: black !important;
-          }
-          
-          /* Keep links blue */
-          a {
-            color: #2563eb !important;
-          }
-          
-          /* Add proper resume formatting for print */
-          h1 {
-            font-size: 24px !important;
-            font-weight: bold !important;
-            text-align: center !important;
-            margin-bottom: 16px !important;
-          }
-          
-          h2 {
-            font-size: 16px !important;
-            font-weight: bold !important;
-            border-bottom: 1px solid #d1d5db !important;
-            padding-bottom: 4px !important;
-            margin-bottom: 16px !important;
-            margin-top: 24px !important;
-          }
-          
-          h3 {
-            font-size: 14px !important;
-            font-weight: 600 !important;
-          }
-          
-          p, li {
-            font-size: 12px !important;
-            line-height: 1.4 !important;
-          }
-          
-          .space-y-12 > * + * {
-            margin-top: 24px !important;
-          }
-          
-          .space-y-8 > * + * {
-            margin-top: 16px !important;
-          }
-          
-          .space-y-6 > * + * {
-            margin-top: 12px !important;
-          }
-          
-          .space-y-2 > * + * {
-            margin-top: 4px !important;
-          }
-          
-          .space-y-1 > * + * {
-            margin-top: 2px !important;
-          }
-          
-          @page {
-            margin: 0.5in;
-            size: A4;
-          }
-          
-          .max-w-4xl {
-            max-width: none !important;
-          }
-          
-          .mx-auto {
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-          }
-          
-          .mb-32 {
-            margin-bottom: 0 !important;
-          }
-        }
-      `}</style>
     </div>
   )
 }

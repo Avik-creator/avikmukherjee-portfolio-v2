@@ -4,7 +4,10 @@ import { cn } from '@/lib/utils';
 
 
 export const metadata = {
-  title: 'Resume',
+  title: {
+    template: '%s | Resume',
+    default: 'Avik Mukherjee',
+  },
   description: 'Resume of Avik Mukherjee',
   openGraph: {
     title: 'Resume',
