@@ -42,23 +42,10 @@ export default function Home() {
       />
 
       <section className="mt-6">
-        <p>
-          I&apos;m a full-stack developer who thrives in fast-paced environments, whether it&apos;s early-stage startups or established tech companies. I take ownership of my work and adapt quickly to different team dynamics — from intimate 3-person teams to larger organizations.
-        </p>
-        <p className="mt-4">
-          Currently working as a Software Engineer Intern at{' '}
-          <Anchor href="https://www.superalign.ai" target="_blank">SuperAlign AI</Anchor>, 
-          where I build scalable frontends with Next.js and robust backends with HonoJS. Previously shipped features at DataFoundry AI (MNC), Dank, and other startups.
-        </p>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="text-neutral-100">me</h2>
-        <p className="mt-2">
-          I started my journey in the programming and development world at my 3rd Year, curious about various technologies and technology domains. I began with Python, then Java a little bit and then hit the ground with Javascript world which led me to build simple websites, which eventually evolved into creating products that solve real-world problems
-        </p>
-        <p className="mt-4">
-        Over time, I am still learning and exploring new domains of technology, and I am currently focused on building products that are user-friendly and solve real-world problems. I am also interested in Application Development, and I am currently learning about it.
+        <p className="text-lg text-stone-400">
+          Full-stack developer currently working at{' '}
+          <Anchor href="https://www.superalign.ai" target="_blank">SuperAlign AI</Anchor>.
+          I build scalable web applications with Next.js, React, and Node.js that help businesses grow and solve real problems.
         </p>
       </section>
 
@@ -67,7 +54,7 @@ export default function Home() {
           <h2 className="text-neutral-100">work</h2>
         </Link>
         <p className="mt-2">
-          I welcome you to my battleground where I always try to build something new and interesting.
+          Recent projects I&apos;ve built to solve real-world problems and help businesses scale.
         </p>
         <div className="py-4">
           {recentProjects.map((project, index) => (
@@ -88,7 +75,7 @@ export default function Home() {
           <h2 className="text-neutral-100">experience</h2>
         </Link>
         <p className="mt-2">
-          I have worked on various projects and internships, where I have learned a lot and gained valuable experience.
+          Companies I&apos;ve worked with to deliver software solutions and drive technical growth.
         </p>
         <div className="py-4">
           {recentExperiences.map((experience, index) => (
@@ -108,12 +95,24 @@ export default function Home() {
           <h2 className="text-neutral-100">writing</h2>
         </Link>
         <p className="mt-2">
-          I write about things I&apos;m learning, my experiences and thoughts on
-          design and technology.
+          I write about development techniques, project insights, and lessons learned building software.
         </p>
         <div className="py-4">
             <BlogList length={3} />
           </div>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-neutral-100">about</h2>
+        <p className="mt-2">
+          I started my programming journey in my 3rd year of college, beginning with Python and Java before diving deep into the JavaScript ecosystem. What began as building simple websites evolved into creating products that solve real-world problems.
+        </p>
+        <p className="mt-4">
+          Previously shipped features at DataFoundry AI, Dank, and other startups. I enjoy working in different environments — from intimate 3-person teams to larger organizations — and take pride in delivering quality software that makes a difference.
+        </p>
+        <p className="mt-4">
+          Currently exploring new domains in technology while staying focused on building user-friendly applications that address real-world problems.
+        </p>
       </section>
 
       <section className="mt-12">

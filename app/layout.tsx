@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.avikmukherjee.me"),
   title: {
     default: "Avik Mukherjee",
-    template: "%s | Avik Mukherjee",
+    template: "%s | Software Developer",
   },
   description: "My personal site to showcase my developer work and projects.",
   keywords: ["developer", "web", "software", "engineer", "react", "next", "Avik", "Mukherjee", "Avik Mukherjee", "portfolio", "projects", "blog"],
