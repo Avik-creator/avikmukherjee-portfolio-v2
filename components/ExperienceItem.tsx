@@ -13,13 +13,10 @@ export default function ExperienceItem({ title, year, company, description, comp
   return (
     <div className="mb-8">
       <div className="flex justify-between items-start mb-1">
-        <Link
-          href={companySite}
-          target="_blank"
-          rel="noopener noreferrer"
+        <div
           className={cn(
-            'group flex items-center gap-1',
-            'hover:outline-[0.5px] outline-offset-[6px] hover:outline-neutral-600/50 border-0',
+            'group flex items-center justify-between gap-4 w-full',
+            'hover:outline-[0.5px] outline-offset-[6px] hover:outline-neutral-600/50 hover:[&>h3]:text-white hover:[&>span]:text-white border-0',
             'relative'
           )}
         >
@@ -37,11 +34,15 @@ export default function ExperienceItem({ title, year, company, description, comp
             <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
             <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
           </div>
-          <h3 className="font-medium text-neutral-200 underline decoration-neutral-400/50 underline-offset-[3px] transition-colors group-hover:text-white">
-            {title} @{company}
+          
+          <h3 className="grow font-medium text-neutral-200 underline decoration-neutral-400/50 underline-offset-[3px] transition-colors">
+            <Link href={companySite} target="_blank" rel="noopener noreferrer">
+              {title} @{company}
+            </Link>
           </h3>
-        </Link>
-        <span className="text-neutral-500 text-sm">{year}</span>
+          
+          <span className="text-neutral-500 text-sm flex-shrink-0">{year}</span>
+        </div>
       </div>
       
       <div className="text-neutral-400 mb-2 space-y-1">

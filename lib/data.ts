@@ -74,7 +74,7 @@ export const projects = [
       year: "2023",
       description:
       "A fullstack hotel booking platform built with React, Node.js, MongoDB. Supports Stripe payments and e2e testing with Playwright.",
-      demoUrl: "#",
+      demoUrl: "https://github.com/Avik-creator/Hotel-Booking-App",
       githubUrl: "https://github.com/Avik-creator/Hotel-Booking-App",
     },
     {
