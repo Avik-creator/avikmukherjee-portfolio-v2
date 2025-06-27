@@ -4,10 +4,9 @@ import Anchor from "./Anchor"
 interface HeaderProps {
   name: string
   location: string
-  resumeUrl?: string
 }
 
-export default function Header({ name, location, resumeUrl }: HeaderProps) {
+export default function Header({ name, location }: HeaderProps) {
   return (
     <header className="mb-6">
       <div className="flex items-center justify-between">

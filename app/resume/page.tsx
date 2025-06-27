@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { DownloadIcon, PrinterIcon, GithubIcon, GlobeIcon, LinkedinIcon, UserIcon } from 'lucide-react'
+import { DownloadIcon, PrinterIcon, GithubIcon, GlobeIcon, LinkedinIcon } from 'lucide-react'
 import BackNavigation from '@/components/back-navigation'
 import Link from 'next/link'
 import PeerlistIcon from "@/public/Peerlist.svg"
@@ -259,7 +259,7 @@ export default function ResumePage() {
               </div>
               <div className="space-y-1 text-neutral-400 text-sm">
                 <p>• Led the development of core features using React Native with Expo accounting for over 60% of the application, and significantly improving its functionality and performance metrics.</p>
-                <p>• Collaborated with cross-functional teams to integrate new API's reducing application page load times by 40% and enhancing overall application performance.</p>
+                <p>• Collaborated with cross-functional teams to integrate new API&apos;s, reducing application page load times by 40% and enhancing overall application performance.</p>
               </div>
             </div>
 
@@ -277,7 +277,7 @@ export default function ResumePage() {
               </div>
               <div className="space-y-1 text-neutral-400 text-sm">
                 <p>• Implemented Redux state management which resulted in 20% increase in application efficiency.</p>
-                <p>• Collaborated with cross-functional teams to integrate new API's reducing application page load times by 40% and enhancing overall application performance.</p>
+                <p>• Collaborated with cross-functional teams to integrate new API&apos;s, reducing application page load times by 40% and enhancing overall application performance.</p>
                 <p>• Implemented Cypress for automated application testing resulting in 50% reduction in manual testing, thus improving reliability.</p>
               </div>
             </div>
