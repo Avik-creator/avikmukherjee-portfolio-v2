@@ -14,15 +14,10 @@ export default function Header({ name, location, resumeUrl }: HeaderProps) {
         <h1 className='text-xl font-serif font-medium text-stone-100 [font-feature-setting:"kern","calt","case"]'>
           {name}
         </h1>
-        {resumeUrl && (
-          
-            <Anchor href={resumeUrl} target="_blank" className="text-stone-100 font-serif flex items-center gap-1">
-              resume 
-              <ArrowRightIcon className="w-4 h-4 text-stone-100" />
-            </Anchor>
-            
-         
-        )}
+        <Anchor href="/resume" className="text-stone-100 font-serif flex items-center gap-1">
+          resume 
+          <ArrowRightIcon className="w-4 h-4 text-stone-100" />
+        </Anchor>
       </div>
       <p className="text-neutral-500 mt-1">{location}</p>
     </header>

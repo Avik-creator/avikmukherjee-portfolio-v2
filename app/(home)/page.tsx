@@ -36,7 +36,6 @@ export default function Home() {
       <Header 
         name="Avik Mukherjee" 
         location="Kolkata, India." 
-        resumeUrl="https://docs.google.com/document/d/1KZ0hvzUtQV_F0gGc8Bw6j5E-RsyaFhx6OXhyzdu_r5Y/edit?usp=sharing"
       />
 
       <section className="mt-6">
