@@ -106,6 +106,28 @@
   --font-serif: var(--font-instrument-serif), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
+/* Light mode syntax highlighting */
+:root {
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --sh-class: #0969da;       /* Dark blue for classes */
+  --sh-identifier: #24292f;   /* Dark gray for identifiers */
+  --sh-keyword: #cf222e;      /* Dark red for keywords */
+  --sh-string: #0a3069;      /* Dark blue for strings */
+  --sh-sign: #6f42c1;        /* Purple for punctuation/symbols */
+  --sh-comment: #6e7781;     /* Medium gray for comments */
+  --sh-jsxliterals: #8250df; /* Purple for JSX literals */
+  --sh-property: #d73a49;    /* Red for properties */
+  --sh-variable: #005cc5;    /* Blue for variables */
+  --sh-function: #6f42c1;    /* Purple for functions */
+  --sh-number: #005cc5;      /* Blue for numeric values */
+  --sh-constant: #0969da;    /* Dark blue for constants */
+  --sh-operator: #d73a49;    /* Red for operators */
+  --sh-parameter: #005cc5;   /* Blue for parameters */
+  --sh-tag: #22863a;         /* Dark green for HTML/JSX tags */
+  --sh-attribute: #6f42c1;   /* Purple for attributes */
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -137,47 +159,47 @@ body {
 
 /* Blog content styling */
 .prose {
-  @apply text-neutral-400;
+  @apply text-gray-800 dark:text-neutral-400;
 }
 
 .prose h1 {
-  @apply text-neutral-100 text-xl font-medium mt-8 mb-4;
+  @apply text-gray-900 dark:text-neutral-100 text-xl font-medium mt-8 mb-4;
 }
 
 .prose h2 {
-  @apply text-neutral-100 text-lg font-medium mt-6 mb-3;
+  @apply text-gray-900 dark:text-neutral-100 text-lg font-medium mt-6 mb-3;
 }
 
 .prose h3 {
-  @apply text-neutral-100 font-medium mt-4 mb-2;
+  @apply text-gray-900 dark:text-neutral-100 font-medium mt-4 mb-2;
 }
 
 .prose p {
-  @apply text-neutral-400 my-4 leading-relaxed;
+  @apply text-gray-800 dark:text-neutral-400 my-4 leading-relaxed;
 }
 
 .prose ul {
-  @apply text-neutral-400 my-4 ml-6 list-disc space-y-1;
+  @apply text-gray-800 dark:text-neutral-400 my-4 ml-6 list-disc space-y-1;
 }
 
 .prose ol {
-  @apply text-neutral-400 my-4 ml-6 list-decimal space-y-1;
+  @apply text-gray-800 dark:text-neutral-400 my-4 ml-6 list-decimal space-y-1;
 }
 
 .prose li {
-  @apply text-neutral-400;
+  @apply text-gray-800 dark:text-neutral-400;
 }
 
 .prose strong {
-  @apply text-neutral-200 font-medium;
+  @apply text-gray-900 dark:text-neutral-200 font-medium;
 }
 
 .prose code {
-  @apply bg-neutral-800 text-neutral-200 px-1 py-0.5 rounded text-sm;
+  @apply bg-gray-100 dark:bg-neutral-800 text-gray-900 dark:text-neutral-200 px-1 py-0.5 rounded text-sm;
 }
 
 .prose pre {
-  @apply bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-800 py-3 px-4 text-sm my-4;
+  @apply bg-gray-100 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-gray-200 dark:border-neutral-800 py-3 px-4 text-sm my-4;
 }
 
 .prose pre code {
@@ -185,11 +207,11 @@ body {
 }
 
 .prose blockquote {
-  @apply bg-neutral-800/30 border-l-2 border-neutral-600 pl-4 py-2 my-4 italic text-neutral-300;
+  @apply bg-gray-100 dark:bg-neutral-800/30 border-l-2 border-gray-300 dark:border-neutral-600 pl-4 py-2 my-4 italic text-gray-700 dark:text-neutral-300;
 }
 
 .prose a {
-  @apply text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200;
+  @apply text-stone-600 dark:text-stone-300 underline decoration-stone-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-800 dark:hover:text-stone-200 hover:decoration-stone-700 dark:hover:decoration-stone-200;
 }
 
 .prose img {
@@ -197,27 +219,27 @@ body {
 }
 
 .prose table {
-  @apply min-w-full divide-y divide-neutral-700 my-6;
+  @apply min-w-full divide-y divide-gray-200 dark:divide-neutral-700 my-6;
 }
 
 .prose thead {
-  @apply bg-neutral-800;
+  @apply bg-gray-50 dark:bg-neutral-800;
 }
 
 .prose tbody {
-  @apply divide-y divide-neutral-700;
+  @apply divide-y divide-gray-200 dark:divide-neutral-700;
 }
 
 .prose th {
-  @apply px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider;
+  @apply px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-neutral-300 uppercase tracking-wider;
 }
 
 .prose td {
-  @apply px-4 py-3 whitespace-nowrap text-sm text-neutral-400;
+  @apply px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-neutral-400;
 }
 
 .prose tr:hover {
-  @apply bg-neutral-800/50;
+  @apply bg-gray-50 dark:bg-neutral-800/50;
 }
 
 .anchor {
@@ -234,7 +256,7 @@ body {
 }
 
 .anchor:after {
-  @apply text-neutral-600;
+  @apply text-gray-400 dark:text-neutral-600;
   content: "#";
 }
 

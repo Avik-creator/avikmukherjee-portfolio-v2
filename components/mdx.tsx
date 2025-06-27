@@ -16,7 +16,7 @@ const options = {
 function Blockquote(props: any) {
   return (
     <blockquote
-      className="bg-neutral-800/30 border-l-2 border-neutral-600 pl-4 py-2 my-4 italic text-neutral-300"
+      className="bg-neutral-800/30 border-l-2 border-neutral-600 pl-4 py-2 my-4 italic text-neutral-300 dark:bg-neutral-800/30 dark:border-neutral-600 dark:text-neutral-300"
       {...props}
     />
   );
@@ -32,15 +32,15 @@ function CustomLink(props: any) {
   const href = props.href;
   if (href.startsWith("/")) {
     return (
-      <Link href={href} {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200">
+      <Link href={href} {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200 dark:text-stone-300 dark:decoration-stone-400 dark:decoration-[0.5px] dark:underline-offset-4 dark:hover:text-stone-200 dark:hover:decoration-stone-200">
         {props.children}
       </Link>
     );
   }
   if (href.startsWith("#")) {
-    return <a {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200" />;
+      return <a {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200 dark:text-stone-300 dark:decoration-stone-400 dark:decoration-[0.5px] dark:underline-offset-4 dark:hover:text-stone-200 dark:hover:decoration-stone-200" />;
   }
-  return <a target="_blank" rel="noopener noreferrer" {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200" />;
+  return <a target="_blank" rel="noopener noreferrer" {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200 dark:text-stone-300 dark:decoration-stone-400 dark:decoration-[0.5px] dark:underline-offset-4 dark:hover:text-stone-200 dark:hover:decoration-stone-200" />;
 }
 
 function RoundedImage(props: any) {
@@ -61,10 +61,10 @@ function createHeading(level: number) {
   const Heading = ({ children }: any) => {
     const slug = slugify(children);
     const className = level === 1 
-      ? "text-neutral-100 text-xl font-medium mt-8 mb-4" 
+      ? "text-gray-900 dark:text-neutral-100 text-xl font-medium mt-8 mb-4" 
       : level === 2 
-      ? "text-neutral-100 text-lg font-medium mt-6 mb-3"
-      : "text-neutral-100 font-medium mt-4 mb-2";
+      ? "text-gray-900 dark:text-neutral-100 text-lg font-medium mt-6 mb-3"
+      : "text-gray-900 dark:text-neutral-100 font-medium mt-4 mb-2";
     
     return React.createElement(
       `h${level}`,
@@ -85,7 +85,7 @@ function createHeading(level: number) {
 
 function Paragraph({ children, ...props }: any) {
   return (
-    <p className="text-neutral-400 my-4 leading-relaxed" {...props}>
+    <p className="text-gray-800 dark:text-neutral-400 my-4 leading-relaxed" {...props}>
       {children}
     </p>
   );
@@ -93,7 +93,7 @@ function Paragraph({ children, ...props }: any) {
 
 function List({ children, ...props }: any) {
   return (
-    <ul className="text-neutral-400 my-4 ml-6 list-disc space-y-1" {...props}>
+    <ul className="text-gray-800 dark:text-neutral-400 my-4 ml-6 list-disc space-y-1" {...props}>
       {children}
     </ul>
   );
@@ -101,7 +101,7 @@ function List({ children, ...props }: any) {
 
 function OrderedList({ children, ...props }: any) {
   return (
-    <ol className="text-neutral-400 my-4 ml-6 list-decimal space-y-1" {...props}>
+    <ol className="text-gray-800 dark:text-neutral-400 my-4 ml-6 list-decimal space-y-1" {...props}>
       {children}
     </ol>
   );
@@ -109,7 +109,7 @@ function OrderedList({ children, ...props }: any) {
 
 function ListItem({ children, ...props }: any) {
   return (
-    <li className="text-neutral-400" {...props}>
+    <li className="text-gray-800 dark:text-neutral-400" {...props}>
       {children}
     </li>
   );
@@ -117,7 +117,7 @@ function ListItem({ children, ...props }: any) {
 
 function Strong({ children, ...props }: any) {
   return (
-    <strong className="text-neutral-200 font-medium" {...props}>
+    <strong className="text-gray-900 dark:text-neutral-200 font-medium" {...props}>
       {children}
     </strong>
   );
@@ -126,7 +126,7 @@ function Strong({ children, ...props }: any) {
 function Table({ children, ...props }: any) {
   return (
     <div className="overflow-x-auto my-6">
-      <table className="min-w-full divide-y divide-neutral-700" {...props}>
+      <table className="min-w-full divide-y divide-neutral-700 dark:divide-neutral-700" {...props}>
         {children}
       </table>
     </div>
@@ -135,7 +135,7 @@ function Table({ children, ...props }: any) {
 
 function TableHead({ children, ...props }: any) {
   return (
-    <thead className="bg-neutral-800" {...props}>
+    <thead className="bg-neutral-800 dark:bg-neutral-800" {...props}>
       {children}
     </thead>
   );
@@ -143,20 +143,20 @@ function TableHead({ children, ...props }: any) {
 
 function TableBody({ children, ...props }: any) {
   return (
-    <tbody className="divide-y divide-neutral-700" {...props}>
+    <tbody className="divide-y divide-neutral-700 dark:divide-neutral-700" {...props}>
       {children}
     </tbody>
   );
 }
 
 function TableRow({ children, ...props }: any) {
-  return <tr className="hover:bg-neutral-800/50" {...props}>{children}</tr>;
+  return <tr className="hover:bg-neutral-800/50 dark:hover:bg-neutral-800/50" {...props}>{children}</tr>;
 }
 
 function TableHeader({ children, ...props }: any) {
   return (
     <th
-      className="px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider"
+      className="px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider dark:text-neutral-300"
       {...props}
     >
       {children}
@@ -166,7 +166,7 @@ function TableHeader({ children, ...props }: any) {
 
 function TableCell({ children, ...props }: any) {
   return (
-    <td className="px-4 py-3 whitespace-nowrap text-sm text-neutral-400" {...props}>
+    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-neutral-400" {...props}>
       {children}
     </td>
   );
