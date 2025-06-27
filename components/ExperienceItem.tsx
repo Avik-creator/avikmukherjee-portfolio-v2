@@ -1,4 +1,3 @@
-import Anchor from "./Anchor"
 import { cn } from "@/lib/utils"
 
 interface ExperienceItemProps {
