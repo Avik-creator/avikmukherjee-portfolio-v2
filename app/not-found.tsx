@@ -198,8 +198,8 @@ export default function NotFound() {
       />
 
       <section className="mt-6">
-        <h2 className="text-neutral-100">404 - Page Not Found</h2>
-        <p className="mt-2 text-neutral-400">
+        <h2 className="text-gray-900 dark:text-neutral-100">404 - Page Not Found</h2>
+        <p className="mt-2 text-gray-600 dark:text-neutral-400">
           You&apos;ve in the dark for way too long. It&apos;s time to get out of the dark and find your way back to the home page. But while you&apos;re here, you can play a game of Nokia Snake.
         </p>
       </section>
@@ -298,7 +298,7 @@ export default function NotFound() {
       </section>
 
       <section className="mt-8">
-        <p className="text-neutral-400">
+        <p className="text-gray-600 dark:text-neutral-400">
           When you&apos;re done playing, you can return to the{" "}
           <Anchor href="/">home page</Anchor>
           {" "}or explore other sections of my site.
@@ -306,7 +306,7 @@ export default function NotFound() {
       </section>
 
       <section className="mt-12">
-        <h2 className="text-neutral-100">quick links</h2>
+        <h2 className="text-gray-900 dark:text-neutral-100">quick links</h2>
         <div className="mt-2 flex flex-wrap gap-2">
           <span className="whitespace-nowrap">
             <span>explore </span>
@@ -320,7 +320,7 @@ export default function NotFound() {
       </section>
 
       <section className="mt-12">
-        <h2 className="text-neutral-100">reach</h2>
+        <h2 className="text-gray-900 dark:text-neutral-100">reach</h2>
         <div className="mt-2 flex flex-wrap gap-2">
           <span className="whitespace-nowrap">
             <span>connect on </span>
