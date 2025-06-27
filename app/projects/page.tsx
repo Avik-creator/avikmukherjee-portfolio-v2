@@ -32,7 +32,7 @@ export default function Page() {
                 <ProjectItem
                     key={index}
                     title={project.title}
-                    year={project.year}
+                   
                     description={project.description}
                     demoUrl={project.demoUrl}
                     githubUrl={project.githubUrl}
