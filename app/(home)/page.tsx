@@ -74,7 +74,7 @@ export default function Home() {
         </h3>
         </Link>
         <p className="mt-2">
-          Recent projects I&apos;ve built to solve real-world problems and help businesses scale.
+          Batteleground of my personal projects that I&apos;ve built to learn new technologies.
         </p>
         <div className="py-4">
           {recentProjects.map((project, index) => (
@@ -116,7 +116,7 @@ export default function Home() {
         </h3>
         </Link>
         <p className="mt-2">
-          Companies I&apos;ve worked with to deliver software solutions and drive technical growth.
+          Companies I&apos;ve worked with to deliver software solutions and drive technical growth of the company.
         </p>
         <div className="py-4">
           {recentExperiences.map((experience, index) => (
