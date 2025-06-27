@@ -34,6 +34,7 @@ export default function Page() {
                 <ExperienceItem
                     key={index}
                     title={experience.title}
+                    company={experience.company}
                     year={experience.year}
                     description={experience.description}
                     companySite={experience.companySite}

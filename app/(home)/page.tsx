@@ -5,6 +5,7 @@ import ProjectItem from '@/components/ProjectItem';
 import Header from '@/components/Header';
 import Link from 'next/link';
 import { Experience, projects } from '@/lib/data';
+import { cn } from '@/lib/utils';
 
 export const metadata = {
   title: 'Avik Mukherjee',
@@ -47,8 +48,30 @@ export default function Home() {
       </section>
 
       <section className="mt-12">
-        <Link href="/projects">
-          <h2 className="text-neutral-100">work</h2>
+        <Link
+        href={`/projects`}
+        className={cn(
+          'group flex items-center justify-between gap-1',
+          'hover:outline-[0.5px] outline-offset-[6px] hover:outline-neutral-600/50 hover:[&>h3]:text-white hover:[&>span]:text-white border-0',
+          'relative'
+        )}>
+        {/* Top left */}
+        <div
+          className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
+          style={{ '--cross-size': '10px' } as React.CSSProperties}>
+          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+        </div>
+        {/* Bottom right */}
+        <div
+          className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
+          style={{ '--cross-size': '10px' } as React.CSSProperties}>
+          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+        </div>
+        <h3 className="grow font-medium text-neutral-200 underline decoration-neutral-400/50 underline-offset-[3px] transition-colors">
+          work
+        </h3>
         </Link>
         <p className="mt-2">
           Recent projects I&apos;ve built to solve real-world problems and help businesses scale.
@@ -68,8 +91,30 @@ export default function Home() {
       </section>
 
       <section className="mt-12">
-        <Link href="/experience">
-          <h2 className="text-neutral-100">experience</h2>
+        <Link
+        href={`/experience`}
+        className={cn(
+          'group flex items-center justify-between gap-1',
+          'hover:outline-[0.5px] outline-offset-[6px] hover:outline-neutral-600/50 hover:[&>h3]:text-white hover:[&>span]:text-white border-0',
+          'relative'
+        )}>
+        {/* Top left */}
+        <div
+          className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
+          style={{ '--cross-size': '10px' } as React.CSSProperties}>
+          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+        </div>
+        {/* Bottom right */}
+        <div
+          className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
+          style={{ '--cross-size': '10px' } as React.CSSProperties}>
+          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+        </div>
+        <h3 className="grow font-medium text-neutral-200 underline decoration-neutral-400/50 underline-offset-[3px] transition-colors">
+          experience
+        </h3>
         </Link>
         <p className="mt-2">
           Companies I&apos;ve worked with to deliver software solutions and drive technical growth.
@@ -79,6 +124,7 @@ export default function Home() {
             <ExperienceItem
               key={index}
               title={experience.title}
+              company={experience.company}
               year={experience.year}
               description={experience.description}
               companySite={experience.companySite}
@@ -88,8 +134,30 @@ export default function Home() {
       </section>
 
       <section className="mt-12">
-        <Link href="/blog">
-          <h2 className="text-neutral-100">writing</h2>
+        <Link
+        href={`/blog`}
+        className={cn(
+          'group flex items-center justify-between gap-1',
+          'hover:outline-[0.5px] outline-offset-[6px] hover:outline-neutral-600/50 hover:[&>h3]:text-white hover:[&>span]:text-white border-0',
+          'relative'
+        )}>
+        {/* Top left */}
+        <div
+          className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
+          style={{ '--cross-size': '10px' } as React.CSSProperties}>
+          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+        </div>
+        {/* Bottom right */}
+        <div
+          className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
+          style={{ '--cross-size': '10px' } as React.CSSProperties}>
+          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-neutral-500" />
+        </div>
+        <h3 className="grow font-medium text-neutral-200 underline decoration-neutral-400/50 underline-offset-[3px] transition-colors">
+          writing
+        </h3>
         </Link>
         <p className="mt-2">
           I write about development techniques, project insights, and lessons learned building software.

@@ -99,6 +99,7 @@ export const projects = [
       {
         title: "Software Engineer Intern",
         year: "May 2025 - Present",
+        company: "SuperAlign",
         description: [
           "Worked on the Frontend using NextJS, ShadcnUI, TailwindCSS and TypeScript",
           "Worked on Backend using HonoJS, DuckDB",
@@ -110,6 +111,7 @@ export const projects = [
       {
         title: "Junior Engineer Trainee (Intern)",
         year: "Sept 2024 – March 2025",
+        company: "DataFoundry",
         description: [
           "Worked on Azure Data pipelines for data preprocessing and generating CSV files.",
           "Implemented Localizations for the web application using i18next and React.",
@@ -120,6 +122,7 @@ export const projects = [
       {
         title: "Junior React Native Developer (Intern)",
         year: "Nov 2023 – Feb 2024",
+        company: "Dank",
         description: [
           "Collaborated with the development team to ensure timely delivery of applications.",
           "Led feature development for core 40% of the application, with a focus on performance optimization.",
@@ -131,6 +134,7 @@ export const projects = [
       {
         title: "LEAD",
         year: "July 2023 – July 2024",
+        company: "GDG",
         description: [
           "Organized workshops, hackathons, and events to help students grow.",
           "Conducted sessions on technologies like Flutter and Google Cloud Platform.",
@@ -142,6 +146,7 @@ export const projects = [
       {
         title: "Web Developer",
         year: "July 2022 – July 2023",
+        company: "Repl",
         description: [
           "Built the frontend using React and plain CSS.",
           "Deployed the website on Firebase."
@@ -151,6 +156,7 @@ export const projects = [
       {
         title: "Software Developer (Intern)",
         year: "June 2023 – Aug 2023",
+        company: "Auctopustechnologies",
         description: [
           "Created responsive interfaces with React and efficient API integrations.",
           "Implemented Redux for managing network discovery states and automated subnet reporting (30% system response improvement).",
@@ -161,6 +167,7 @@ export const projects = [
       {
         title: "Content Writer (Intern)",
         year: "Nov 2022 – Feb 2023",
+        company: "Framedmedia",
         description: [
           "Wrote technical articles on React, Node, and miscellaneous topics like gaming.",
           "Authored 50+ articles during the internship."
@@ -170,6 +177,7 @@ export const projects = [
       {
         title: "Content Writer (Intern)",
         year: "May 2019 – Aug 2019",
+        company: "Qwerty Thoughts",
         description: [
           "Wrote spiritual articles focusing on Hindu mythology and spirituality.",
           "Authored 30+ articles during the internship."

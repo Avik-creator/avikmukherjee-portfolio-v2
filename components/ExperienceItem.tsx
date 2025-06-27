@@ -3,11 +3,12 @@ import Anchor from "./Anchor"
 interface ExperienceItemProps {
   title: string
   year: string
+  company: string
   description: string[]
   companySite: string
 }
 
-export default function ExperienceItem({ title, year, description, companySite }: ExperienceItemProps) {
+export default function ExperienceItem({ title, year, company, description, companySite }: ExperienceItemProps) {
   return (
     <div className="mb-8">
       <div className="flex justify-between items-start mb-1">
@@ -27,7 +28,7 @@ export default function ExperienceItem({ title, year, description, companySite }
           target="_blank"
           rel="noopener noreferrer"
         >
-          company site
+          {company}
         </Anchor>
       </div>
     </div>
