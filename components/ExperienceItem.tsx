@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 interface ExperienceItemProps {
   title: string
@@ -12,7 +13,7 @@ export default function ExperienceItem({ title, year, company, description, comp
   return (
     <div className="mb-8">
       <div className="flex justify-between items-start mb-1">
-        <a
+        <Link
           href={companySite}
           target="_blank"
           rel="noopener noreferrer"
@@ -39,7 +40,7 @@ export default function ExperienceItem({ title, year, company, description, comp
           <h3 className="font-medium text-neutral-200 underline decoration-neutral-400/50 underline-offset-[3px] transition-colors group-hover:text-white">
             {title} @{company}
           </h3>
-        </a>
+        </Link>
         <span className="text-neutral-500 text-sm">{year}</span>
       </div>
       
