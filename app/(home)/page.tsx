@@ -13,16 +13,13 @@ export const metadata = {
   openGraph: {
     title: 'Avik Mukherjee',
     description: 'Avik Mukherjee is a developer who loves to code and build things.',
-    images: ['/images/avik-mukherjee.png'],
+    images: ['https://www.avikmukherjee.me/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Avik Mukherjee',
     description: 'Avik Mukherjee is a developer who loves to code and build things.',
-    images: ['/images/avik-mukherjee.png'],
-  },
-  icons: {
-    icon: '/images/avik-mukherjee.png',
+    images: ['https://www.avikmukherjee.me/og-image.png'],
   },
   alternates: {
     canonical: 'https://www.avikmukherjee.me',
@@ -42,7 +39,7 @@ export default function Home() {
       />
 
       <section className="mt-6">
-        <p className="text-lg text-stone-400">
+        <p className="text-stone-400">
           Full-stack developer currently working at{' '}
           <Anchor href="https://www.superalign.ai" target="_blank">SuperAlign AI</Anchor>.
           I build scalable web applications with Next.js, React, and Node.js that help businesses grow and solve real problems.

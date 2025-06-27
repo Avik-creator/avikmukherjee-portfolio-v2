@@ -9,8 +9,8 @@ export const metadata: Metadata = {
     openGraph: {
       title: "Projects | Avik",
       description: "Projects of Avik Mukherjee.",
-      url: "https://www.avikmukherjee.tech/projects",
-      images: ["https://www.avikmukherjee.tech/og-image.jpg"],
+      url: "https://www.avikmukherjee.me/projects",
+      images: ["https://www.avikmukherjee.me/og-image.png"],
       siteName: "Avik Mukherjee",
       locale: "en_US",
       type: "website",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     twitter: {
       title: "Projects | Avik",
       card: "summary_large_image",
-      images: ["https://www.avikmukherjee.tech/og-image.jpg"],
+      images: ["https://www.avikmukherjee.me/og-image.png"],
       description: "Projects of Avik Mukherjee.",
     },
   };
