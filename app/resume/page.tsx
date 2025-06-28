@@ -178,25 +178,25 @@ export default function ResumePage() {
             <p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <span>
-                  <Link href="https://github.com/Avik-creator" className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 flex items-center gap-1">
+                  <Link href="https://github.com/Avik-creator" target='_blank' className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 flex items-center gap-1">
                     <GithubIcon className="w-4 h-4" />
                     Github
                   </Link>
                 </span>
                 <span>
-                 <Link href="https://avikmukherjee.me" className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 flex items-center gap-1">
+                 <Link href="https://avikmukherjee.me" target='_blank' className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 flex items-center gap-1">
                    <GlobeIcon className="w-4 h-4" />
                    Portfolio
                  </Link>
                 </span>
                 <span>
-                  <Link href="https://www.linkedin.com/in/avik-mukherjee-8ab9911bb/" className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 flex items-center gap-1">
+                  <Link href="https://www.linkedin.com/in/avik-mukherjee-8ab9911bb/" target='_blank' className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 flex items-center gap-1">
                     <LinkedinIcon className="w-4 h-4" />
                     Linkedin
                   </Link>
                 </span>
                 <span>
-                  <Link href="https://peerlist.io/avikmukherjee/" className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 flex items-center gap-1">
+                  <Link href="https://peerlist.io/avikmukherjee/" target='_blank' className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 flex items-center gap-1">
                     <Image src={PeerlistIcon} alt="Peerlist" className="w-4 h-4" />
                     Peerlist
                   </Link>
