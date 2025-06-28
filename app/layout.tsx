@@ -49,6 +49,7 @@ export const metadata: Metadata = {
   twitter: {
     title: "Avik Mukherjee",
     card: "summary_large_image",
+    images: ['https://avikmukherjee.me/og-image.jpg']
   }
 };
 
