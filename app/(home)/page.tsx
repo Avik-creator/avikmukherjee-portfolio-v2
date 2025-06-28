@@ -14,13 +14,13 @@ export const metadata = {
   openGraph: {
     title: 'Avik Mukherjee',
     description: 'Avik Mukherjee is a developer who loves to code and build things.',
-    images: ['https://www.avikmukherjee.me/og-image.png'],
+    images: ['https://www.avikmukherjee.me/og-image.jpg'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Avik Mukherjee',
     description: 'Avik Mukherjee is a developer who loves to code and build things.',
-    images: ['https://www.avikmukherjee.me/og-image.png'],
+    images: ['https://www.avikmukherjee.me/og-image.jpg'],
   },
   alternates: {
     canonical: 'https://www.avikmukherjee.me',
