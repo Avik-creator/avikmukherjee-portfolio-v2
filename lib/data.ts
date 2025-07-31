@@ -1,6 +1,6 @@
 export const projects = [
   {
-    title: "NeuroSeek",
+    title: "NeuroSeek (Currently in Work)",
     year: "2025",
     description: "NeuroSeek is a AI Search engine that helps the users to search for information on the web in a comprehensive manner. It uses AI SDK to interact with all the models. Built it because I wanted to learn about AI Tool calling and a personal search engine.",
     demoUrl: "https://neuroseek.avikmukherjee.me/",
