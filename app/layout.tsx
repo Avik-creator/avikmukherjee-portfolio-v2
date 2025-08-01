@@ -65,7 +65,7 @@ export default function RootLayout({
         <Script
           defer
           data-domain="avikmukherjee.me"
-          src="https://webtracker.avikmukherjee.tech/tracking-script.js"
+          src="https://webtracker.avikmukherjee.me/tracking-script.js"
         />
         </head>
       <body
