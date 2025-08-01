@@ -4,6 +4,7 @@ import Footer from "@/components/footer/footer";
 import { Instrument_Serif } from "next/font/google";
 import { GeistMono } from 'geist/font/mono';
 import { cn } from "@/lib/utils";
+import Script from "next/script";
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -60,7 +61,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={instrumentSerif.variable}>
-      <head />
+      <head>
+        <Script
+          defer
+          data-domain="avikmukherjee.me"
+          src="https://webtracker.avikmukherjee.tech/tracking-script.js"
+        />
+        </head>
       <body
         className={cn(
           GeistMono.variable,
