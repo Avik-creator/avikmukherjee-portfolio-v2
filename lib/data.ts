@@ -1,10 +1,18 @@
 export const projects = [
+  
   {
     title: "NeuroSeek (Currently in Work)",
     year: "2025",
     description: "NeuroSeek is a AI Search engine that helps the users to search for information on the web in a comprehensive manner. It uses AI SDK to interact with all the models. Built it because I wanted to learn about AI Tool calling and a personal search engine.",
     demoUrl: "https://neuroseek.avikmukherjee.me/",
     githubUrl: "https://github.com/Avik-creator/neuroseek"
+  },
+    {
+    title: "WebTracker",
+    year: "2025",
+    description: "It is a powerful, privacy-focused web analytics platform that helps you to visualize the website's reach. Built it due to Vercel Analytics Quota exhaustion.",
+    demoUrl: "https://webtracker.avikmukherjee.me",
+    githubUrl: "https://github.com/Avik-creator/webtracker"
   },
   {
     title: "ChessAI",
@@ -14,18 +22,18 @@ export const projects = [
     githubUrl: "https://github.com/Avik-creator/chess"
   },
   {
-    title: "WebTracker",
-    year: "2025",
-    description: "It is a powerful, privacy-focused web analytics platform that helps you to visualize the website's reach. Built it due to Vercel Analytics Quota exhaustion.",
-    demoUrl: "https://webtracker.avikmukherjee.me",
-    githubUrl: "https://github.com/Avik-creator/webtracker"
-  },
-  {
     title: "AI PPT Generator",
     year: "2025",
     description: "AI-powered web application that generates fully customizable PowerPoint presentations from user input. Built with Next.js and FastAPI, it uses Google’s Gemini AI to create slide content tailored to a specific audience. Hosted on Vercel and AWS EC2.",
     demoUrl: "https://aipptgenerator.vercel.app/",
     githubUrl: "https://github.com/Avik-creator/aipptgenerator"
+  },
+  {
+    title: "PeerShare",
+    year: "2025",
+    description: "PeerShare is a secure peer-to-peer file sharing and video calling app built with Next.js and WebRTC. It enables real-time chat, HD video calls, and unlimited file transfers without storing any data on servers.",
+    demoUrl: "https://peershare.avikmukherjee.me",
+    githubUrl: "https://github.com/Avik-creator/peerFileShare"
   },
   {
     title: "FormCraftAI",
