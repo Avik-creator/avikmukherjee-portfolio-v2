@@ -119,8 +119,17 @@ export const projects = [
 
 export const Experience = [
   {
+    title: "Software Engineer",
+    year: "August 2025 - Present",
+    company: "SuperAlign",
+    description: [
+      "Currently working as a full time developer. Juggling between multiple tech stacks and multiple technologies."
+    ],
+    companySite: "https://www.superalign.ai"
+  },
+  {
     title: "Software Engineer Intern",
-    year: "May 2025 - Present",
+    year: "May 2025 - July 2025",
     company: "SuperAlign",
     description: [
       "Worked on the Frontend using NextJS, ShadcnUI, TailwindCSS and TypeScript",
