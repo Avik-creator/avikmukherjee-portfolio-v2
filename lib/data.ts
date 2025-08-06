@@ -1,11 +1,11 @@
 export const projects = [
   
   {
-    title: "NeuroSeek (Currently in Work)",
+    title: "Chat (Currently in Work)",
     year: "2025",
-    description: "NeuroSeek is a AI Search engine that helps the users to search for information on the web in a comprehensive manner. It uses AI SDK to interact with all the models. Built it because I wanted to learn about AI Tool calling and a personal search engine.",
-    demoUrl: "https://neuroseek.avikmukherjee.me/",
-    githubUrl: "https://github.com/Avik-creator/neuroseek"
+    description: "Chat is a AI Chat bot with the functionality of web search. It uses AI SDK and it's tool calling functionality for calling various tools. Wanted to learn about Tool Calling, so made this.",
+    demoUrl: "https://chat.avikmukherjee.me/",
+    githubUrl: "https://github.com/Avik-creator/aiChatBot"
   },
     {
     title: "WebTracker",
