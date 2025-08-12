@@ -36,6 +36,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
+  themeColor: "#0a0a0a",
   robots: {
     index: true,
     follow: true,
@@ -62,6 +63,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={instrumentSerif.variable}>
       <head>
+        <meta name="application-name" content="Avik Mukherjee" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Avik" />
+        <link rel="manifest" href="/manifest.webmanifest" />
         <Script
           defer
           data-domain="avikmukherjee.me"

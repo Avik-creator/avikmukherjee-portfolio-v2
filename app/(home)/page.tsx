@@ -178,7 +178,7 @@ export default function Home() {
           Currently exploring new domains in technology while staying focused on building user-friendly applications that address real-world problems.
         </p>
         <p className='mt-4 text-gray-600 dark:text-neutral-400'>
-          If you don't want to read so much text, you can watch my video below.
+          If you don&apos;t want to read so much text, you can watch my video below.
         </p>
         <VideoSection/>
       </section>
