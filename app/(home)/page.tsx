@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import Link from 'next/link';
 import { Experience, projects } from '@/lib/data';
 import { cn } from '@/lib/utils';
+import { VideoSection } from '@/components/video-section';
 
 export const metadata = {
   title: 'Avik Mukherjee',
@@ -176,6 +177,10 @@ export default function Home() {
         <p className="mt-4 text-gray-600 dark:text-neutral-400">
           Currently exploring new domains in technology while staying focused on building user-friendly applications that address real-world problems.
         </p>
+        <p className='mt-4 text-gray-600 dark:text-neutral-400'>
+          If you don't want to read so much text, you can watch my video below.
+        </p>
+        <VideoSection/>
       </section>
 
       <section className="mt-12">
