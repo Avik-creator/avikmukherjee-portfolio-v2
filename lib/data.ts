@@ -1,5 +1,12 @@
 export const projects = [
-  
+
+  {
+    title: "FormCraftAI",
+    year: "2025",
+    description: "FormCraft AI is an open-source, no-code AI form builder with drag-and-drop design, AI-generated forms, conditional logic, regex validation, integrations (Google Sheets), and real-time analytics — all with customizable templates and transparent, no-recurring-fee pricing.",
+    demoUrl: "https://formcraftai.avikmukherjee.me/",
+    githubUrl: "https://github.com/Avik-creator/formcraftAI"
+  },
   {
     title: "Chat (Currently in Work)",
     year: "2025",
@@ -36,7 +43,7 @@ export const projects = [
     githubUrl: "https://github.com/Avik-creator/peerFileShare"
   },
   {
-    title: "FormCraftAI",
+    title: "FormCraftAI (Not Active)",
     year: "2025",
     description:
       "Build professional forms in seconds with AI. Whether it is surveys, registrations, or feedback, describe your need and get a smart, user-friendly form instantly. Hosted on Vercel.",
