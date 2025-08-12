@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "@/components/footer/footer";
 import { Instrument_Serif } from "next/font/google";
