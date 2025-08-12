@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Footer from "@/components/footer/footer";
 import { Instrument_Serif } from "next/font/google";
@@ -36,7 +36,6 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
-  themeColor: "#0a0a0a",
   robots: {
     index: true,
     follow: true,
@@ -55,6 +54,8 @@ export const metadata: Metadata = {
   }
 };
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -63,11 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={instrumentSerif.variable}>
       <head>
-        <meta name="application-name" content="Avik Mukherjee" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Avik" />
-        <link rel="manifest" href="/manifest.webmanifest" />
+        
         <Script
           defer
           data-domain="avikmukherjee.me"
