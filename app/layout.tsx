@@ -47,6 +47,15 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  icons:{
+    icon: "/my-favicon/web-app-manifest-192x192.png",
+    shortcut: "/my-favicon/web-app-manifest-192x192.png",
+    apple: "/my-favicon/web-app-manifest-192x192.png",
+    other: {
+      rel: "icon",
+      url: "/my-favicon/web-app-manifest-192x192.png",
+    },
+  },
   twitter: {
     title: "Avik Mukherjee",
     card: "summary_large_image",
@@ -64,7 +73,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={instrumentSerif.variable}>
       <head>
-        
+      <meta name="apple-mobile-web-app-title" content="Avik" />
         <Script
           defer
           data-domain="avikmukherjee.me"
