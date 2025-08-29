@@ -174,7 +174,7 @@ export default function ResumePage() {
         <header className="text-center">
           <h1 className="text-3xl font-serif font-medium text-gray-900 dark:text-stone-100 mb-4">AVIK MUKHERJEE</h1>
           <div className="space-y-2 text-gray-600 dark:text-neutral-400">
-            <p>Kolkata, West Bengal | <Link href="tel:+919668066031" className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200">+919668066031</Link> | <Link href="mailto:avikm744@gmail.com" className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200">avikm744@gmail.com</Link></p>
+            <p>Hyderabad | <Link href="tel:+919668066031" className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200">+919668066031</Link> | <Link href="mailto:avikm744@gmail.com" className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200">avikm744@gmail.com</Link></p>
             <p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <span>
@@ -210,7 +210,24 @@ export default function ResumePage() {
         <section>
           <h2 className="text-xl font-medium text-gray-900 dark:text-neutral-100 mb-6">Work Experience</h2>
           
-          <div className="space-y-8">
+          <div className="space-y-10">
+             <div className="space-y-2">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="font-medium text-gray-800 dark:text-neutral-200">SuperAlign AI</h3>
+                  <p className="text-gray-600 dark:text-neutral-400">Software Engineer</p>
+                </div>
+                <div className="text-right text-gray-600 dark:text-neutral-500 text-sm">
+                  <p>Hyderabad</p>
+                  <p>August 2025-Present</p>
+                </div>
+              </div>
+              <div className="space-y-1 text-gray-600 dark:text-neutral-400 text-sm">
+                <p>• Built a Chrome Extension to capture and analyze user interactions with multiple AI platforms (e.g., ChatGPT, Claude, Gemini, Perplexity).</p>
+                <p>• Implemented real-time request interception and blocking, preventing sensitive data from being sent and alerting users through custom popups.</p>
+                <p>• Collaborated across frontend, backend, and security teams to integrate captured insights into analytics workflows and improve monitoring accuracy.</p>
+              </div>
+            </div>
             {/* SuperAlign AI */}
             <div className="space-y-2">
               <div className="flex justify-between items-start">
@@ -220,12 +237,13 @@ export default function ResumePage() {
                 </div>
                 <div className="text-right text-gray-600 dark:text-neutral-500 text-sm">
                   <p>Remote</p>
-                  <p>April 2025-Present</p>
+                  <p>April 2025-August 2025</p>
                 </div>
               </div>
               <div className="space-y-1 text-gray-600 dark:text-neutral-400 text-sm">
                 <p>• Developed responsive frontend interfaces using Next.js, ensuring high design fidelity and performance.</p>
                 <p>• Built a scalable backend with HonoJS and DrizzleORM, enabling structured API routes and efficient database interactions.</p>
+                <p>• Built a Python WebScrapper using Craw4AI for scrapping web pages and converting them in a markdown report.</p>
               </div>
             </div>
 
