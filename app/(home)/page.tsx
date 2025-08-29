@@ -36,7 +36,7 @@ export default function Home() {
     <main className="mb-32 text-gray-700 dark:text-neutral-400">
       <Header 
         name="Avik Mukherjee" 
-        location="Kolkata, India." 
+        location="Hyderabad, India." 
       />
 
       <section className="mt-6">
