@@ -1,4 +1,11 @@
 export const projects = [
+  {
+    title: "PulsePing",
+    year: "2025",
+    description: "A Serverless deployment monitoring tool solving the cold start problem. Written in Go and NextJS",
+    demoUrl: "https://pulseping.avikmukherjee.me",
+    githubUrl: "https://github.com/Avik-creator/pulsePing"
+  },
 
   {
     title: "FormCraftAI",
