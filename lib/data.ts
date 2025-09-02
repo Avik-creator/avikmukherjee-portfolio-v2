@@ -49,14 +49,6 @@ export const projects = [
     githubUrl: "https://github.com/Avik-creator/aipptgenerator",
   },
   {
-    title: "Chat",
-    year: "2025",
-    description:
-      "Chat is a AI Chat bot with the functionality of web search. It uses AI SDK and it's tool calling functionality for calling various tools. Wanted to learn about Tool Calling, so made this.",
-    demoUrl: "",
-    githubUrl: "https://github.com/Avik-creator/aiChatBot",
-  },
-  {
     title: "FormCraftAI (Not Active)",
     year: "2025",
     description:
