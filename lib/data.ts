@@ -2,52 +2,59 @@ export const projects = [
   {
     title: "PulsePing",
     year: "2025",
-    description: "A Serverless deployment monitoring tool solving the cold start problem. Written in Go and NextJS",
+    description:
+      "A Serverless deployment monitoring tool solving the cold start problem. Written in Go and NextJS",
     demoUrl: "https://pulseping.avikmukherjee.me",
-    githubUrl: "https://github.com/Avik-creator/pulsePing"
+    githubUrl: "https://github.com/Avik-creator/pulsePing",
   },
 
   {
     title: "FormCraftAI",
     year: "2025",
-    description: "FormCraft AI is an open-source, no-code AI form builder with drag-and-drop design, AI-generated forms, conditional logic, regex validation, integrations (Google Sheets), and real-time analytics — all with customizable templates and transparent, no-recurring-fee pricing.",
-    demoUrl: "https://formcraftai.avikmukherjee.me/",
-    githubUrl: "https://github.com/Avik-creator/formcraftAI"
+    description:
+      "FormCraft AI is an open-source, no-code AI form builder with drag-and-drop design, AI-generated forms, conditional logic, regex validation, integrations (Google Sheets), and real-time analytics — all with customizable templates and transparent, no-recurring-fee pricing.",
+    demoUrl: "https://formcraftai.xyz",
+    githubUrl: "https://github.com/Avik-creator/formcraftAI",
   },
   {
-    title: "Chat (Currently in Work)",
-    year: "2025",
-    description: "Chat is a AI Chat bot with the functionality of web search. It uses AI SDK and it's tool calling functionality for calling various tools. Wanted to learn about Tool Calling, so made this.",
-    demoUrl: "https://chat.avikmukherjee.me/",
-    githubUrl: "https://github.com/Avik-creator/aiChatBot"
-  },
-    {
     title: "WebTracker",
     year: "2025",
-    description: "It is a powerful, privacy-focused web analytics platform that helps you to visualize the website's reach. Built it due to Vercel Analytics Quota exhaustion.",
+    description:
+      "It is a powerful, privacy-focused web analytics platform that helps you to visualize the website's reach. Built it due to Vercel Analytics Quota exhaustion.",
     demoUrl: "https://webtracker.avikmukherjee.me",
-    githubUrl: "https://github.com/Avik-creator/webtracker"
-  },
-  {
-    title: "ChessAI",
-    year: "2025",
-    description: "It is a Chess game built with NextJS and AI SDK. In here the user can play against AI and can improve their skills. Built it because I suck at Chess.",
-    demoUrl: "https://chess.avikmukherjee.me/",
-    githubUrl: "https://github.com/Avik-creator/chess"
-  },
-  {
-    title: "AI PPT Generator",
-    year: "2025",
-    description: "AI-powered web application that generates fully customizable PowerPoint presentations from user input. Built with Next.js and FastAPI, it uses Google’s Gemini AI to create slide content tailored to a specific audience. Hosted on Vercel and AWS EC2.",
-    demoUrl: "https://aipptgenerator.vercel.app/",
-    githubUrl: "https://github.com/Avik-creator/aipptgenerator"
+    githubUrl: "https://github.com/Avik-creator/webtracker",
   },
   {
     title: "PeerShare",
     year: "2025",
-    description: "PeerShare is a secure peer-to-peer file sharing and video calling app built with Next.js and WebRTC. It enables real-time chat, HD video calls, and unlimited file transfers without storing any data on servers.",
+    description:
+      "PeerShare is a secure peer-to-peer file sharing and video calling app built with Next.js and WebRTC. It enables real-time chat, HD video calls, and unlimited file transfers without storing any data on servers.",
     demoUrl: "https://peershare.avikmukherjee.me",
-    githubUrl: "https://github.com/Avik-creator/peerFileShare"
+    githubUrl: "https://github.com/Avik-creator/peerFileShare",
+  },
+  {
+    title: "ChessAI",
+    year: "2025",
+    description:
+      "It is a Chess game built with NextJS and AI SDK. In here the user can play against AI and can improve their skills. Built it because I suck at Chess.",
+    demoUrl: "https://chess.avikmukherjee.me/",
+    githubUrl: "https://github.com/Avik-creator/chess",
+  },
+  {
+    title: "AI PPT Generator",
+    year: "2025",
+    description:
+      "AI-powered web application that generates fully customizable PowerPoint presentations from user input. Built with Next.js and FastAPI, it uses Google’s Gemini AI to create slide content tailored to a specific audience. Hosted on Vercel and AWS EC2.",
+    demoUrl: "https://aipptgenerator.vercel.app/",
+    githubUrl: "https://github.com/Avik-creator/aipptgenerator",
+  },
+  {
+    title: "Chat",
+    year: "2025",
+    description:
+      "Chat is a AI Chat bot with the functionality of web search. It uses AI SDK and it's tool calling functionality for calling various tools. Wanted to learn about Tool Calling, so made this.",
+    demoUrl: "",
+    githubUrl: "https://github.com/Avik-creator/aiChatBot",
   },
   {
     title: "FormCraftAI (Not Active)",
@@ -128,8 +135,8 @@ export const projects = [
       "Convert code snippets to beautiful images for sharing. Built using React and react-simple-code-editor.",
     demoUrl: "https://code-to-picture.vercel.app/",
     githubUrl: "https://github.com/Avik-creator/Code-to-Picture",
-  }
-]
+  },
+];
 
 export const Experience = [
   {
@@ -137,9 +144,9 @@ export const Experience = [
     year: "August 2025 - Present",
     company: "SuperAlign",
     description: [
-      "Currently working as a full time developer. Juggling between multiple tech stacks and multiple technologies."
+      "Currently working as a full time developer. Juggling between multiple tech stacks and multiple technologies.",
     ],
-    companySite: "https://www.superalign.ai"
+    companySite: "https://www.superalign.ai",
   },
   {
     title: "Software Engineer Intern",
@@ -150,7 +157,7 @@ export const Experience = [
       "Worked on Backend using HonoJS, DuckDB",
       "Implemented a python webscrapper to scrape data from the web and store it in a markdown file",
     ],
-    companySite: "https://www.superalign.ai"
+    companySite: "https://www.superalign.ai",
   },
 
   {
@@ -160,9 +167,9 @@ export const Experience = [
     description: [
       "Worked on Azure Data pipelines for data preprocessing and generating CSV files.",
       "Implemented Localizations for the web application using i18next and React.",
-      "Implemented Permission Based Access Control for the web application."
+      "Implemented Permission Based Access Control for the web application.",
     ],
-    companySite: "https://datafoundry.ai"
+    companySite: "https://datafoundry.ai",
   },
   {
     title: "Junior React Native Developer (Intern)",
@@ -172,9 +179,10 @@ export const Experience = [
       "Collaborated with the development team to ensure timely delivery of applications.",
       "Led feature development for core 40% of the application, with a focus on performance optimization.",
       "Built and maintained core features like feed, comments, and user profiles.",
-      "Worked on the frontend using React Native."
+      "Worked on the frontend using React Native.",
     ],
-    companySite: "https://play.google.com/store/apps/details?id=com.joindank.dankapp"
+    companySite:
+      "https://play.google.com/store/apps/details?id=com.joindank.dankapp",
   },
   {
     title: "LEAD",
@@ -184,9 +192,10 @@ export const Experience = [
       "Organized workshops, hackathons, and events to help students grow.",
       "Conducted sessions on technologies like Flutter and Google Cloud Platform.",
       "Built a community of 600+ tech enthusiasts.",
-      "Collaborated with organizations for event execution."
+      "Collaborated with organizations for event execution.",
     ],
-    companySite: "https://gdg.community.dev/gdg-on-campus-maulana-abul-kalam-azad-university-of-technology-kalyani-india/"
+    companySite:
+      "https://gdg.community.dev/gdg-on-campus-maulana-abul-kalam-azad-university-of-technology-kalyani-india/",
   },
   {
     title: "Web Developer",
@@ -194,9 +203,9 @@ export const Experience = [
     company: "Repl",
     description: [
       "Built the frontend using React and plain CSS.",
-      "Deployed the website on Firebase."
+      "Deployed the website on Firebase.",
     ],
-    companySite: "https://repl-us.web.app"
+    companySite: "https://repl-us.web.app",
   },
   {
     title: "Software Developer (Intern)",
@@ -205,9 +214,9 @@ export const Experience = [
     description: [
       "Created responsive interfaces with React and efficient API integrations.",
       "Implemented Redux for managing network discovery states and automated subnet reporting (30% system response improvement).",
-      "Wrote Cypress test cases, reducing manual testing by 50%."
+      "Wrote Cypress test cases, reducing manual testing by 50%.",
     ],
-    companySite: "https://www.auctopustechnologies.com/home"
+    companySite: "https://www.auctopustechnologies.com/home",
   },
   {
     title: "Content Writer (Intern)",
@@ -215,9 +224,9 @@ export const Experience = [
     company: "Framedmedia",
     description: [
       "Wrote technical articles on React, Node, and miscellaneous topics like gaming.",
-      "Authored 50+ articles during the internship."
+      "Authored 50+ articles during the internship.",
     ],
-    companySite: "https://framedmedia.com"
+    companySite: "https://framedmedia.com",
   },
   {
     title: "Content Writer (Intern)",
@@ -225,8 +234,8 @@ export const Experience = [
     company: "Qwerty Thoughts",
     description: [
       "Wrote spiritual articles focusing on Hindu mythology and spirituality.",
-      "Authored 30+ articles during the internship."
+      "Authored 30+ articles during the internship.",
     ],
-    companySite: "https://www.linkedin.com/company/qwerty-thoughts"
-  }
+    companySite: "https://www.linkedin.com/company/qwerty-thoughts",
+  },
 ];
