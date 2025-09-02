@@ -7,7 +7,6 @@ export const projects = [
     demoUrl: "https://pulseping.avikmukherjee.me",
     githubUrl: "https://github.com/Avik-creator/pulsePing",
   },
-
   {
     title: "FormCraftAI",
     year: "2025",
