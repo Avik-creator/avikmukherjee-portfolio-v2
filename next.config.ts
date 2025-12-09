@@ -4,6 +4,7 @@ import createMDX from "@next/mdx";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  productionBrowserSourceMaps: true,
   webpack: (config) => {
     config.resolve.fallback = {
       fs: false,
