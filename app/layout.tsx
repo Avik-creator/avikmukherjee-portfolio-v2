@@ -5,6 +5,8 @@ import { Instrument_Serif } from "next/font/google";
 import { GeistMono } from 'geist/font/mono';
 import { cn } from "@/lib/utils";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -158,7 +160,10 @@ export default function RootLayout({
           GeistMono.variable,
           'flex min-h-screen mx-auto flex-col bg-neutral-950 font-mono text-neutral-100 text-sm'
         )}>
-        <main className="flex-1 pt-24">{children}</main>
+        <main className="flex-1 pt-24">{children}
+          <SpeedInsights />
+          <Analytics />
+        </main>
         <Footer />
       </body>
     </html>
