@@ -26,7 +26,7 @@ export async function generateMetadata({
         title: `${post.title} | Avik Mukherjee`,
         description: post.excerpt,
         url: `https://www.avikmukherjee.me/blog/${slugPath}`,
-        images: ["https://www.avikmukherjee.me/og-image.webp"],
+        images: ["/og-image.webp"],
         siteName: "Avik Mukherjee",
         locale: "en_US",
         type: "article",
@@ -34,7 +34,7 @@ export async function generateMetadata({
       twitter: {
         title: `${post.title} | Avik Mukherjee`,
         card: "summary_large_image",
-        images: ["https://www.avikmukherjee.me/og-image.jpg"],
+        images: ["/og-image.jpg"],
         description: post.excerpt,
       },
     }
