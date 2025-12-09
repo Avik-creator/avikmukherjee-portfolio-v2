@@ -12,13 +12,13 @@ export const metadata = {
   openGraph: {
     title: 'Resume',
     description: 'Resume of Avik Mukherjee',
-    images: ['/og?title=Resume'],
+    images: ['https://www.avikmukherjee.me/og-image.jpg'],
     url: 'https://avikmukherjee.me/resume',
   },
   twitter: {
     title: 'Resume',
     description: 'Resume of Avik Mukherjee',
-    images: ['/og?title=Resume'],
+    images: ['https://www.avikmukherjee.me/og-image.jpg'],
   },
   alternates: {
     canonical: 'https://avikmukherjee.me/resume',

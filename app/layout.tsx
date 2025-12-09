@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "Avik Mukherjee's Portfolio",
     images: [
       {
-        url: "/og",
+        url: "https://www.avikmukherjee.me/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Avik Mukherjee",
@@ -134,7 +134,7 @@ export const metadata: Metadata = {
     site: "@avikm744",
     siteId: "@avikm744",
     description: "Full-stack software developer specializing in Next.js, React, and TypeScript.",
-    images: ["/og"]
+    images: ["https://www.avikmukherjee.me/og-image.jpg"]
   }
 };
 
@@ -161,10 +161,11 @@ export default function RootLayout({
           'flex min-h-screen mx-auto flex-col bg-neutral-950 font-mono text-neutral-100 text-sm'
         )}>
         <main className="flex-1 pt-24">{children}
-          <SpeedInsights />
-          <Analytics />
+
         </main>
         <Footer />
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
