@@ -160,11 +160,10 @@ export default function RootLayout({
           GeistMono.variable,
           'flex min-h-screen mx-auto flex-col bg-neutral-950 font-mono text-neutral-100 text-sm'
         )}>
-        <main className="flex-1 pt-24">{children}
-          <SpeedInsights />
-          <Analytics />
-        </main>
+        <main className="flex-1 pt-24">{children}</main>
         <Footer />
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
