@@ -3,9 +3,9 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
 	return {
 		name: "Avik Mukherjee",
-		short_name: "avikmukherjee",
+		short_name: "Avik",
 		description:
-			"Passionate full stack developer from India. On the way to master programming",
+			"Full-stack software developer specializing in Next.js, React, and TypeScript. Portfolio, projects, and writing by Avik Mukherjee",
 		start_url: "/",
 		id: "com.avikmukherjee",
 		display: "standalone",

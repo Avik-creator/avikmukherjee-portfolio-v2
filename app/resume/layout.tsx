@@ -12,13 +12,13 @@ export const metadata = {
   openGraph: {
     title: 'Resume',
     description: 'Resume of Avik Mukherjee',
-    images: ['https://avikmukherjee.me/og-image.jpg'],
+    images: ['/og?title=Resume'],
     url: 'https://avikmukherjee.me/resume',
   },
   twitter: {
     title: 'Resume',
     description: 'Resume of Avik Mukherjee',
-    images: ['https://avikmukherjee.me/og-image.jpg'],
+    images: ['/og?title=Resume'],
   },
   alternates: {
     canonical: 'https://avikmukherjee.me/resume',
@@ -26,6 +26,13 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 }
 

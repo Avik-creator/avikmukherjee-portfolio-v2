@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     "portfolio",
     "projects",
     "blog",
-    "Kolkata"
+    "India"
   ],
   openGraph: {
     title: "Avik Mukherjee",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     siteName: "Avik Mukherjee's Portfolio",
     images: [
       {
-        url: "https://www.avikmukherjee.me/og-image.jpg",
+        url: "/og",
         width: 1200,
         height: 630,
         alt: "Avik Mukherjee",
@@ -66,65 +66,65 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-		icon: [
-			{
-				media: "(prefers-color-scheme: light)",
-				url: "/my-favicon/web-app-manifest-192x192.png",
-				href: "/my-favicon/web-app-manifest-192x192.png",
-				sizes: "192x192",
-				type: "image/png",
-				rel: "icon",
-			},
-			{
-				media: "(prefers-color-scheme: light)",
-				url: "/my-favicon/favicon.svg",
-				type: "image/svg+xml",
-				rel: "icon",
-			},
-			{
-				media: "(prefers-color-scheme: dark)",
-				url: "/my-favicon/web-app-manifest-192x192-dark.png",
-				href: "/my-favicon/web-app-manifest-192x192-dark.png",
-				sizes: "192x192",
-				type: "image/png",
-				rel: "icon",
-			},
-			{
-				media: "(prefers-color-scheme: dark)",
-				url: "/my-favicon/favicon.svg",
-				type: "image/svg+xml",
-				rel: "icon",
-			},
-		],
-		shortcut: [
-			{
-				media: "(prefers-color-scheme: light)",
-				url: "/my-favicon/favicon.ico",
-				href: "/my-favicon/favicon.ico",
-			},
-			{
-				media: "(prefers-color-scheme: dark)",
-				url: "/my-favicon/favicon-dark.ico",
-				href: "/my-favicon/favicon-dark.ico",
-			},
-		],
-		apple: [
-			{
-				media: "(prefers-color-scheme: light)",
-				url: "/my-favicon/apple-icon.png",
-				href: "/my-favicon/apple-icon.png",
-				sizes: "180x180",
-				type: "image/png",
-			},
-			{
-				media: "(prefers-color-scheme: dark)",
-				url: "/my-favicon/apple-icon.png",
-				href: "/my-favicon/apple-icon.png",
-				sizes: "180x180",
-				type: "image/png",
-			},
-		],
-	},
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/my-favicon/web-app-manifest-192x192.png",
+        href: "/my-favicon/web-app-manifest-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+        rel: "icon",
+      },
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/my-favicon/favicon.svg",
+        type: "image/svg+xml",
+        rel: "icon",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/my-favicon/web-app-manifest-192x192-dark.png",
+        href: "/my-favicon/web-app-manifest-192x192-dark.png",
+        sizes: "192x192",
+        type: "image/png",
+        rel: "icon",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/my-favicon/favicon.svg",
+        type: "image/svg+xml",
+        rel: "icon",
+      },
+    ],
+    shortcut: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/my-favicon/favicon.ico",
+        href: "/my-favicon/favicon.ico",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/my-favicon/favicon-dark.ico",
+        href: "/my-favicon/favicon-dark.ico",
+      },
+    ],
+    apple: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/my-favicon/apple-icon.png",
+        href: "/my-favicon/apple-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/my-favicon/apple-icon.png",
+        href: "/my-favicon/apple-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+  },
   twitter: {
     title: "Avik Mukherjee",
     card: "summary_large_image",
@@ -132,7 +132,7 @@ export const metadata: Metadata = {
     site: "@avikm744",
     siteId: "@avikm744",
     description: "Full-stack software developer specializing in Next.js, React, and TypeScript.",
-    images: ['https://avikmukherjee.me/og-image.jpg']
+    images: ["/og"]
   }
 };
 
@@ -146,13 +146,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={instrumentSerif.variable}>
       <head>
-      <meta name="apple-mobile-web-app-title" content="Avik" />
+        <meta name="apple-mobile-web-app-title" content="Avik" />
         <Script
           defer
           data-domain="avikmukherjee.me"
           src="https://webtracker.avikmukherjee.me/tracking-script.js"
         />
-        </head>
+      </head>
       <body
         className={cn(
           GeistMono.variable,

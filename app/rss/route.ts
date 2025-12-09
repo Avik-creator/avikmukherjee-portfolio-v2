@@ -1,5 +1,6 @@
 import { getAllPosts } from "@/lib/mdx";
 import type { Post } from "@/lib/mdx";
+import { Experience, projects } from "@/lib/data";
 
 function toRfc822Date(dateString: string): string {
   // Try native parse first
@@ -20,8 +21,17 @@ function escapeCdata(text: string): string {
   return text.replaceAll("]]>", "]]&gt;");
 }
 
-function generateRSSFeed(posts: Post[], blogUrl: string): string {
-  const feedItems = posts
+function getYearDate(value: string | undefined): string {
+  if (!value) return new Date().toUTCString();
+  const match = value.match(/(\d{4})/);
+  if (match) {
+    return new Date(parseInt(match[1], 10), 0, 1).toUTCString();
+  }
+  return new Date().toUTCString();
+}
+
+function generateRSSFeed(posts: Post[], blogUrl: string, portfolioUrl: string): string {
+  const blogItems = posts
     .map((post) => {
       const postUrl = `${blogUrl}/${post.slug}`;
       const title = escapeCdata(post.title ?? "Untitled");
@@ -39,15 +49,51 @@ function generateRSSFeed(posts: Post[], blogUrl: string): string {
     })
     .join("");
 
+  const projectItems = projects
+    .map((project) => {
+      const link = project.demoUrl || `${portfolioUrl}/projects`;
+      const title = escapeCdata(project.title ?? "Untitled project");
+      const description = escapeCdata(project.description ?? "");
+      const pubDate = getYearDate(project.year);
+
+      return `
+        <item>
+            <title><![CDATA[${title}]]></title>
+            <link>${link}</link>
+            <guid>${link}</guid>
+            <pubDate>${pubDate}</pubDate>
+            <description><![CDATA[<p>${description}</p>]]></description>
+        </item>`;
+    })
+    .join("");
+
+  const experienceItems = Experience.map((exp) => {
+    const link = exp.companySite || `${portfolioUrl}/experience`;
+    const title = escapeCdata(`${exp.title} at ${exp.company}`);
+    const description = escapeCdata(Array.isArray(exp.description) ? exp.description.join(" ") : exp.description ?? "");
+    const pubDate = getYearDate(exp.year);
+
+    return `
+        <item>
+            <title><![CDATA[${title}]]></title>
+            <link>${link}</link>
+            <guid>${link}</guid>
+            <pubDate>${pubDate}</pubDate>
+            <description><![CDATA[<p>${description}</p>]]></description>
+        </item>`;
+  }).join("");
+
   return `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
   <channel>
-    <title><![CDATA[Avik Mukherjee's Blog]]></title>
-    <link>${blogUrl}</link>
-    <description><![CDATA[Explore blog posts on engineering, design, and product development.]]></description>
+    <title><![CDATA[Avik Mukherjee – Portfolio Feed]]></title>
+    <link>${portfolioUrl}</link>
+    <description><![CDATA[Projects, blog posts, and updates from Avik Mukherjee.]]></description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    ${feedItems}
+    ${projectItems}
+    ${experienceItems}
+    ${blogItems}
   </channel>
 </rss>`;
 }
@@ -57,7 +103,7 @@ const baseUrl = "https://www.avikmukherjee.me";
 export const GET = async () => {
   const posts = await getAllPosts();
   const blogUrl = `${baseUrl}/blog`;
-  const rss = generateRSSFeed(posts, blogUrl);
+  const rss = generateRSSFeed(posts, blogUrl, baseUrl);
 
   return new Response(rss, {
     headers: {

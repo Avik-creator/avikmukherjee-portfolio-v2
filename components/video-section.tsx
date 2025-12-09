@@ -46,10 +46,13 @@ export function VideoSection() {
             {/* Thumbnail */}
             <div className="aspect-video bg-neutral-900 flex items-center justify-center">
               <img
-                src="https://img.youtube.com/vi/BvAWNrlYMJ4/maxresdefault.jpg"
+                src="https://img.youtube.com/vi/BvAWNrlYMJ4/mqdefault.jpg"
                 alt="Building Modern Web Applications - thumbnail"
                 className="w-full h-full object-cover opacity-85 group-hover:opacity-95 transition-opacity"
+                width={320}
+                height={180}
                 loading="lazy"
+                decoding="async"
               />
 
               {/* Play button overlay */}
