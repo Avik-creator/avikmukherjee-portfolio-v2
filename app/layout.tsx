@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "Avik Mukherjee's Portfolio",
     images: [
       {
-        url: "https://www.avikmukherjee.me/og-image.jpg",
+        url: "https://www.avikmukherjee.me/og-image.webp",
         width: 1200,
         height: 630,
         alt: "Avik Mukherjee",
@@ -134,7 +134,7 @@ export const metadata: Metadata = {
     site: "@avikm744",
     siteId: "@avikm744",
     description: "Full-stack software developer specializing in Next.js, React, and TypeScript.",
-    images: ["https://www.avikmukherjee.me/og-image.jpg"]
+    images: ["https://www.avikmukherjee.me/og-image.webp"]
   }
 };
 

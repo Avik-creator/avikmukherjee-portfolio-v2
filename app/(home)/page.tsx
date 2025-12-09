@@ -8,25 +8,6 @@ import { Experience, projects } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import { VideoSection } from '@/components/video-section';
 
-export const metadata = {
-  title: 'Avik Mukherjee',
-  description: 'Avik Mukherjee is a developer who loves to code and build things.',
-  keywords: ['Avik Mukherjee', 'developer', 'software engineer', 'portfolio', 'projects', 'blog', 'formcraftai', 'formcraftai-delta', 'formcraftai-ai', 'formcraftai-ai-powered', 'formcraftai-ai-powered-application', 'formcraftai-ai-powered-application-that-helps-you-to-create-google-forms-with-ease'],
-  openGraph: {
-    title: 'Avik Mukherjee',
-    description: 'Avik Mukherjee is a developer who loves to code and build things.',
-    images: ['/og?title=Avik%20Mukherjee'],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Avik Mukherjee',
-    description: 'Avik Mukherjee is a developer who loves to code and build things.',
-    images: ['/og?title=Avik%20Mukherjee'],
-  },
-  alternates: {
-    canonical: 'https://www.avikmukherjee.me',
-  },
-};
 
 export default function Home() {
   const recentExperiences = Experience.slice(0, 3);
@@ -34,9 +15,9 @@ export default function Home() {
 
   return (
     <main className="mb-32 text-gray-700 dark:text-neutral-400">
-      <Header 
-        name="Avik Mukherjee" 
-        location="Hyderabad, India." 
+      <Header
+        name="Avik Mukherjee"
+        location="Hyderabad, India."
       />
 
       <section className="mt-6">
@@ -49,29 +30,29 @@ export default function Home() {
 
       <section className="mt-12">
         <Link
-        href={`/projects`}
-        className={cn(
-          'group flex items-center justify-between gap-1',
-          'hover:outline-[0.5px] outline-offset-[6px] hover:outline-gray-400/50 dark:hover:outline-neutral-600/50 hover:[&>h3]:text-gray-900 dark:hover:[&>h3]:text-white hover:[&>span]:text-gray-900 dark:hover:[&>span]:text-white border-0',
-          'relative'
-        )}>
-        {/* Top left */}
-        <div
-          className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
-          style={{ '--cross-size': '10px' } as React.CSSProperties}>
-          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-        </div>
-        {/* Bottom right */}
-        <div
-          className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
-          style={{ '--cross-size': '10px' } as React.CSSProperties}>
-          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-        </div>
-        <h2 className="grow text-lg font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-[4px] transition-colors">
-          work
-        </h2>
+          href={`/projects`}
+          className={cn(
+            'group flex items-center justify-between gap-1',
+            'hover:outline-[0.5px] outline-offset-[6px] hover:outline-gray-400/50 dark:hover:outline-neutral-600/50 hover:[&>h3]:text-gray-900 dark:hover:[&>h3]:text-white hover:[&>span]:text-gray-900 dark:hover:[&>span]:text-white border-0',
+            'relative'
+          )}>
+          {/* Top left */}
+          <div
+            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
+            style={{ '--cross-size': '10px' } as React.CSSProperties}>
+            <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          {/* Bottom right */}
+          <div
+            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
+            style={{ '--cross-size': '10px' } as React.CSSProperties}>
+            <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          <h2 className="grow text-lg font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-[4px] transition-colors">
+            work
+          </h2>
         </Link>
         <p className="mt-2 text-gray-600 dark:text-neutral-400">
           Batteleground of my personal projects that I&apos;ve built to learn new technologies.
@@ -91,29 +72,29 @@ export default function Home() {
 
       <section className="mt-12">
         <Link
-        href={`/experience`}
-        className={cn(
-          'group flex items-center justify-between gap-1',
-          'hover:outline-[0.5px] outline-offset-[6px] hover:outline-gray-400/50 dark:hover:outline-neutral-600/50 hover:[&>h3]:text-gray-900 dark:hover:[&>h3]:text-white hover:[&>span]:text-gray-900 dark:hover:[&>span]:text-white border-0',
-          'relative'
-        )}>
-        {/* Top left */}
-        <div
-          className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
-          style={{ '--cross-size': '10px' } as React.CSSProperties}>
-          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-        </div>
-        {/* Bottom right */}
-        <div
-          className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
-          style={{ '--cross-size': '10px' } as React.CSSProperties}>
-          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-        </div>
-        <h2 className="grow text-lg font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-[4px] transition-colors">
-          experience
-        </h2>
+          href={`/experience`}
+          className={cn(
+            'group flex items-center justify-between gap-1',
+            'hover:outline-[0.5px] outline-offset-[6px] hover:outline-gray-400/50 dark:hover:outline-neutral-600/50 hover:[&>h3]:text-gray-900 dark:hover:[&>h3]:text-white hover:[&>span]:text-gray-900 dark:hover:[&>span]:text-white border-0',
+            'relative'
+          )}>
+          {/* Top left */}
+          <div
+            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
+            style={{ '--cross-size': '10px' } as React.CSSProperties}>
+            <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          {/* Bottom right */}
+          <div
+            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
+            style={{ '--cross-size': '10px' } as React.CSSProperties}>
+            <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          <h2 className="grow text-lg font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-[4px] transition-colors">
+            experience
+          </h2>
         </Link>
         <p className="mt-2 text-gray-600 dark:text-neutral-400">
           Companies I&apos;ve worked with to deliver software solutions and drive technical growth of the company.
@@ -134,36 +115,36 @@ export default function Home() {
 
       <section className="mt-12">
         <Link
-        href={`/blog`}
-        className={cn(
-          'group flex items-center justify-between gap-1',
-          'hover:outline-[0.5px] outline-offset-[6px] hover:outline-gray-400/50 dark:hover:outline-neutral-600/50 hover:[&>h3]:text-gray-900 dark:hover:[&>h3]:text-white hover:[&>span]:text-gray-900 dark:hover:[&>span]:text-white border-0',
-          'relative'
-        )}>
-        {/* Top left */}
-        <div
-          className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
-          style={{ '--cross-size': '10px' } as React.CSSProperties}>
-          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-        </div>
-        {/* Bottom right */}
-        <div
-          className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
-          style={{ '--cross-size': '10px' } as React.CSSProperties}>
-          <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-          <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-        </div>
-        <h2 className="grow text-lg font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-[4px] transition-colors">
-          writing
-        </h2>
+          href={`/blog`}
+          className={cn(
+            'group flex items-center justify-between gap-1',
+            'hover:outline-[0.5px] outline-offset-[6px] hover:outline-gray-400/50 dark:hover:outline-neutral-600/50 hover:[&>h3]:text-gray-900 dark:hover:[&>h3]:text-white hover:[&>span]:text-gray-900 dark:hover:[&>span]:text-white border-0',
+            'relative'
+          )}>
+          {/* Top left */}
+          <div
+            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
+            style={{ '--cross-size': '10px' } as React.CSSProperties}>
+            <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          {/* Bottom right */}
+          <div
+            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
+            style={{ '--cross-size': '10px' } as React.CSSProperties}>
+            <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          <h2 className="grow text-lg font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-[4px] transition-colors">
+            writing
+          </h2>
         </Link>
         <p className="mt-2 text-gray-600 dark:text-neutral-400">
           I write about development techniques, project insights, and lessons learned building software.
         </p>
         <div className="py-4">
-            <BlogList length={3} />
-          </div>
+          <BlogList length={3} />
+        </div>
       </section>
 
       <section className="mt-12">
@@ -180,7 +161,7 @@ export default function Home() {
         <p className='mt-4 text-gray-600 dark:text-neutral-400'>
           If you don&apos;t want to read so much text, you can watch my video below.
         </p>
-        <VideoSection/>
+        <VideoSection />
       </section>
 
       <section className="mt-12">
