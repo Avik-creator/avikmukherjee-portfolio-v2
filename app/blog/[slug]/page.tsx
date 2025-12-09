@@ -3,8 +3,8 @@ import { getAllPosts, getPostBySlug } from "@/lib/mdx"
 import { CustomMDX } from "@/components/mdx";
 import BackNavigation from "@/components/back-navigation";
 
-export async function generateMetadata({ params }: {params: Promise<{slug: string}>}) {
-  const {slug} = await params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
 
   try {
     const post = await getPostBySlug(slug)
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: {params: Promise<{slug: strin
         title: `${post.title} | Avik Mukherjee`,
         description: post.excerpt,
         url: `https://www.avikmukherjee.me/blog/${slug}`,
-        images: ["https://www.avikmukherjee.me/og-image.jpg"],
+        images: ["/og-image.jpg"],
         siteName: "Avik Mukherjee",
         locale: "en_US",
         type: "article",
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: {params: Promise<{slug: strin
       twitter: {
         title: `${post.title} | Avik Mukherjee`,
         card: "summary_large_image",
-        images: ["https://www.avikmukherjee.me/og-image.jpg"],
+        images: ["/og-image.jpg"],
         description: post.excerpt,
       },
     }
@@ -55,9 +55,9 @@ export async function generateStaticParams() {
   }
 }
 
-export default async function BlogPost({ params }: { params: Promise<{slug: string}> }) {
-  const {slug} = await params;
-  
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
   try {
     const post = await getPostBySlug(slug)
 
@@ -68,14 +68,14 @@ export default async function BlogPost({ params }: { params: Promise<{slug: stri
     return (
       <main className="mb-32 text-gray-900 dark:text-neutral-400">
         <BackNavigation href="/blog">back</BackNavigation>
-        
+
         <header className="mt-6 mb-8">
           <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-medium mb-2">{post.title}</h1>
           <p className="text-gray-500 dark:text-neutral-500 text-sm">{post.date}</p>
         </header>
 
         <article className="prose prose-neutral max-w-none dark:prose-invert">
-          <CustomMDX source={post.content}/>
+          <CustomMDX source={post.content} />
         </article>
       </main>
     )

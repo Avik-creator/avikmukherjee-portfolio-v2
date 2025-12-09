@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Avik Mukherjee',
     description: 'Avik Mukherjee is a developer who loves to code and build things.',
-    images: ['https://www.avikmukherjee.me/og-image.webp'],
+    images: ['/og-image.webp'],
     url: 'https://www.avikmukherjee.me',
     siteName: 'Avik Mukherjee',
     locale: 'en_US',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Avik Mukherjee',
     description: 'Avik Mukherjee is a developer who loves to code and build things.',
-    images: ['https://www.avikmukherjee.me/og-image.webp'],
+    images: ['/og-image.webp'],
     creator: '@avikm744',
     site: '@avikm744',
     siteId: '@avikm744',

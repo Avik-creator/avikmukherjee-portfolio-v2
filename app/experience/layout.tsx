@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     title: "Experience | Avik",
     description: "Experience of Avik Mukherjee.",
     url: "https://www.avikmukherjee.me/experience",
-    images: ["https://www.avikmukherjee.me/og-image.webp"],
+    images: ["/og-image.webp"],
     siteName: "Avik Mukherjee",
     locale: "en_US",
     type: "website",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   twitter: {
     title: "Experience | Avik",
     card: "summary_large_image",
-    images: ["https://www.avikmukherjee.me/og-image.webp"],
+    images: ["/og-image.webp"],
     description: "Experience of Avik Mukherjee.",
   },
   robots: {
