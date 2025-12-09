@@ -1,11 +1,11 @@
-import type {MetadataRoute} from "next";
+import type { MetadataRoute } from "next";
 
-export default function robots(): MetadataRoute.Robots{
+export default function robots(): MetadataRoute.Robots {
     const baseURL = "https://www.avikmukherjee.me";
-    return{
-        rules:{
+    return {
+        rules: {
             userAgent: "*",
-            allow: ["/"],
+            allow: ["/", "/blog", "/projects", "/experience", "/resume", "/rss"],
             disallow: [],
         },
         sitemap: `${baseURL}/sitemap.xml`
