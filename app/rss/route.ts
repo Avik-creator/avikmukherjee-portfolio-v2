@@ -49,9 +49,16 @@ function generateRSSFeed(posts: Post[], blogUrl: string, portfolioUrl: string): 
     })
     .join("");
 
+  const portfolioHost = new URL(portfolioUrl).host;
+
   const projectItems = projects
     .map((project) => {
-      const link = project.demoUrl || `${portfolioUrl}/projects`;
+      const linkHost = project.demoUrl ? new URL(project.demoUrl).host : "";
+      // Keep links on the same host as the portfolio to avoid sitemap/RSS host mismatch errors
+      const link =
+        linkHost && linkHost === portfolioHost
+          ? project.demoUrl!
+          : `${portfolioUrl}/projects`;
       const title = escapeCdata(project.title ?? "Untitled project");
       const description = escapeCdata(project.description ?? "");
       const pubDate = getYearDate(project.year);
@@ -68,7 +75,11 @@ function generateRSSFeed(posts: Post[], blogUrl: string, portfolioUrl: string): 
     .join("");
 
   const experienceItems = Experience.map((exp) => {
-    const link = exp.companySite || `${portfolioUrl}/experience`;
+    const linkHost = exp.companySite ? new URL(exp.companySite).host : "";
+    const link =
+      linkHost && linkHost === portfolioHost
+        ? exp.companySite!
+        : `${portfolioUrl}/experience`;
     const title = escapeCdata(`${exp.title} at ${exp.company}`);
     const description = escapeCdata(Array.isArray(exp.description) ? exp.description.join(" ") : exp.description ?? "");
     const pubDate = getYearDate(exp.year);
@@ -98,7 +109,7 @@ function generateRSSFeed(posts: Post[], blogUrl: string, portfolioUrl: string): 
 </rss>`;
 }
 
-const baseUrl = "https://www.avikmukherjee.me";
+const baseUrl = "https://avikmukherjee.me";
 
 export const GET = async () => {
   const posts = await getAllPosts();
