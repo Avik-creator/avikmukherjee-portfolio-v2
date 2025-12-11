@@ -8,7 +8,6 @@ import { Experience, projects } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import { VideoSection } from '@/components/video-section';
 
-
 export default function Home() {
   const recentExperiences = Experience.slice(0, 3);
   const recentProjects = projects.slice(0, 3);

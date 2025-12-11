@@ -17,10 +17,10 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.avikmukherjee.me/"),
   title: {
-    default: "Avik Mukherjee",
-    template: "%s | Software Developer",
+    default: "Avik Mukherjee — Full-Stack Web Developer & Software Engineer",
+    template: "%s | Avik Mukherjee — Software Developer",
   },
-  description: "Full-stack software developer specializing in Next.js, React, and TypeScript. Portfolio, projects, and writing by Avik Mukherjee.",
+  description: "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. Explore projects, experience, and technical writing.",
   keywords: [
     "developer",
     "web",
@@ -41,8 +41,8 @@ export const metadata: Metadata = {
     "India"
   ],
   openGraph: {
-    title: "Avik Mukherjee",
-    description: "Full-stack software developer specializing in Next.js, React, and TypeScript.",
+    title: "Avik Mukherjee — Full-Stack Web Developer & Software Engineer",
+    description: "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. Explore projects, experience, and technical writing.",
     url: "https://www.avikmukherjee.me/",
     siteName: "Avik Mukherjee's Portfolio",
     images: [
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
         url: "/og-image.webp",
         width: 1200,
         height: 630,
-        alt: "Avik Mukherjee",
+        alt: "Avik Mukherjee — Full-Stack Software Developer Portfolio",
       },
     ],
     locale: "en_US",
@@ -128,14 +128,14 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    title: "Avik Mukherjee",
+    title: "Avik Mukherjee — Full-Stack Web Developer & Software Engineer",
     card: "summary_large_image",
     creator: "@avikm744",
     site: "@avikm744",
     siteId: "@avikm744",
-    description: "Full-stack software developer specializing in Next.js, React, and TypeScript.",
+    description: "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. Explore projects, experience, and technical writing.",
     images: ["/og-image.webp"]
-  }
+  },
 };
 
 
@@ -149,6 +149,40 @@ export default function RootLayout({
     <html lang="en" className={instrumentSerif.variable}>
       <head>
         <meta name="apple-mobile-web-app-title" content="Avik" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Avik Mukherjee",
+              url: "https://www.avikmukherjee.me",
+              image: "https://www.avikmukherjee.me/og-image.webp",
+              sameAs: [
+                "https://x.com/avikm744",
+                "https://github.com/Avik-creator",
+                "https://www.linkedin.com/in/avik-mukherjee-8ab9911bb/",
+                "https://peerlist.io/avikmukherjee/",
+              ],
+              jobTitle: "Full-Stack Software Developer",
+              worksFor: {
+                "@type": "Organization",
+                name: "SuperAlign AI",
+                url: "https://www.superalign.ai",
+              },
+              knowsAbout: [
+                "Next.js",
+                "React",
+                "TypeScript",
+                "Node.js",
+                "Full-Stack Development",
+                "Web Applications",
+              ],
+              description:
+                "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js, building scalable web applications.",
+            }),
+          }}
+        />
         <Script
           defer
           data-domain="avikmukherjee.me"

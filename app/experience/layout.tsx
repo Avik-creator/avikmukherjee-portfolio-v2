@@ -4,11 +4,11 @@ import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Experience",
-  description: "See my Experience.",
+  title: "Experience — Professional Work History of Avik Mukherjee",
+  description: "Professional experience of Avik Mukherjee as a software engineer at SuperAlign AI, DataFoundry, Dank, and more. Full-stack development roles and achievements.",
   openGraph: {
-    title: "Experience | Avik",
-    description: "Experience of Avik Mukherjee.",
+    title: "Experience — Professional Work History of Avik Mukherjee",
+    description: "Professional experience of Avik Mukherjee as a software engineer at SuperAlign AI, DataFoundry, Dank, and more. Full-stack development roles and achievements.",
     url: "https://www.avikmukherjee.me/experience",
     images: ["/og-image.webp"],
     siteName: "Avik Mukherjee",
@@ -16,10 +16,10 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    title: "Experience | Avik",
+    title: "Experience — Professional Work History of Avik Mukherjee",
     card: "summary_large_image",
     images: ["/og-image.webp"],
-    description: "Experience of Avik Mukherjee.",
+    description: "Professional experience of Avik Mukherjee as a software engineer at SuperAlign AI, DataFoundry, Dank, and more. Full-stack development roles and achievements.",
   },
   robots: {
     index: true,

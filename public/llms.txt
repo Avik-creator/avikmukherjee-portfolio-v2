@@ -1,0 +1,43 @@
+# Avik Mukherjee — Full-Stack Software Developer Portfolio
+
+> Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. This portfolio showcases projects, professional experience, technical writing, and resume.
+
+## About
+
+Avik Mukherjee is a software engineer currently working at SuperAlign AI. He builds scalable web applications that help businesses grow and solve real-world problems. Previously shipped features at DataFoundry AI, Dank, and other startups.
+
+## Sections
+
+- [Home](https://avikmukherjee.me): Main landing page with overview of work, experience, and writing
+- [Projects](https://avikmukherjee.me/projects): Personal and professional projects built with modern web technologies
+- [Experience](https://avikmukherjee.me/experience): Professional work history and roles at various companies
+- [Blog](https://avikmukherjee.me/blog): Technical writing about development techniques, project insights, and lessons learned
+- [Resume](https://avikmukherjee.me/resume): Detailed professional resume and qualifications
+
+## Featured Projects
+
+- **PulsePing**: Serverless deployment monitoring tool solving cold start problems (Go, Next.js)
+- **FormCraftAI**: Open-source, no-code AI form builder with drag-and-drop design
+- **WebTracker**: Privacy-focused web analytics platform
+- **PeerShare**: Secure peer-to-peer file sharing and video calling app (WebRTC)
+- **ChessAI**: Chess game with AI opponent built with Next.js and AI SDK
+
+## Technical Skills
+
+- Frontend: Next.js, React, TypeScript, TailwindCSS
+- Backend: Node.js, HonoJS, Express
+- Databases: PostgreSQL, MongoDB, DuckDB
+- Tools: Docker, Git, Vercel, AWS
+
+## Contact
+
+- Website: https://avikmukherjee.me
+- GitHub: https://github.com/Avik-creator
+- LinkedIn: https://linkedin.com/in/avik-mukherjee-8ab9911bb
+- X (Twitter): https://x.com/avikm744
+- Peerlist: https://peerlist.io/avikmukherjee
+
+## RSS Feed
+
+Subscribe to updates: https://avikmukherjee.me/rss
+

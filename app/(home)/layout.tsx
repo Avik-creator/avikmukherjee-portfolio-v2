@@ -4,9 +4,9 @@ import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Avik Mukherjee',
-  description: 'Avik Mukherjee is a developer who loves to code and build things.',
-  keywords: ['Avik Mukherjee', 'developer', 'software engineer', 'portfolio', 'projects', 'blog', 'formcraftai', 'formcraftai-delta', 'formcraftai-ai', 'formcraftai-ai-powered', 'formcraftai-ai-powered-application', 'formcraftai-ai-powered-application-that-helps-you-to-create-google-forms-with-ease'],
+  title: 'Avik Mukherjee — Full-Stack Web Developer & Software Engineer',
+  description: 'Avik Mukherjee is a full-stack software developer building scalable web applications with Next.js, React, TypeScript, and Node.js. Explore projects, experience, and blog.',
+  keywords: ['Avik Mukherjee', 'full-stack developer', 'software engineer', 'Next.js', 'React', 'TypeScript', 'Node.js', 'web developer', 'portfolio', 'SuperAlign AI', 'India'],
   openGraph: {
     title: 'Avik Mukherjee',
     description: 'Avik Mukherjee is a developer who loves to code and build things.',

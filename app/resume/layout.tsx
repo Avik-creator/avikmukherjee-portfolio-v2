@@ -4,20 +4,17 @@ import { cn } from '@/lib/utils';
 
 
 export const metadata = {
-  title: {
-    template: '%s | Resume',
-    default: 'Avik Mukherjee',
-  },
-  description: 'Resume of Avik Mukherjee',
+  title: 'Resume — Avik Mukherjee, Full-Stack Software Developer',
+  description: 'Download or view the professional resume of Avik Mukherjee. Skills in Next.js, React, TypeScript, Node.js, and full-stack web development. Based in India.',
   openGraph: {
-    title: 'Resume',
-    description: 'Resume of Avik Mukherjee',
+    title: 'Resume — Avik Mukherjee, Full-Stack Software Developer',
+    description: 'Download or view the professional resume of Avik Mukherjee. Skills in Next.js, React, TypeScript, Node.js, and full-stack web development. Based in India.',
     images: ['/og-image.webp'],
     url: 'https://avikmukherjee.me/resume',
   },
   twitter: {
-    title: 'Resume',
-    description: 'Resume of Avik Mukherjee',
+    title: 'Resume — Avik Mukherjee, Full-Stack Software Developer',
+    description: 'Download or view the professional resume of Avik Mukherjee. Skills in Next.js, React, TypeScript, Node.js, and full-stack web development. Based in India.',
     images: ['/og-image.webp'],
   },
   alternates: {

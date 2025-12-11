@@ -4,11 +4,11 @@ import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Projects",
-  description: "See my Projects.",
+  title: "Projects — Web Apps & Open Source by Avik Mukherjee",
+  description: "Explore web applications and open-source projects built by Avik Mukherjee using Next.js, React, TypeScript, Go, and Node.js. From AI tools to real-time apps.",
   openGraph: {
-    title: "Projects | Avik",
-    description: "Projects of Avik Mukherjee.",
+    title: "Projects — Web Apps & Open Source by Avik Mukherjee",
+    description: "Explore web applications and open-source projects built by Avik Mukherjee using Next.js, React, TypeScript, Go, and Node.js. From AI tools to real-time apps.",
     url: "https://www.avikmukherjee.me/projects",
     images: ["/og-image.webp"],
     siteName: "Avik Mukherjee",
@@ -16,10 +16,10 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    title: "Projects | Avik",
+    title: "Projects — Web Apps & Open Source by Avik Mukherjee",
     card: "summary_large_image",
     images: ["/og-image.webp"],
-    description: "Projects of Avik Mukherjee.",
+    description: "Explore web applications and open-source projects built by Avik Mukherjee using Next.js, React, TypeScript, Go, and Node.js. From AI tools to real-time apps.",
   },
   robots: {
     index: true,

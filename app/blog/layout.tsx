@@ -4,22 +4,22 @@ import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Blogs",
-  description: "See my Blogs.",
+  title: "Blog — Technical Writing by Avik Mukherjee",
+  description: "Read technical articles about web development, Next.js, React, TypeScript, and software engineering. Insights, tutorials, and lessons learned by Avik Mukherjee.",
   openGraph: {
-    title: "Blogs | Avik",
-    description: "Blogs of Avik Mukherjee.",
-    url: "https://www.avikmukherjee.me/writing",
-    images: ["/og-image.jpg"],
+    title: "Blog — Technical Writing by Avik Mukherjee",
+    description: "Read technical articles about web development, Next.js, React, TypeScript, and software engineering. Insights, tutorials, and lessons learned by Avik Mukherjee.",
+    url: "https://www.avikmukherjee.me/blog",
+    images: ["/og-image.webp"],
     siteName: "Avik Mukherjee",
     locale: "en_US",
     type: "website",
   },
   twitter: {
-    title: "Writing | Avik",
+    title: "Blog — Technical Writing by Avik Mukherjee",
     card: "summary_large_image",
-    images: ["/og-image.jpg"],
-    description: "Writing of Avik Mukherjee.",
+    images: ["/og-image.webp"],
+    description: "Read technical articles about web development, Next.js, React, TypeScript, and software engineering. Insights, tutorials, and lessons learned by Avik Mukherjee.",
   },
   robots: {
     index: true,
