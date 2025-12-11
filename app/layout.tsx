@@ -17,8 +17,8 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.avikmukherjee.me/"),
   title: {
+    template: "%s | Avik Mukherjee",
     default: "Avik Mukherjee — Full-Stack Web Developer & Software Engineer",
-    template: "%s | Avik Mukherjee — Software Developer",
   },
   description: "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. Explore projects, experience, and technical writing.",
   keywords: [
