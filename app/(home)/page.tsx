@@ -29,17 +29,27 @@ export default function Home() {
           )}>
           {/* Top left */}
           <div
-            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
-            style={{ '--cross-size': '10px' } as React.CSSProperties}>
-            <div className="absolute left-0 top-0 h-(--cross-size).5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            <div className="absolute left-0 top-0 h-[0.5px] w-(--cross-size)nslate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute left-0 top-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 top-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          {/* Top right */}
+          <div
+            className="absolute right-[-6.25px] top-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute right-0 top-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute right-0 top-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          {/* Bottom left */}
+          <div
+            className="absolute left-[-6.25px] bottom-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute left-0 bottom-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 bottom-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
           </div>
           {/* Bottom right */}
           <div
-            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
-            style={{ '--cross-size': '10px' } as React.CSSProperties}>
-            <div className="absolute left-0 top-0 h-(--cross-size).5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            <div className="absolute left-0 top-0 h-[0.5px] w-(--cross-size)nslate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute right-0 bottom-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute right-0 bottom-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
           </div>
           <h2 className="grow text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-colors">
             work
@@ -57,17 +67,27 @@ export default function Home() {
           )}>
           {/* Top left */}
           <div
-            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
-            style={{ '--cross-size': '10px' } as React.CSSProperties}>
-            <div className="absolute left-0 top-0 h-(--cross-size).5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            <div className="absolute left-0 top-0 h-[0.5px] w-(--cross-size)nslate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute left-0 top-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 top-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          {/* Top right */}
+          <div
+            className="absolute right-[-6.25px] top-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute right-0 top-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute right-0 top-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          {/* Bottom left */}
+          <div
+            className="absolute left-[-6.25px] bottom-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute left-0 bottom-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 bottom-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
           </div>
           {/* Bottom right */}
           <div
-            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
-            style={{ '--cross-size': '10px' } as React.CSSProperties}>
-            <div className="absolute left-0 top-0 h-(--cross-size) w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            <div className="absolute left-0 top-0 h-[0.5px] w-(--cross-size)nslate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute right-0 bottom-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute right-0 bottom-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
           </div>
           <h2 className="grow text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-colors">
             experience
@@ -85,17 +105,27 @@ export default function Home() {
           )}>
           {/* Top left */}
           <div
-            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
-            style={{ '--cross-size': '10px' } as React.CSSProperties}>
-            <div className="absolute left-0 top-0 h-(--cross-size).5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            <div className="absolute left-0 top-0 h-[0.5px] w-(--cross-size)nslate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute left-0 top-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 top-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          {/* Top right */}
+          <div
+            className="absolute right-[-6.25px] top-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute right-0 top-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute right-0 top-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          {/* Bottom left */}
+          <div
+            className="absolute left-[-6.25px] bottom-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute left-0 bottom-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 bottom-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
           </div>
           {/* Bottom right */}
           <div
-            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
-            style={{ '--cross-size': '10px' } as React.CSSProperties}>
-            <div className="absolute left-0 top-0 h-(--cross-size).5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            <div className="absolute left-0 top-0 h-[0.5px] w-(--cross-size) -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute right-0 bottom-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute right-0 bottom-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
           </div>
           <h2 className="grow text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-colors">
             writing
@@ -113,17 +143,27 @@ export default function Home() {
           )}>
           {/* Top left */}
           <div
-            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
-            style={{ '--cross-size': '10px' } as React.CSSProperties}>
-            <div className="absolute left-0 top-0 h-(--cross-size).5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            <div className="absolute left-0 top-0 h-[0.5px] w-(--cross-size)nslate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute left-0 top-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 top-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          {/* Top right */}
+          <div
+            className="absolute right-[-6.25px] top-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute right-0 top-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute right-0 top-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
+          </div>
+          {/* Bottom left */}
+          <div
+            className="absolute left-[-6.25px] bottom-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute left-0 bottom-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute left-0 bottom-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
           </div>
           {/* Bottom right */}
           <div
-            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
-            style={{ '--cross-size': '10px' } as React.CSSProperties}>
-            <div className="absolute left-0 top-0 h-(--cross-size).5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            <div className="absolute left-0 top-0 h-[0.5px] w-(--cross-size) -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
+            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block w-[10px] h-[10px]">
+            <div className="absolute right-0 bottom-0 h-[10px] w-[0.5px] bg-gray-500 dark:bg-neutral-500" />
+            <div className="absolute right-0 bottom-0 h-[0.5px] w-[10px] bg-gray-500 dark:bg-neutral-500" />
           </div>
           <h2 className="grow text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-colors">
             about
