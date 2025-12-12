@@ -25,10 +25,11 @@ export async function GET(
     // Format as v0 registry item
     const registryItem = {
       name: experiment.component.toLowerCase(),
-      type: "components:ui",
+      type: "registry:ui",
       registryDependencies: experiment.dependencies || [],
       files: [
         {
+          type: "registry:file",
           path: `components/${experiment.component}.tsx`,
           content: componentCode,
         },
