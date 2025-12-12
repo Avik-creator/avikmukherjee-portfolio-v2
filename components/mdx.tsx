@@ -16,7 +16,7 @@ const options = {
 function Blockquote(props: any) {
   return (
     <blockquote
-      className="bg-neutral-800/30 border-l-2 border-neutral-600 pl-4 py-2 my-4 italic text-neutral-300 dark:bg-neutral-800/30 dark:border-neutral-600 dark:text-neutral-300"
+      className="bg-gray-100 dark:bg-neutral-800/30 border-l-2 border-gray-300 dark:border-neutral-600 pl-4 py-2 my-4 italic text-gray-700 dark:text-neutral-300"
       {...props}
     />
   );
@@ -32,15 +32,15 @@ function CustomLink(props: any) {
   const href = props.href;
   if (href.startsWith("/")) {
     return (
-      <Link href={href} {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200 dark:text-stone-300 dark:decoration-stone-400 dark:decoration-[0.5px] dark:underline-offset-4 dark:hover:text-stone-200 dark:hover:decoration-stone-200">
+      <Link href={href} {...props} className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 hover:decoration-gray-700 dark:hover:decoration-stone-200">
         {props.children}
       </Link>
     );
   }
   if (href.startsWith("#")) {
-    return <a {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200 dark:text-stone-300 dark:decoration-stone-400 dark:decoration-[0.5px] dark:underline-offset-4 dark:hover:text-stone-200 dark:hover:decoration-stone-200" />;
+    return <a {...props} className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 hover:decoration-gray-700 dark:hover:decoration-stone-200" />;
   }
-  return <a target="_blank" rel="noopener noreferrer" {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200 dark:text-stone-300 dark:decoration-stone-400 dark:decoration-[0.5px] dark:underline-offset-4 dark:hover:text-stone-200 dark:hover:decoration-stone-200" />;
+  return <a target="_blank" rel="noopener noreferrer" {...props} className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 hover:decoration-gray-700 dark:hover:decoration-stone-200" />;
 }
 
 function RoundedImage(props: any) {
@@ -126,7 +126,7 @@ function Strong({ children, ...props }: any) {
 function Table({ children, ...props }: any) {
   return (
     <div className="overflow-x-auto my-6">
-      <table className="min-w-full divide-y divide-neutral-700 dark:divide-neutral-700" {...props}>
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700" {...props}>
         {children}
       </table>
     </div>
@@ -135,7 +135,7 @@ function Table({ children, ...props }: any) {
 
 function TableHead({ children, ...props }: any) {
   return (
-    <thead className="bg-neutral-800 dark:bg-neutral-800" {...props}>
+    <thead className="bg-gray-50 dark:bg-neutral-800" {...props}>
       {children}
     </thead>
   );
@@ -143,20 +143,20 @@ function TableHead({ children, ...props }: any) {
 
 function TableBody({ children, ...props }: any) {
   return (
-    <tbody className="divide-y divide-neutral-700 dark:divide-neutral-700" {...props}>
+    <tbody className="divide-y divide-gray-200 dark:divide-neutral-700" {...props}>
       {children}
     </tbody>
   );
 }
 
 function TableRow({ children, ...props }: any) {
-  return <tr className="hover:bg-neutral-800/50 dark:hover:bg-neutral-800/50" {...props}>{children}</tr>;
+  return <tr className="hover:bg-gray-50 dark:hover:bg-neutral-800/50" {...props}>{children}</tr>;
 }
 
 function TableHeader({ children, ...props }: any) {
   return (
     <th
-      className="px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider dark:text-neutral-300"
+      className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-neutral-300 uppercase tracking-wider"
       {...props}
     >
       {children}

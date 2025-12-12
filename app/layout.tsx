@@ -192,7 +192,9 @@ export default function RootLayout({
       <body
         className={cn(
           GeistMono.variable,
-          'flex min-h-screen mx-auto flex-col bg-neutral-950 font-mono text-neutral-100 text-sm'
+          'flex min-h-screen mx-auto flex-col font-mono text-sm',
+          'bg-white dark:bg-neutral-950',
+          'text-gray-900 dark:text-neutral-100'
         )}>
         <main className="flex-1 pt-24">{children}
 

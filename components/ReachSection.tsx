@@ -27,6 +27,10 @@ export default function ReachSection({ animationDelay = '1.2s' }: ReachSectionPr
           <Anchor href="https://peerlist.io/avikmukherjee/" target="_blank" className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block">
             Peerlist
           </Anchor>
+          <span className="mx-1 text-gray-400 dark:text-neutral-400/50 transition-opacity duration-200">·</span>
+          <Anchor href="https://cal.com/avik-mukherjee-2fq9cw" target="_blank" className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block">
+            Cal.com
+          </Anchor>
         </span>
         <span className="text-gray-700 dark:text-neutral-400">
           — or send me an email at{" "}
