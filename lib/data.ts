@@ -1,5 +1,21 @@
 export const projects = [
   {
+    title: "ArchFlow",
+    year: "2025",
+    description:
+      "Privacy-first visual workspace for designing, simulating, and sharing system architectures. Features drag-and-drop cloud components, real-time collaboration, AI assistant, flow simulation and creating challenges — all running locally in the browser. Selected as Staff Picked Project of the Day on Peerlist.",
+    demoUrl: "https://archflow.avikmukherjee.me",
+    githubUrl: "https://github.com/Avik-creator/ArchFlow",
+  },
+  {
+    title: "Snippet",
+    year: "2025",
+    description:
+      "A minimalist tool for creating beautiful screenshots of code, images, and websites. Features syntax highlighting, custom themes, image animations, and website capture — perfect for documentation and social media. Featured in top 5 projects on Peerlist.",
+    demoUrl: "https://snippet.avikmukherjee.me",
+    githubUrl: "https://github.com/Avik-creator/mock-image",
+  },
+  {
     title: "PulsePing",
     year: "2025",
     description:
@@ -24,7 +40,15 @@ export const projects = [
     githubUrl: "https://github.com/Avik-creator/webtracker",
   },
   {
-    title: "PeerShare",
+    title: "MemeGenerator",
+    year: "2025",
+    description:
+      "Create memes quickly and effortlessly with an intuitive interface. Generate memes without any hassle — just like you like to sleep.",
+    demoUrl: "https://meme-generator-plum-seven.vercel.app",
+    githubUrl: "https://github.com/Avik-creator/memegenerator",
+  },
+  {
+    title: "PeerShare (Not Active)",
     year: "2025",
     description:
       "PeerShare is a secure peer-to-peer file sharing and video calling app built with Next.js and WebRTC. It enables real-time chat, HD video calls, and unlimited file transfers without storing any data on servers.",
@@ -130,6 +154,17 @@ export const projects = [
 ];
 
 export const Experience = [
+  {
+    title: "V0 Ambassador",
+    year: "December 2025 - Present",
+    company: "Vercel (V0)",
+    description: [
+      "Represent v0 in the community and engage with developers to showcase AI-powered application development.",
+      "Contribute to improving the Platform Experience for the users by providing feedback and suggestions.",
+      "Help other developers by answering their questions and providing guidance.",
+    ],
+    companySite: "https://v0.app",
+  },
   {
     title: "Software Engineer",
     year: "August 2025 - Present",
