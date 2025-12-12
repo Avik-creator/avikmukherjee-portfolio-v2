@@ -68,7 +68,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     return (
       <main className="mb-32 text-gray-900 dark:text-neutral-400">
         <div className="animate-[slideFadeUp_0.4s_ease-out]">
-          <BackNavigation href="/blog">back</BackNavigation>
+        <BackNavigation href="/blog">back</BackNavigation>
         </div>
 
         <header className="mt-6 mb-8 animate-[slideFadeUp_0.5s_ease-out]">

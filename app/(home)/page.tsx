@@ -28,9 +28,8 @@ export default function Home() {
         animationDelay="0.6s"
       />
 
-      <HomeLink href="/projects" label="work" animationDelay="0.7s" />
-
-      <HomeLink href="/experience" label="experience" animationDelay="0.8s" />
+      <HomeLink href="/experience" label="experience" animationDelay="0.7s" />
+      <HomeLink href="/projects" label="work" animationDelay="0.8s" />
 
       <HomeLink href="/blog" label="writing" animationDelay="0.9s" />
 

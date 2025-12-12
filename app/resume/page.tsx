@@ -21,7 +21,7 @@ export default function ResumePage() {
     <div className="max-w-4xl mx-auto mb-32 text-gray-700 dark:text-neutral-400">
       <div className="print:hidden">
         <BackNavigation href="/">back</BackNavigation>
-      </div>
+          </div>
 
       <ResumeActions />
 

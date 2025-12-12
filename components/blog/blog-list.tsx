@@ -16,11 +16,11 @@ export default async function BlogList({ length }: Props) {
           className="animate-[slideFadeUp_0.6s_ease-out]"
           style={{ animationDelay: `${(index + 1) * 0.1}s`, animationFillMode: 'both' }}
         >
-          <BlogItem
+        <BlogItem
             title={post.title}
             date={post.date}
             slug={post.slug}
-          />
+        />
         </li>
       ))}
     </ul>
