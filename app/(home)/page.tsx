@@ -30,6 +30,7 @@ export default function Home() {
 
       <HomeLink href="/experience" label="experience" animationDelay="0.7s" />
       <HomeLink href="/projects" label="work" animationDelay="0.8s" />
+      <HomeLink href="/experiments" label="experiments" animationDelay="0.85s" />
 
       <HomeLink href="/blog" label="writing" animationDelay="0.9s" />
 
