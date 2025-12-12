@@ -31,6 +31,7 @@ export async function GET(
         {
           type: "registry:file",
           path: `components/${experiment.component}.tsx`,
+          target: `components/${experiment.component}.tsx`,
           content: componentCode,
         },
       ],
