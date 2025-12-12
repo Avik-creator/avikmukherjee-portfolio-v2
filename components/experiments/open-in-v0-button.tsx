@@ -11,7 +11,7 @@ interface OpenInV0ButtonProps {
 export function OpenInV0Button({ url, className }: OpenInV0ButtonProps) {
   return (
     <a
-      href={`https://v0.app/chat/api/open?url=${encodeURIComponent(url)}`}
+      href={`https://v0.dev/chat/api/open?url=${encodeURIComponent(url)}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Open in v0"

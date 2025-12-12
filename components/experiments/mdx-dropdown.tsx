@@ -117,9 +117,12 @@ export function MDXDropdown({ pageUrl, mdxContent, className }: MDXDropdownProps
 
             <button
               onClick={() => {
-                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
-                navigator.clipboard.writeText(prompt).catch(() => { });
-                window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
+                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nComponent URL: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+                const url = `https://chatgpt.com/?${new URLSearchParams({
+                  hints: "search",
+                  q: prompt,
+                })}`;
+                window.open(url, "_blank", "noopener,noreferrer");
                 setIsOpen(false);
               }}
               className={cn(
@@ -137,9 +140,11 @@ export function MDXDropdown({ pageUrl, mdxContent, className }: MDXDropdownProps
 
             <button
               onClick={() => {
-                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
-                navigator.clipboard.writeText(prompt).catch(() => { });
-                window.open("https://claude.ai/", "_blank", "noopener,noreferrer");
+                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nComponent URL: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+                const url = `https://claude.ai/new?${new URLSearchParams({
+                  q: prompt,
+                })}`;
+                window.open(url, "_blank", "noopener,noreferrer");
                 setIsOpen(false);
               }}
               className={cn(
@@ -157,9 +162,11 @@ export function MDXDropdown({ pageUrl, mdxContent, className }: MDXDropdownProps
 
             <button
               onClick={() => {
-                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
-                navigator.clipboard.writeText(prompt).catch(() => { });
-                window.open("https://scira.ai/", "_blank", "noopener,noreferrer");
+                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nComponent URL: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+                const url = `https://scira.ai/?${new URLSearchParams({
+                  q: prompt,
+                })}`;
+                window.open(url, "_blank", "noopener,noreferrer");
                 setIsOpen(false);
               }}
               className={cn(

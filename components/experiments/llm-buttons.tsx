@@ -10,49 +10,47 @@ interface LLMButtonProps {
 }
 
 const getPrompt = (url: string) =>
-  `I'm looking at this component documentation: ${url}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+  `I'm looking at this component documentation: ${url}\n\nComponent URL: ${url}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
 
 const providerConfig = {
   chatgpt: {
     label: "Open in ChatGPT",
     icon: Icons.chatgpt,
     url: (url: string) => {
-      // ChatGPT doesn't support direct URL parameters, so we'll open it and copy prompt to clipboard
       const prompt = getPrompt(url);
-      navigator.clipboard.writeText(prompt).catch(() => { });
-      return "https://chatgpt.com/";
+      return `https://chatgpt.com/?${new URLSearchParams({
+        hints: "search",
+        q: prompt,
+      })}`;
     },
-    onClick: (url: string) => {
-      const prompt = getPrompt(url);
-      navigator.clipboard.writeText(prompt).catch(() => { });
+    onClick: () => {
+      // No additional action needed, URL contains the prompt
     },
   },
   claude: {
     label: "Open in Claude",
     icon: Icons.claude,
     url: (url: string) => {
-      // Claude doesn't support direct URL parameters, so we'll open it and copy prompt to clipboard
       const prompt = getPrompt(url);
-      navigator.clipboard.writeText(prompt).catch(() => { });
-      return "https://claude.ai/";
+      return `https://claude.ai/new?${new URLSearchParams({
+        q: prompt,
+      })}`;
     },
-    onClick: (url: string) => {
-      const prompt = getPrompt(url);
-      navigator.clipboard.writeText(prompt).catch(() => { });
+    onClick: () => {
+      // No additional action needed, URL contains the prompt
     },
   },
   scira: {
     label: "Open in Scira AI",
     icon: Icons.scira,
     url: (url: string) => {
-      // Scira AI doesn't support direct URL parameters, so we'll open it and copy prompt to clipboard
       const prompt = getPrompt(url);
-      navigator.clipboard.writeText(prompt).catch(() => { });
-      return "https://scira.ai/";
+      return `https://scira.ai/?${new URLSearchParams({
+        q: prompt,
+      })}`;
     },
-    onClick: (url: string) => {
-      const prompt = getPrompt(url);
-      navigator.clipboard.writeText(prompt).catch(() => { });
+    onClick: () => {
+      // No additional action needed, URL contains the prompt
     },
   },
 };
