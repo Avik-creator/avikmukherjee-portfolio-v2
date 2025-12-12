@@ -303,6 +303,14 @@ body {
   @apply rounded-lg my-4;
 }
 
+.prose figure {
+  @apply my-6;
+}
+
+.prose figcaption {
+  @apply text-center text-sm text-gray-600 dark:text-neutral-400 mt-2 italic;
+}
+
 .prose table {
   @apply min-w-full divide-y divide-gray-200 dark:divide-neutral-700 my-6;
 }

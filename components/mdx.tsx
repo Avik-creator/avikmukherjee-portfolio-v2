@@ -45,7 +45,109 @@ function CustomLink(props: any) {
 }
 
 function RoundedImage(props: any) {
-  return <Image alt={props.alt} className="rounded-lg my-4" {...props} />;
+  const {
+    src,
+    alt,
+    title,
+    width,
+    height,
+    className = "",
+    ...rest
+  } = props;
+
+  // Check if it's an external URL or starts with /
+  const isExternal = src?.startsWith('http://') || src?.startsWith('https://');
+  const isLocal = src?.startsWith('/');
+
+  // Determine image size/style from className or props
+  const isFullWidth = className.includes('full-width') || props.fullWidth;
+  const isSmall = className.includes('small') || props.small;
+  const hasCaption = title;
+
+  // Container classes
+  const containerClasses = `my-6 ${isFullWidth
+    ? 'w-full'
+    : isSmall
+      ? 'max-w-md mx-auto'
+      : 'max-w-2xl mx-auto'
+    }`;
+
+  // Image wrapper classes
+  const wrapperClasses = `relative rounded-lg overflow-hidden border border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-900/50 ${isFullWidth ? '' : 'shadow-sm'
+    }`;
+
+  // Handle external images
+  if (isExternal) {
+    return (
+      <figure className={containerClasses}>
+        <div className={wrapperClasses}>
+          <img
+            src={src}
+            alt={alt || ''}
+            className="w-full h-auto rounded-lg"
+            loading="lazy"
+            {...rest}
+          />
+        </div>
+        {hasCaption && (
+          <figcaption className="text-center text-sm text-gray-600 dark:text-neutral-400 mt-2 italic">
+            {title}
+          </figcaption>
+        )}
+      </figure>
+    );
+  }
+
+  // Handle local images (from public folder or relative paths)
+  // For Next.js Image, we need width and height, or use unoptimized for dynamic sizes
+  const imageWidth = width || (isFullWidth ? 1200 : isSmall ? 600 : 800);
+  const imageHeight = height || (isFullWidth ? 600 : isSmall ? 400 : 500);
+
+  // If width/height not provided and it's a local image, use unoptimized
+  if (isLocal && !width && !height) {
+    return (
+      <figure className={containerClasses}>
+        <div className={wrapperClasses}>
+          <Image
+            src={src}
+            alt={alt || ''}
+            width={imageWidth}
+            height={imageHeight}
+            className="w-full h-auto rounded-lg"
+            loading="lazy"
+            unoptimized
+            {...rest}
+          />
+        </div>
+        {hasCaption && (
+          <figcaption className="text-center text-sm text-gray-600 dark:text-neutral-400 mt-2 italic">
+            {title}
+          </figcaption>
+        )}
+      </figure>
+    );
+  }
+
+  return (
+    <figure className={containerClasses}>
+      <div className={wrapperClasses}>
+        <Image
+          src={src}
+          alt={alt || ''}
+          width={imageWidth}
+          height={imageHeight}
+          className="w-full h-auto rounded-lg"
+          loading="lazy"
+          {...rest}
+        />
+      </div>
+      {hasCaption && (
+        <figcaption className="text-center text-sm text-gray-600 dark:text-neutral-400 mt-2 italic">
+          {title}
+        </figcaption>
+      )}
+    </figure>
+  );
 }
 
 function slugify(str: string) {
