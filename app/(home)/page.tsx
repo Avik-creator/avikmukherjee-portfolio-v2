@@ -28,13 +28,11 @@ export default function Home() {
         animationDelay="0.6s"
       />
 
-      <HomeLink href="/experience" label="experience" animationDelay="0.7s" />
-      <HomeLink href="/projects" label="work" animationDelay="0.8s" />
-      <HomeLink href="/experiments" label="experiments" animationDelay="0.85s" />
-
-      <HomeLink href="/blog" label="writing" animationDelay="0.9s" />
-
-      <HomeLink href="/about" label="about" animationDelay="1.0s" />
+      <HomeLink href="/experiments" label="experiments" animationDelay="0.7s" />
+      <HomeLink href="/experience" label="experience" animationDelay="0.8s" />
+      <HomeLink href="/projects" label="work" animationDelay="0.9s" />
+      <HomeLink href="/blog" label="writing" animationDelay="1.0s" />
+      <HomeLink href="/about" label="about" animationDelay="1.1s" />
 
       <section
         className="mt-12 animate-[slideFadeUp_0.6s_ease-out]"
