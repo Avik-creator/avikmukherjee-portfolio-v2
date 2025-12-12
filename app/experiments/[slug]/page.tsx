@@ -14,6 +14,7 @@ import { SpotlightCard } from "@/components/experiments/spotlight-card";
 import { Typewriter } from "@/components/experiments/typewriter";
 import { ExperimentItemDemo } from "@/components/experiments/experiment-item-demo";
 
+
 // Component registry for dynamic rendering
 const componentRegistry: Record<string, React.ReactNode> = {
   AnimatedCounter: (
@@ -135,9 +136,56 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: "Experiment Not Found" };
   }
 
+  const experimentUrl = `https://www.avikmukherjee.me/experiments/${slug}`;
+  const featuresText = experiment.features?.join(", ") || "";
+  const dependenciesText = experiment.dependencies?.join(", ") || "";
+
   return {
-    title: experiment.title,
-    description: experiment.description,
+    title: `${experiment.title} — UI Experiment by Avik Mukherjee`,
+    description: `${experiment.description}${featuresText ? ` Features: ${featuresText}.` : ""}${dependenciesText ? ` Built with: ${dependenciesText}.` : ""}`,
+    keywords: [
+      experiment.title,
+      "UI experiment",
+      "React component",
+      "Next.js",
+      "TypeScript",
+      ...(experiment.dependencies || []),
+      "Avik Mukherjee",
+      "portfolio",
+      "web development",
+      "frontend",
+    ],
+    openGraph: {
+      title: `${experiment.title} — UI Experiment by Avik Mukherjee`,
+      description: experiment.description,
+      url: experimentUrl,
+      images: ["/og-image.webp"],
+      siteName: "Avik Mukherjee",
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      title: `${experiment.title} — UI Experiment by Avik Mukherjee`,
+      card: "summary_large_image",
+      images: ["/og-image.webp"],
+      description: experiment.description,
+      creator: "@avikm744",
+      site: "@avikm744",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    alternates: {
+      canonical: experimentUrl,
+    },
   };
 }
 

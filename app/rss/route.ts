@@ -1,6 +1,7 @@
 import { getAllPosts } from "@/lib/mdx";
 import type { Post } from "@/lib/mdx";
 import { Experience, projects } from "@/lib/data";
+import { experiments } from "@/lib/experiments-data";
 
 function toRfc822Date(dateString: string): string {
   // Try native parse first
@@ -94,16 +95,51 @@ function generateRSSFeed(posts: Post[], blogUrl: string, portfolioUrl: string): 
         </item>`;
   }).join("");
 
+  const experimentItems = experiments
+    .map((experiment) => {
+      const link = `${portfolioUrl}/experiments/${experiment.slug}`;
+      const title = escapeCdata(experiment.title ?? "Untitled experiment");
+      const description = escapeCdata(experiment.description ?? "");
+      const pubDate = getYearDate(experiment.year);
+
+      // Build detailed description with features and dependencies
+      let detailedDescription = description;
+      if (experiment.features && experiment.features.length > 0) {
+        detailedDescription += ` Features: ${experiment.features.join(", ")}.`;
+      }
+      if (experiment.dependencies && experiment.dependencies.length > 0) {
+        detailedDescription += ` Built with: ${experiment.dependencies.join(", ")}.`;
+      }
+
+      // Build category tags
+      const categories = ["UI Experiment", "React Component", "Next.js"];
+      if (experiment.dependencies && experiment.dependencies.length > 0) {
+        categories.push(...experiment.dependencies);
+      }
+
+      return `
+        <item>
+            <title><![CDATA[${title}]]></title>
+            <link>${link}</link>
+            <guid>${link}</guid>
+            <pubDate>${pubDate}</pubDate>
+            <description><![CDATA[<p>${escapeCdata(detailedDescription)}</p>]]></description>
+            <category>${categories.map(cat => escapeCdata(cat)).join("</category><category>")}</category>
+        </item>`;
+    })
+    .join("");
+
   return `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
   <channel>
     <title><![CDATA[Avik Mukherjee – Portfolio Feed]]></title>
     <link>${portfolioUrl}</link>
-    <description><![CDATA[Projects, blog posts, and updates from Avik Mukherjee.]]></description>
+    <description><![CDATA[Projects, blog posts, experiments, and updates from Avik Mukherjee.]]></description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     ${projectItems}
     ${experienceItems}
+    ${experimentItems}
     ${blogItems}
   </channel>
 </rss>`;
