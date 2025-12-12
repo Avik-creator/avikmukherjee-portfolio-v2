@@ -23,10 +23,12 @@ export async function GET(
     const componentCode = await readComponentCode(experiment.component);
 
     // Format as v0 registry item
+    // Note: registryDependencies is for registry components only, not npm packages
+    // npm packages go in dependencies array
     const registryItem = {
       name: experiment.component.toLowerCase(),
       type: "registry:ui",
-      registryDependencies: experiment.dependencies || [],
+      registryDependencies: [], // Empty - we don't have registry component dependencies
       files: [
         {
           type: "registry:file",
@@ -35,7 +37,7 @@ export async function GET(
           content: componentCode,
         },
       ],
-      dependencies: experiment.dependencies || [],
+      dependencies: experiment.dependencies || [], // npm packages like "motion"
       devDependencies: [],
       peerDependencies: [],
       description: experiment.description,
