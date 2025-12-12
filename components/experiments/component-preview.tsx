@@ -12,6 +12,7 @@ interface ComponentPreviewProps {
   title?: string;
   className?: string;
   pageUrl?: string;
+  v0Url?: string;
 }
 
 export default function ComponentPreview({
@@ -20,6 +21,7 @@ export default function ComponentPreview({
   title,
   className,
   pageUrl,
+  v0Url,
 }: ComponentPreviewProps) {
   const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
   const [key, setKey] = useState(0);
@@ -58,16 +60,16 @@ export default function ComponentPreview({
             Code
           </button>
         </div>
-        
+
         {activeTab === "preview" && (
           <div className="flex items-center gap-2 mr-2">
-          <button
-            onClick={handleReplay}
+            <button
+              onClick={handleReplay}
               className="p-2 rounded-md text-gray-500 dark:text-neutral-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-neutral-800 transition-all"
-            title="Replay animation"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
+              title="Replay animation"
+            >
+              <RotateCcw className="w-4 h-4" />
+            </button>
           </div>
         )}
       </div>
@@ -77,14 +79,14 @@ export default function ComponentPreview({
         {activeTab === "preview" ? (
           <div className="relative min-h-[280px] flex items-center justify-center p-8 bg-gray-100/50 dark:bg-neutral-950/50">
             {/* Grid background pattern */}
-            <div 
+            <div
               className="absolute inset-0 opacity-30"
               style={{
                 backgroundImage: `radial-gradient(circle, rgba(128, 128, 128, 0.3) 1px, transparent 1px)`,
                 backgroundSize: '20px 20px',
               }}
             />
-            
+
             {/* Corner markers */}
             <div className="absolute top-3 left-3 w-3 h-3">
               <div className="absolute left-0 top-0 h-full w-px bg-gray-400 dark:bg-neutral-600" />
@@ -109,18 +111,18 @@ export default function ComponentPreview({
             </div>
 
             {/* Standalone Open in v0 button */}
-            {pageUrl && (
+            {(v0Url || pageUrl) && (
               <div className="absolute top-4 right-4 z-20">
-                <OpenInV0Button url={pageUrl} />
+                <OpenInV0Button url={v0Url || pageUrl!} />
               </div>
             )}
           </div>
         ) : (
-          <CodeBlock 
-            code={code} 
-            title={title} 
-            collapsible 
-            defaultCollapsed 
+          <CodeBlock
+            code={code}
+            title={title}
+            collapsible
+            defaultCollapsed
             maxHeight={400}
           />
         )}

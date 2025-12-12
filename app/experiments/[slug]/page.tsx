@@ -207,6 +207,9 @@ export default async function ExperimentPage({ params }: PageProps) {
   // Generate page URL
   const pageUrl = `https://www.avikmukherjee.me/experiments/${slug}`;
 
+  // Generate v0 registry URL (JSON endpoint)
+  const v0RegistryUrl = `https://www.avikmukherjee.me/api/experiments/${slug}`;
+
   // Generate MDX content
   const mdxContent = generateMDX(experiment, componentCode, experiment.usage);
 
@@ -222,8 +225,8 @@ export default async function ExperimentPage({ params }: PageProps) {
           </h1>
           <div className="flex items-center gap-3 animate-[slideFadeUp_0.4s_ease-out]">
             <span className="text-sm text-gray-500 dark:text-neutral-500 tabular-nums">
-            {experiment.year}
-          </span>
+              {experiment.year}
+            </span>
             <MDXDropdown pageUrl={pageUrl} mdxContent={mdxContent} />
           </div>
         </div>
@@ -286,6 +289,7 @@ export default async function ExperimentPage({ params }: PageProps) {
           code={componentCode}
           title={`${experiment.component}.tsx`}
           pageUrl={pageUrl}
+          v0Url={v0RegistryUrl}
         >
           {PreviewComponent}
         </ComponentPreview>
