@@ -222,8 +222,8 @@ export default async function ExperimentPage({ params }: PageProps) {
           </h1>
           <div className="flex items-center gap-3 animate-[slideFadeUp_0.4s_ease-out]">
             <span className="text-sm text-gray-500 dark:text-neutral-500 tabular-nums">
-              {experiment.year}
-            </span>
+            {experiment.year}
+          </span>
             <MDXDropdown pageUrl={pageUrl} mdxContent={mdxContent} />
           </div>
         </div>

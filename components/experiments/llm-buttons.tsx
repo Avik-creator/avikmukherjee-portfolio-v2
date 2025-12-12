@@ -62,7 +62,7 @@ export function LLMButton({ url, provider, className }: LLMButtonProps) {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     if (config.onClick) {
-      config.onClick(url);
+      config.onClick();
     }
     window.open(config.url(url), "_blank", "noopener,noreferrer");
   };
