@@ -10,12 +10,12 @@ export default async function BlogPage() {
       <main className="mb-32 text-gray-700 dark:text-neutral-400">
         <BackNavigation href="/">back</BackNavigation>
 
-        <header className="mt-6 mb-12">
-          <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-medium mb-2">writing</h1>
-          <p className="text-gray-600 dark:text-neutral-400">I write about development techniques, project insights, and lessons learned building software.</p>
+        <header className="mt-6 mb-12 animate-[slideFadeUp_0.4s_ease-out]">
+          <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-serif font-medium mb-2">writing</h1>
+          <p className="text-gray-600 dark:text-neutral-400 leading-relaxed animate-[slideFadeUp_0.5s_ease-out]">I write about development techniques, project insights, and lessons learned building software.</p>
         </header>
 
-        <section>
+        <section className="animate-[slideFadeUp_0.6s_ease-out]">
           <BlogList />
         </section>
       </main>
