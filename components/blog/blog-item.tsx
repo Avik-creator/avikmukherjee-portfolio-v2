@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import CornerMarkers from '@/components/CornerMarkers';
+import { formatDate } from '@/lib/date-utils';
 
 interface Props {
   title: string;
@@ -28,12 +29,7 @@ export default function BlogItem({ title, slug, date }: Props) {
             'ml-1 flex items-center gap-1 whitespace-nowrap transition-colors text-gray-600 dark:text-neutral-400'
           }>
           <span>
-            {date &&
-              new Date(date).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric'
-              })}
+            {formatDate(date)}
           </span>
         </span>
       </Link>

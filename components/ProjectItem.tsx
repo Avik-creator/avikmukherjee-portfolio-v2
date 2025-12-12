@@ -27,7 +27,7 @@ export default function ProjectItem({ title, description, demoUrl, githubUrl }: 
             </Link>
           </h3>
 
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             {githubUrl && (
               <span className="underline decoration-gray-400 dark:decoration-neutral-400/50 underline-offset-[3px] transition-colors text-gray-600 dark:text-neutral-500 text-sm">
                 <Link href={githubUrl} target="_blank" rel="noopener noreferrer">

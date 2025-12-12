@@ -1,6 +1,7 @@
 
 import BlogList from "@/components/blog/blog-list";
-import BackNavigation from "@/components/back-navigation";
+import PageHeader from "@/components/PageHeader";
+import AnimatedSection from "@/components/AnimatedSection";
 
 
 
@@ -8,25 +9,29 @@ export default async function BlogPage() {
   try {
     return (
       <main className="mb-32 text-gray-700 dark:text-neutral-400">
-        <BackNavigation href="/">back</BackNavigation>
+        <PageHeader
+          backHref="/"
+          title="writing"
+          description="I write about development techniques, project insights, and lessons learned building software."
+          titleSize="sm"
+          descriptionClassName="mb-12"
+        />
 
-        <header className="mt-6 mb-12 animate-[slideFadeUp_0.4s_ease-out]">
-          <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-serif font-medium mb-2">writing</h1>
-          <p className="text-gray-600 dark:text-neutral-400 leading-relaxed animate-[slideFadeUp_0.5s_ease-out]">I write about development techniques, project insights, and lessons learned building software.</p>
-        </header>
-
-        <section className="animate-[slideFadeUp_0.6s_ease-out]">
+        <AnimatedSection delay="0.6s">
           <BlogList />
-        </section>
+        </AnimatedSection>
       </main>
     )
   } catch (error) {
     console.error("Error in blog page:", error)
     return (
       <main className="mb-32 text-gray-700 dark:text-neutral-400">
-        <BackNavigation href="/">back</BackNavigation>
-        <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-medium mb-2">Error</h1>
-        <p className="text-gray-600 dark:text-neutral-400">There was an error loading the blog posts. Please try again later.</p>
+        <PageHeader
+          backHref="/"
+          title="Error"
+          description="There was an error loading the blog posts. Please try again later."
+          titleSize="sm"
+        />
       </main>
     )
   }

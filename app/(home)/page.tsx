@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import HomeLink from '@/components/HomeLink';
 import QuoteBlock from '@/components/QuoteBlock';
 import ReachSection from '@/components/ReachSection';
+import AnimatedSection from '@/components/AnimatedSection';
 
 export default function Home() {
   return (
@@ -12,17 +13,17 @@ export default function Home() {
         location="Hyderabad, India."
       />
 
-      <section className="mt-6 animate-[slideFadeUp_0.4s_ease-out]">
+      <AnimatedSection delay="0.4s" className="mt-6">
         <p className="text-gray-600 dark:text-stone-400 leading-relaxed">
           Full-stack developer currently working at{' '}
           <Anchor href="https://www.superalign.ai" target="_blank" className="transition-all duration-200 hover:opacity-80">SuperAlign AI</Anchor>.
           I build scalable web applications with Next.js, React, and Node.js that help businesses grow and solve real problems.
         </p>
-      </section>
+      </AnimatedSection>
 
-      <section className="mt-6 animate-[slideFadeUp_0.5s_ease-out]">
+      <AnimatedSection delay="0.5s" className="mt-6">
         <p className="text-gray-700 dark:text-neutral-400">This is something I remind myself of every day.</p>
-      </section>
+      </AnimatedSection>
 
       <QuoteBlock
         quote="Every morning you have two choices: Continue to sleep with your dreams or wake up and chase them 💪🏻"
@@ -60,7 +61,7 @@ export default function Home() {
         animationDelay="1.1s"
       />
 
-      <ReachSection animationDelay="1.2s" xLink="https://x.com/avikm744" githubLink="https://github.com/Avik-creator" linkedinLink="https://www.linkedin.com/in/avik-mukherjee-8ab9911bb/" peerlistLink="https://peerlist.io/avikmukherjee/" emailLink="mailto:avikm744@gmail.com" />
+      <ReachSection animationDelay="1.2s" />
     </main>
   );
 }
