@@ -3,8 +3,10 @@ import { Metadata } from "next";
 import BackNavigation from "@/components/back-navigation";
 import ComponentPreview from "@/components/experiments/component-preview";
 import CodeBlock from "@/components/experiments/code-block";
+import { MDXDropdown } from "@/components/experiments/mdx-dropdown";
 import { getExperimentBySlug, getAllExperimentSlugs } from "@/lib/experiments-data";
 import { readComponentCode } from "@/lib/read-component";
+import { generateMDX } from "@/lib/generate-mdx";
 
 // Import all experiment components
 import { AnimatedCounter } from "@/components/experiments/animated-counter";
@@ -202,6 +204,12 @@ export default async function ExperimentPage({ params }: PageProps) {
   // Read the actual component code from the file system
   const componentCode = await readComponentCode(experiment.component);
 
+  // Generate page URL
+  const pageUrl = `https://www.avikmukherjee.me/experiments/${slug}`;
+
+  // Generate MDX content
+  const mdxContent = generateMDX(experiment, componentCode, experiment.usage);
+
   return (
     <main className="mb-32 text-gray-700 dark:text-neutral-400">
       <BackNavigation href="/experiments">back</BackNavigation>
@@ -212,9 +220,12 @@ export default async function ExperimentPage({ params }: PageProps) {
           <h1 className="text-2xl font-serif font-semibold text-gray-900 dark:text-neutral-100 animate-[slideFadeUp_0.4s_ease-out]">
             {experiment.title}
           </h1>
-          <span className="text-sm text-gray-500 dark:text-neutral-500 tabular-nums animate-[slideFadeUp_0.4s_ease-out]">
-            {experiment.year}
-          </span>
+          <div className="flex items-center gap-3 animate-[slideFadeUp_0.4s_ease-out]">
+            <span className="text-sm text-gray-500 dark:text-neutral-500 tabular-nums">
+              {experiment.year}
+            </span>
+            <MDXDropdown pageUrl={pageUrl} mdxContent={mdxContent} />
+          </div>
         </div>
         <p className="text-gray-600 dark:text-neutral-400 leading-relaxed animate-[slideFadeUp_0.5s_ease-out]">
           {experiment.description}
@@ -271,7 +282,11 @@ export default async function ExperimentPage({ params }: PageProps) {
         <h2 className="text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 mb-3">
           Preview
         </h2>
-        <ComponentPreview code={componentCode} title={`${experiment.component}.tsx`}>
+        <ComponentPreview
+          code={componentCode}
+          title={`${experiment.component}.tsx`}
+          pageUrl={pageUrl}
+        >
           {PreviewComponent}
         </ComponentPreview>
       </div>
