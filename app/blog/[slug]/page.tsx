@@ -67,14 +67,16 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
     return (
       <main className="mb-32 text-gray-900 dark:text-neutral-400">
-        <BackNavigation href="/blog">back</BackNavigation>
+        <div className="animate-[slideFadeUp_0.4s_ease-out]">
+          <BackNavigation href="/blog">back</BackNavigation>
+        </div>
 
-        <header className="mt-6 mb-8">
-          <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-medium mb-2">{post.title}</h1>
-          <p className="text-gray-500 dark:text-neutral-500 text-sm">{post.date}</p>
+        <header className="mt-6 mb-8 animate-[slideFadeUp_0.5s_ease-out]">
+          <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-serif font-medium mb-2 leading-tight">{post.title}</h1>
+          <p className="text-gray-500 dark:text-neutral-500 text-sm mt-2">{post.date}</p>
         </header>
 
-        <article className="prose prose-neutral max-w-none dark:prose-invert">
+        <article className="prose prose-neutral max-w-none dark:prose-invert blog-content">
           <CustomMDX source={post.content} />
         </article>
       </main>

@@ -24,7 +24,7 @@ function Blockquote(props: any) {
 
 function Code({ children, ...props }: any) {
   const codeHTML = highlight(children);
-  
+
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
 }
 
@@ -38,7 +38,7 @@ function CustomLink(props: any) {
     );
   }
   if (href.startsWith("#")) {
-      return <a {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200 dark:text-stone-300 dark:decoration-stone-400 dark:decoration-[0.5px] dark:underline-offset-4 dark:hover:text-stone-200 dark:hover:decoration-stone-200" />;
+    return <a {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200 dark:text-stone-300 dark:decoration-stone-400 dark:decoration-[0.5px] dark:underline-offset-4 dark:hover:text-stone-200 dark:hover:decoration-stone-200" />;
   }
   return <a target="_blank" rel="noopener noreferrer" {...props} className="text-stone-300 underline decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-stone-200 hover:decoration-stone-200 dark:text-stone-300 dark:decoration-stone-400 dark:decoration-[0.5px] dark:underline-offset-4 dark:hover:text-stone-200 dark:hover:decoration-stone-200" />;
 }
@@ -60,12 +60,12 @@ function slugify(str: string) {
 function createHeading(level: number) {
   const Heading = ({ children }: any) => {
     const slug = slugify(children);
-    const className = level === 1 
-      ? "text-gray-900 dark:text-neutral-100 text-xl font-medium mt-8 mb-4" 
-      : level === 2 
-      ? "text-gray-900 dark:text-neutral-100 text-lg font-medium mt-6 mb-3"
-      : "text-gray-900 dark:text-neutral-100 font-medium mt-4 mb-2";
-    
+    const className = level === 1
+      ? "text-gray-900 dark:text-neutral-100 text-xl font-medium mt-8 mb-4"
+      : level === 2
+        ? "text-gray-900 dark:text-neutral-100 text-lg font-medium mt-6 mb-3"
+        : "text-gray-900 dark:text-neutral-100 font-medium mt-4 mb-2";
+
     return React.createElement(
       `h${level}`,
       { id: slug, className },
@@ -85,7 +85,7 @@ function createHeading(level: number) {
 
 function Paragraph({ children, ...props }: any) {
   return (
-    <p className="text-gray-800 dark:text-neutral-400 my-4 leading-relaxed" {...props}>
+    <p className="text-gray-800 dark:text-neutral-400 my-4 leading-relaxed prose-paragraph" {...props}>
       {children}
     </p>
   );
