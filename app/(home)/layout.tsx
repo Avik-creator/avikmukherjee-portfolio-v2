@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Avik Mukherjee — Full-Stack Web Developer & Software Engineer',
-  description: 'Avik Mukherjee is a full-stack software developer building scalable web applications with Next.js, React, TypeScript, and Node.js. Explore projects, experience, and blog.',
+  description: 'Avik Mukherjee is a full-stack software developer building scalable web applications. Explore projects, experience, and blog.',
   keywords: ['Avik Mukherjee', 'full-stack developer', 'software engineer', 'Next.js', 'React', 'TypeScript', 'Node.js', 'web developer', 'portfolio', 'SuperAlign AI', 'India'],
   openGraph: {
     title: 'Avik Mukherjee',

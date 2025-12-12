@@ -12,7 +12,7 @@ export default async function BlogPage() {
 
         <header className="mt-6 mb-12">
           <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-medium mb-2">writing</h1>
-          <p className="text-gray-600 dark:text-neutral-400">Thoughts on design, development, and technology.</p>
+          <p className="text-gray-600 dark:text-neutral-400">I write about development techniques, project insights, and lessons learned building software.</p>
         </header>
 
         <section>
