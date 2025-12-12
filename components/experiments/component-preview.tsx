@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Eye, Code2, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CodeBlock from "./code-block";
-import { OpenInV0Button } from "./open-in-v0-button";
+
 
 interface ComponentPreviewProps {
   children: React.ReactNode;
@@ -110,12 +110,7 @@ export default function ComponentPreview({
               {children}
             </div>
 
-            {/* Standalone Open in v0 button */}
-            {(v0Url || pageUrl) && (
-              <div className="absolute top-4 right-4 z-20">
-                <OpenInV0Button url={v0Url || pageUrl!} />
-              </div>
-            )}
+
           </div>
         ) : (
           <CodeBlock
