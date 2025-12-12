@@ -19,7 +19,10 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="mt-12 animate-[slideFadeUp_0.5s_ease-out]">
+      <section
+        className="mt-12 animate-[slideFadeUp_0.6s_ease-out]"
+        style={{ animationDelay: '0.1s', animationFillMode: 'both' }}
+      >
         <Link
           href={`/projects`}
           className={cn(
@@ -57,7 +60,10 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className="mt-12 animate-[slideFadeUp_0.6s_ease-out]">
+      <section
+        className="mt-12 animate-[slideFadeUp_0.6s_ease-out]"
+        style={{ animationDelay: '0.2s', animationFillMode: 'both' }}
+      >
         <Link
           href={`/experience`}
           className={cn(
@@ -95,7 +101,10 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className="mt-12 animate-[slideFadeUp_0.7s_ease-out]">
+      <section
+        className="mt-12 animate-[slideFadeUp_0.6s_ease-out]"
+        style={{ animationDelay: '0.3s', animationFillMode: 'both' }}
+      >
         <Link
           href={`/blog`}
           className={cn(
@@ -133,7 +142,10 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className="mt-12 animate-[slideFadeUp_0.8s_ease-out]">
+      <section
+        className="mt-12 animate-[slideFadeUp_0.6s_ease-out]"
+        style={{ animationDelay: '0.4s', animationFillMode: 'both' }}
+      >
         <Link
           href={`/about`}
           className={cn(
@@ -171,7 +183,10 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className="mt-12 animate-[slideFadeUp_0.9s_ease-out]">
+      <section
+        className="mt-12 animate-[slideFadeUp_0.6s_ease-out]"
+        style={{ animationDelay: '0.5s', animationFillMode: 'both' }}
+      >
         <h2 className="text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100">reach</h2>
         <div className="mt-2 flex flex-wrap gap-2">
           <span className="whitespace-nowrap text-gray-700 dark:text-neutral-400">
