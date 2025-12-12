@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { highlight } from "sugar-high";
 import remarkGfm from "remark-gfm";
+import { Pre } from "./mdx-pre";
 
 const options = {
   mdxOptions: {
@@ -187,6 +188,7 @@ const components = {
   img: RoundedImage,
   a: CustomLink,
   code: Code,
+  pre: Pre,
   blockquote: Blockquote,
   table: Table,
   thead: TableHead,
