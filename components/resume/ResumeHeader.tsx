@@ -12,13 +12,7 @@ export default function ResumeHeader() {
       <div className="space-y-2 text-gray-600 dark:text-neutral-400">
         <p>
           Hyderabad |{" "}
-          <Link
-            href="tel:+919668066031"
-            className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200"
-          >
-            +919668066031
-          </Link>{" "}
-          |{" "}
+
           <Link
             href="mailto:avikm744@gmail.com"
             className="text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200"
