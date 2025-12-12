@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Play } from "lucide-react"
+import CornerMarkers from "@/components/CornerMarkers"
 
 export function VideoSection() {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -25,23 +26,9 @@ export function VideoSection() {
                 handlePlay()
               }
             }}
-            className="group cursor-pointer select-none border border-gray-800 bg-neutral-950 overflow-hidden transition-colors focus:outline-[0.5px] outline-offset-[6px] focus:outline-gray-400/50 dark:focus:outline-neutral-600/50"
+            className="group cursor-pointer select-none border border-gray-800 bg-neutral-950 overflow-hidden transition-colors focus:outline-[0.5px] outline-offset-[6px] focus:outline-gray-400/50 dark:focus:outline-neutral-600/50 relative"
           >
-            {/* Hover corner crosses to match site */}
-            <div
-              className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
-              style={{ '--cross-size': '10px' } as React.CSSProperties}
-            >
-              <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-              <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            </div>
-            <div
-              className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
-              style={{ '--cross-size': '10px' } as React.CSSProperties}
-            >
-              <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-              <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            </div>
+            <CornerMarkers />
 
             {/* Thumbnail */}
             <div className="aspect-video bg-neutral-900 flex items-center justify-center">
@@ -62,7 +49,7 @@ export function VideoSection() {
                 </div>
               </div>
             </div>
-            
+
           </article>
         ) : (
           <div className="aspect-video border border-gray-800 overflow-hidden">

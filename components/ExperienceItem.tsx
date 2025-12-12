@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import Link from "next/link"
+import CornerMarkers from "@/components/CornerMarkers"
 
 interface ExperienceItemProps {
   title: string
@@ -20,31 +21,17 @@ export default function ExperienceItem({ title, year, company, description, comp
             'relative'
           )}
         >
-          {/* Top left */}
-          <div
-            className="absolute left-[-6.25px] top-[-6.25px] hidden group-hover:block"
-            style={{ '--cross-size': '10px' } as React.CSSProperties}>
-            <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-          </div>
-          {/* Bottom right */}
-          <div
-            className="absolute bottom-[-6.25px] right-[-6.25px] hidden group-hover:block"
-            style={{ '--cross-size': '10px' } as React.CSSProperties}>
-            <div className="absolute left-0 top-0 h-[var(--cross-size)] w-[0.5px] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-            <div className="absolute left-0 top-0 h-[0.5px] w-[var(--cross-size)] -translate-x-1/2 -translate-y-1/2 bg-gray-500 dark:bg-neutral-500" />
-          </div>
-          
+          <CornerMarkers />
           <h3 className="grow font-medium text-gray-800 dark:text-neutral-200 underline decoration-gray-400 dark:decoration-neutral-400/50 underline-offset-[3px] transition-colors">
             <Link href={companySite} target="_blank" rel="noopener noreferrer">
               {title} @{company}
             </Link>
           </h3>
-          
-          <span className="text-gray-600 dark:text-neutral-500 text-sm flex-shrink-0">{year}</span>
+
+          <span className="text-gray-600 dark:text-neutral-500 text-sm shrink-0">{year}</span>
         </div>
       </div>
-      
+
       <div className="text-gray-600 dark:text-neutral-400 mb-2 space-y-1">
         {description.map((desc, index) => (
           <p key={index} className="text-sm">• {desc}</p>
