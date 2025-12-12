@@ -40,6 +40,14 @@ export const projects = [
     githubUrl: "https://github.com/Avik-creator/webtracker",
   },
   {
+    title: "Git Wrapped",
+    year: "2025",
+    description:
+      "Your year in code. Visualize your GitHub contributions and coding journey with beautiful animated summaries. Built using v0, Remotion, GitHub API, Next.js, and Canvas API.",
+    demoUrl: "https://v0-github-username-summary.vercel.app",
+    githubUrl: "https://v0.app/templates/github-username-summary-t1sEM4NJwlQ",
+  },
+  {
     title: "MemeGenerator",
     year: "2025",
     description:
