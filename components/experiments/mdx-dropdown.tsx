@@ -51,91 +51,130 @@ export function MDXDropdown({ pageUrl, mdxContent, className }: MDXDropdownProps
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 rounded-md bg-gray-50 dark:bg-neutral-900/95 backdrop-blur-sm shadow-lg border border-gray-200 dark:border-neutral-800 py-1 z-50 animate-[slideFadeUp_0.2s_ease-out]">
-          <div className="px-3 py-2 text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider border-b border-gray-200 dark:border-neutral-800">
+        <div className="absolute right-0 mt-2 w-64 rounded-md bg-gray-50 dark:bg-neutral-900/95 backdrop-blur-sm shadow-lg border border-gray-200 dark:border-neutral-800 py-2 z-50 animate-[slideFadeUp_0.2s_ease-out]">
+          <div className="px-4 py-2 text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider border-b border-gray-200 dark:border-neutral-800 mb-1">
             Actions
           </div>
 
-          <button
-            onClick={async () => {
-              try {
-                await navigator.clipboard.writeText(mdxContent);
-                setCopied(true);
-                setTimeout(() => {
-                  setCopied(false);
+          <div className="px-2 py-1 space-y-1">
+            <button
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(mdxContent);
+                  setCopied(true);
+                  setTimeout(() => {
+                    setCopied(false);
+                    setIsOpen(false);
+                  }, 1500);
+                } catch (err) {
+                  console.error("Failed to copy:", err);
                   setIsOpen(false);
-                }, 1500);
-              } catch (err) {
-                console.error("Failed to copy:", err);
+                }
+              }}
+              className={cn(
+                'group flex items-center gap-2 w-full',
+                'relative transition-all duration-300 ease-out px-3 py-2',
+                'hover:translate-x-[-2px]'
+              )}
+            >
+              <CornerMarkers />
+              {copied ? (
+                <>
+                  <Check className="w-4 h-4 text-gray-900 dark:text-neutral-100 relative z-10" />
+                  <span className="text-sm font-medium text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-all duration-300 group-hover:underline-offset-[6px] group-hover:decoration-gray-700 dark:group-hover:decoration-neutral-300 relative z-10">
+                    Copied!
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4 text-gray-900 dark:text-neutral-100 relative z-10" />
+                  <span className="text-sm font-medium text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-all duration-300 group-hover:underline-offset-[6px] group-hover:decoration-gray-700 dark:group-hover:decoration-neutral-300 relative z-10">
+                    Copy MDX
+                  </span>
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={() => {
+                const blob = new Blob([mdxContent], { type: "text/markdown" });
+                const url = URL.createObjectURL(blob);
+                window.open(url, "_blank");
                 setIsOpen(false);
-              }
-            }}
-            className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-800/50 hover:text-gray-900 dark:hover:text-neutral-100 transition-all duration-200 w-full text-left"
-          >
-            {copied ? (
-              <>
-                <Check className="w-4 h-4" />
-                Copied!
-              </>
-            ) : (
-              <>
-                <Copy className="w-4 h-4" />
-                Copy MDX
-              </>
-            )}
-          </button>
+              }}
+              className={cn(
+                'group flex items-center gap-2 w-full',
+                'relative transition-all duration-300 ease-out px-3 py-2',
+                'hover:translate-x-[-2px]'
+              )}
+            >
+              <CornerMarkers />
+              <Icons.markdown className="w-4 h-4 text-gray-900 dark:text-neutral-100 relative z-10" />
+              <span className="text-sm font-medium text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-all duration-300 group-hover:underline-offset-[6px] group-hover:decoration-gray-700 dark:group-hover:decoration-neutral-300 relative z-10">
+                View as Markdown
+              </span>
+            </button>
 
-          <button
-            onClick={() => {
-              const blob = new Blob([mdxContent], { type: "text/markdown" });
-              const url = URL.createObjectURL(blob);
-              window.open(url, "_blank");
-              setIsOpen(false);
-            }}
-            className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-800/50 hover:text-gray-900 dark:hover:text-neutral-100 transition-all duration-200 w-full text-left"
-          >
-            <Icons.markdown className="w-4 h-4" />
-            View as Markdown
-          </button>
+            <button
+              onClick={() => {
+                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+                navigator.clipboard.writeText(prompt).catch(() => { });
+                window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
+                setIsOpen(false);
+              }}
+              className={cn(
+                'group flex items-center gap-2 w-full',
+                'relative transition-all duration-300 ease-out px-3 py-2',
+                'hover:translate-x-[-2px]'
+              )}
+            >
+              <CornerMarkers />
+              <Icons.chatgpt className="w-4 h-4 text-gray-900 dark:text-neutral-100 relative z-10" />
+              <span className="text-sm font-medium text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-all duration-300 group-hover:underline-offset-[6px] group-hover:decoration-gray-700 dark:group-hover:decoration-neutral-300 relative z-10">
+                Open in ChatGPT
+              </span>
+            </button>
 
-          <button
-            onClick={() => {
-              const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
-              navigator.clipboard.writeText(prompt).catch(() => { });
-              window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
-              setIsOpen(false);
-            }}
-            className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-800/50 hover:text-gray-900 dark:hover:text-neutral-100 transition-all duration-200 w-full text-left"
-          >
-            <Icons.chatgpt className="w-4 h-4" />
-            Open in ChatGPT
-          </button>
+            <button
+              onClick={() => {
+                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+                navigator.clipboard.writeText(prompt).catch(() => { });
+                window.open("https://claude.ai/", "_blank", "noopener,noreferrer");
+                setIsOpen(false);
+              }}
+              className={cn(
+                'group flex items-center gap-2 w-full',
+                'relative transition-all duration-300 ease-out px-3 py-2',
+                'hover:translate-x-[-2px]'
+              )}
+            >
+              <CornerMarkers />
+              <Icons.claude className="w-4 h-4 text-gray-900 dark:text-neutral-100 relative z-10" />
+              <span className="text-sm font-medium text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-all duration-300 group-hover:underline-offset-[6px] group-hover:decoration-gray-700 dark:group-hover:decoration-neutral-300 relative z-10">
+                Open in Claude
+              </span>
+            </button>
 
-          <button
-            onClick={() => {
-              const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
-              navigator.clipboard.writeText(prompt).catch(() => { });
-              window.open("https://claude.ai/", "_blank", "noopener,noreferrer");
-              setIsOpen(false);
-            }}
-            className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-800/50 hover:text-gray-900 dark:hover:text-neutral-100 transition-all duration-200 w-full text-left"
-          >
-            <Icons.claude className="w-4 h-4" />
-            Open in Claude
-          </button>
-
-          <button
-            onClick={() => {
-              const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
-              navigator.clipboard.writeText(prompt).catch(() => { });
-              window.open("https://scira.ai/", "_blank", "noopener,noreferrer");
-              setIsOpen(false);
-            }}
-            className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-800/50 hover:text-gray-900 dark:hover:text-neutral-100 transition-all duration-200 w-full text-left"
-          >
-            <Icons.scira className="w-4 h-4" />
-            Open in Scira AI
-          </button>
+            <button
+              onClick={() => {
+                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+                navigator.clipboard.writeText(prompt).catch(() => { });
+                window.open("https://scira.ai/", "_blank", "noopener,noreferrer");
+                setIsOpen(false);
+              }}
+              className={cn(
+                'group flex items-center gap-2 w-full',
+                'relative transition-all duration-300 ease-out px-3 py-2',
+                'hover:translate-x-[-2px]'
+              )}
+            >
+              <CornerMarkers />
+              <Icons.scira className="w-4 h-4 text-gray-900 dark:text-neutral-100 relative z-10" />
+              <span className="text-sm font-medium text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-all duration-300 group-hover:underline-offset-[6px] group-hover:decoration-gray-700 dark:group-hover:decoration-neutral-300 relative z-10">
+                Open in Scira AI
+              </span>
+            </button>
+          </div>
         </div>
       )}
     </div>
