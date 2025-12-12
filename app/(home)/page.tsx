@@ -19,7 +19,7 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="mt-12 animate-[slideFadeUp_0.5s_ease-out]">
+      <section className="mt-6 animate-[slideFadeUp_0.5s_ease-out]">
         <p className="text-gray-700 dark:text-neutral-400">This is something I remind myself of every day.</p>
       </section>
 
