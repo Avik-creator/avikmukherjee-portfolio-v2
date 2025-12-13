@@ -97,9 +97,8 @@ export function MDXDropdown({ pageUrl, mdxContent, className }: MDXDropdownProps
 
             <button
               onClick={() => {
-                const blob = new Blob([mdxContent], { type: "text/markdown" });
-                const url = URL.createObjectURL(blob);
-                window.open(url, "_blank");
+                const mdxUrl = pageUrl.endsWith('.md') ? pageUrl : `${pageUrl}.md`;
+                window.open(mdxUrl, "_blank", "noopener,noreferrer");
                 setIsOpen(false);
               }}
               className={cn(
