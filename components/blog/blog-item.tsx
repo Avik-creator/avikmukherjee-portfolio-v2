@@ -15,7 +15,7 @@ export default function BlogItem({ title, slug, date }: Props) {
       <Link
         href={`/blog/${slug}`}
         className={cn(
-          'group flex items-center justify-between gap-1',
+          'group flex items-center gap-4',
           'relative transition-all duration-300 ease-out',
           'hover:translate-x-[-2px]'
         )}>
@@ -26,11 +26,9 @@ export default function BlogItem({ title, slug, date }: Props) {
 
         <span
           className={
-            'ml-1 flex items-center gap-1 whitespace-nowrap transition-colors text-gray-600 dark:text-neutral-400'
+            'shrink-0 w-28 text-right whitespace-nowrap transition-colors text-gray-600 dark:text-neutral-400 tabular-nums'
           }>
-          <span>
-            {formatDate(date)}
-          </span>
+          {formatDate(date)}
         </span>
       </Link>
     </div>

@@ -52,7 +52,12 @@ export async function getAllPosts(): Promise<Post[]> {
     })
   )
 
-  return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1))
+  // Parse dates and sort in descending order (newest first)
+  return allPostsData.sort((a, b) => {
+    const dateA = new Date(a.date)
+    const dateB = new Date(b.date)
+    return dateB.getTime() - dateA.getTime()
+  })
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {

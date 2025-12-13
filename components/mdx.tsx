@@ -55,6 +55,11 @@ function RoundedImage(props: any) {
     ...rest
   } = props;
 
+  // Return null if src is missing or empty
+  if (!src || src.trim() === '') {
+    return null;
+  }
+
   // Check if it's an external URL or starts with /
   const isExternal = src?.startsWith('http://') || src?.startsWith('https://');
   const isLocal = src?.startsWith('/');
@@ -187,6 +192,28 @@ function createHeading(level: number) {
 }
 
 function Paragraph({ children, ...props }: any) {
+  // Check if children contains block-level elements (figure, div, etc.)
+  // If so, render as div to avoid hydration errors
+  const hasBlockElements = React.Children.toArray(children).some((child) => {
+    if (React.isValidElement(child)) {
+      const type = child.type;
+      // Check for block-level element types
+      if (typeof type === 'string') {
+        return ['figure', 'div', 'table', 'ul', 'ol', 'blockquote', 'pre'].includes(type);
+      }
+      // Check for custom components that render block elements (like RoundedImage)
+      if (typeof type === 'function') {
+        const name = (type as any).displayName || type.name || '';
+        return ['RoundedImage', 'Pre', 'Blockquote', 'Table', 'List', 'OrderedList'].includes(name);
+      }
+    }
+    return false;
+  });
+
+  if (hasBlockElements) {
+    return <div className="my-4" {...props}>{children}</div>;
+  }
+
   return (
     <p className="text-gray-800 dark:text-neutral-400 my-4 leading-relaxed prose-paragraph" {...props}>
       {children}

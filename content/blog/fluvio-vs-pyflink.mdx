@@ -1,0 +1,71 @@
+---
+title: "From PyFlink to Fluvio: Why We Migrated Our CEF Log Pipeline"
+publishDate: "25 October 2025"
+description: "After months of experimentation with Apache Flink, we migrated our entire CEF log parsing pipeline to Fluvio, a Rust-based streaming platform. Here's why the switch delivered 5× faster throughput and 10–50× less memory usage."
+tags: ["fluvio", "pyflink", "apache-flink", "streaming", "kubernetes", "rust", "cef-logs", "real-time-processing", "data-pipeline", "performance"]
+---
+
+When dealing with high-velocity event streams like CEF (Common Event Format) logs, scalability and real-time precision matter just as much as simplicity. After months of experimentation and optimization with Apache Flink, our team made a bold yet rewarding decision — migrating our entire CEF log parsing pipeline to Fluvio, a Rust-based streaming platform designed for the modern Kubernetes era.
+
+## The PyFlink Experience: Power With Pain
+
+PyFlink extends Apache Flink's capabilities to Python developers by wrapping Java APIs through a bridge between Python and the JVM. While that's impressive in design, we found a few challenges hard to ignore:
+
+**Serialization Overhead**: Every Python-Java data exchange requires serialization/deserialization, which introduces noticeable latency and CPU costs, especially when processing high-frequency logs.
+
+**Heavy Infrastructure**: Even a small PyFlink job required running JobManagers and TaskManagers with significant JVM memory footprints, making it difficult to scale efficiently in Kubernetes clusters.
+
+**Deployment Friction**: Packaging PyFlink jobs as container images meant juggling Python dependencies, JDK requirements, and the Flink operator's resource definition for Kubernetes. Local testing mirrored none of that complexity.
+
+**Limited Python Flexibility**: Since PyFlink executes through the JVM, we couldn't fully leverage Python's ecosystem without hitting bridge-related constraints or debugging issues that required Java insight.
+
+In short, PyFlink is powerful, but it's also Java-heavy, resource-intensive, and slow to iterate for modern container-native environments.
+
+## Why Fluvio Outperformed PyFlink
+
+Moving to Fluvio reshaped our entire approach to real-time log transformation. Here's how.
+
+### 1. SmartModules: Inline CEF Transformation
+
+Instead of maintaining Python UDFs that get serialized into JVM code, we now use Rust-based SmartModules compiled to WebAssembly. These transformations run inline on the stream, reducing latency and removing the need for a separate ETL layer or job orchestration.
+
+### 2. Lightweight Architecture
+
+Fluvio's Rust core and async runtime deliver performance with almost no operational cost. Tests showed:
+
+- Up to 5× faster throughput
+- 10–50× less memory usage compared to PyFlink-based jobs
+- A single Fluvio streaming unit (SPU) idled at ~50 MB RAM, versus PyFlink's multi-GB footprint in Kubernetes.
+
+### 3. Kubernetes-Native by Design
+
+Fluvio integrates seamlessly with Kubernetes as a first-class citizen. There are no external job managers, no coordination via Zookeeper, and no JVM tuning required. The entire cluster can scale via simple YAML definitions — a huge leap over PyFlink's multi-step operator-based pipeline setup.
+
+### 4. Single Binary Deployment
+
+Where PyFlink required a Python image stacked over a JDK base — often exceeding several hundred MB, Fluvio delivers a 50 MB single binary deployable anywhere. This drastically simplified our CI/CD and improved cold-start times for new workloads.
+
+### 5. Developer Velocity
+
+Perhaps the most underrated improvement: productivity. With Fluvio, we can:
+
+- Spin up local clusters identical to production
+- Test SmartModules in isolation
+- Debug transformations in pure Rust or WASM
+
+That's night and day compared to PyFlink's complex container orchestration for even minor code changes.
+
+## The Result
+
+Transitioning from PyFlink to Fluvio delivered:
+
+- Reduced infrastructure overhead (no JVM or external dependencies)
+- Real-time inline log transformation via SmartModules
+- Lightning-fast deployment across dev, test, and production
+- Better developer experience through native tooling and uniform workflow
+
+## Final Thoughts
+
+Our PyFlink setup taught us valuable lessons in stream processing at scale but it also exposed the practical challenges of running JVM-dependent systems in a Kubernetes world. Fluvio, with its Rust foundation and WASM execution model, provides the best of both performance and simplicity.
+
+For real-time pipelines like CEF log parsing, where compact transformations and low latency are paramount, Fluvio isn't just faster than PyFlink, it's architecturally cleaner, operationally leaner, and developer-approved.
