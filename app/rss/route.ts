@@ -98,6 +98,7 @@ function generateRSSFeed(posts: Post[], blogUrl: string, portfolioUrl: string): 
   const experimentItems = experiments
     .map((experiment) => {
       const link = `${portfolioUrl}/experiments/${experiment.slug}`;
+      const mdxLink = `${portfolioUrl}/experiments/${experiment.slug}.md`;
       const title = escapeCdata(experiment.title ?? "Untitled experiment");
       const description = escapeCdata(experiment.description ?? "");
       const pubDate = getYearDate(experiment.year);
@@ -110,6 +111,7 @@ function generateRSSFeed(posts: Post[], blogUrl: string, portfolioUrl: string): 
       if (experiment.dependencies && experiment.dependencies.length > 0) {
         detailedDescription += ` Built with: ${experiment.dependencies.join(", ")}.`;
       }
+      detailedDescription += ` MDX Documentation: ${mdxLink}`;
 
       // Build category tags
       const categories = ["UI Experiment", "React Component", "Next.js"];

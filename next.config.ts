@@ -12,7 +12,15 @@ const nextConfig: NextConfig = {
     };
     return config;
   },
-  pageExtensions:["ts", "tsx", "js", "jsx", "mdx"],
+  pageExtensions: ["ts", "tsx", "js", "jsx", "mdx"],
+  async rewrites() {
+    return [
+      {
+        source: "/experiments/:slug.md",
+        destination: "/experiments.md/:slug",
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX({

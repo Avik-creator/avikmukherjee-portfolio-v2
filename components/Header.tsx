@@ -10,7 +10,7 @@ export default function Header({ name, location }: HeaderProps) {
   return (
     <header className="mb-6">
       <div className="flex items-center justify-between">
-        <h1 className='text-2xl font-serif font-medium text-gray-900 dark:text-stone-100 [font-feature-setting:"kern","calt","case"]'>
+        <h1 className='text-xl font-serif font-medium text-gray-900 dark:text-stone-100 [font-feature-setting:"kern","calt","case"]'>
           {name}
         </h1>
         <Anchor href="/resume" className="text-gray-900 dark:text-stone-100 font-serif flex items-center gap-1">

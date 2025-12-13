@@ -7,7 +7,7 @@ import AnimatedSection from '@/components/AnimatedSection';
 
 export default function Home() {
   return (
-    <main className="mb-32 text-[17px] text-gray-700 dark:text-neutral-400">
+    <main className="mb-32 text-gray-700 dark:text-neutral-400">
       <Header
         name="Avik Mukherjee"
         location="Hyderabad, India."

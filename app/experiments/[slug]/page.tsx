@@ -204,8 +204,8 @@ export default async function ExperimentPage({ params }: PageProps) {
   // Read the actual component code from the file system
   const componentCode = await readComponentCode(experiment.component);
 
-  // Generate page URL
-  const pageUrl = `https://www.avikmukherjee.me/experiments/${slug}`;
+  // Generate page URL (use .md for LLM prompts)
+  const pageUrl = `https://www.avikmukherjee.me/experiments/${slug}.md`;
 
   // Generate v0 registry URL (JSON endpoint)
   const v0RegistryUrl = `https://www.avikmukherjee.me/api/experiments/${slug}`;

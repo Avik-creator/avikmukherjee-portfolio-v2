@@ -1,5 +1,7 @@
 import { getAllPosts } from "@/lib/mdx";
 import { projects, Experience } from "@/lib/data";
+import { experiments } from "@/lib/experiments-data";
+import { getAllExperimentMDX } from "@/lib/experiments-mdx";
 
 const baseUrl = "https://avikmukherjee.me";
 const displayName = "Avik Mukherjee";
@@ -68,8 +70,16 @@ async function getBlogContent() {
   return text.join("\n\n");
 }
 
+async function getExperimentsContent() {
+  const allExperiments = await getAllExperimentMDX();
+  const text = allExperiments.map((item) => {
+    return `---\ntitle: "${item.title}"\ndescription: "${item.description}"\nyear: "${item.year}"\nsource: "${baseUrl}/experiments/${item.slug}.md"\n---\n\n${item.content}`;
+  });
+  return text.join("\n\n");
+}
+
 async function getContent() {
-  return `<SYSTEM>This document contains comprehensive information about ${displayName}'s professional profile, portfolio, and blog content. It includes personal details, work experience, projects, and all published blog posts. This data is formatted for consumption by Large Language Models (LLMs) to provide accurate and up-to-date information about ${displayName}'s background, skills, and expertise as a Software Engineer.</SYSTEM>
+  return `<SYSTEM>This document contains comprehensive information about ${displayName}'s professional profile, portfolio, and blog content. It includes personal details, work experience, projects, experiments, and all published blog posts. This data is formatted for consumption by Large Language Models (LLMs) to provide accurate and up-to-date information about ${displayName}'s background, skills, and expertise as a Software Engineer.</SYSTEM>
 
 # avikmukherjee.me
 
@@ -78,6 +88,10 @@ async function getContent() {
 ${aboutText}
 ${experienceText}
 ${projectsText}
+
+## Experiments
+
+${await getExperimentsContent()}
 
 ## Blog
 

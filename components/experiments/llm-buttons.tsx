@@ -9,8 +9,10 @@ interface LLMButtonProps {
   className?: string;
 }
 
-const getPrompt = (url: string) =>
-  `I'm looking at this component documentation: ${url}\n\nComponent URL: ${url}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+const getPrompt = (url: string) => {
+  const mdxUrl = url.endsWith('.md') ? url : `${url}.md`;
+  return `I'm looking at this component documentation: ${mdxUrl}\n\nComponent URL: ${mdxUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+};
 
 const providerConfig = {
   chatgpt: {

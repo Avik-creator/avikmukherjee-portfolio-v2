@@ -117,7 +117,8 @@ export function MDXDropdown({ pageUrl, mdxContent, className }: MDXDropdownProps
 
             <button
               onClick={() => {
-                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nComponent URL: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+                const mdxUrl = pageUrl.endsWith('.md') ? pageUrl : `${pageUrl}.md`;
+                const prompt = `I'm looking at this component documentation: ${mdxUrl}\n\nComponent URL: ${mdxUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
                 const url = `https://chatgpt.com/?${new URLSearchParams({
                   hints: "search",
                   q: prompt,
@@ -140,7 +141,8 @@ export function MDXDropdown({ pageUrl, mdxContent, className }: MDXDropdownProps
 
             <button
               onClick={() => {
-                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nComponent URL: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+                const mdxUrl = pageUrl.endsWith('.md') ? pageUrl : `${pageUrl}.md`;
+                const prompt = `I'm looking at this component documentation: ${mdxUrl}\n\nComponent URL: ${mdxUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
                 const url = `https://claude.ai/new?${new URLSearchParams({
                   q: prompt,
                 })}`;
@@ -162,7 +164,8 @@ export function MDXDropdown({ pageUrl, mdxContent, className }: MDXDropdownProps
 
             <button
               onClick={() => {
-                const prompt = `I'm looking at this component documentation: ${pageUrl}\n\nComponent URL: ${pageUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
+                const mdxUrl = pageUrl.endsWith('.md') ? pageUrl : `${pageUrl}.md`;
+                const prompt = `I'm looking at this component documentation: ${mdxUrl}\n\nComponent URL: ${mdxUrl}\n\nI want to use it in a React (TypeScript) project.\nHelp me understand how to use it step-by-step, including explaining key concepts, showing practical examples with TypeScript code, and pointing out common pitfalls.\nBe ready to answer follow-up questions and help debug issues based on the documentation.`;
                 const url = `https://scira.ai/?${new URLSearchParams({
                   q: prompt,
                 })}`;

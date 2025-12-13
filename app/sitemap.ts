@@ -14,12 +14,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: post.date ? new Date(post.date) : new Date(),
   }));
 
-  const experiments = experimentSlugs.map((slug) => ({
-    url: `${baseUrl}/experiments/${slug}`,
-    lastModified: new Date(),
-  }));
+  const experiments = experimentSlugs.flatMap((slug) => [
+    {
+      url: `${baseUrl}/experiments/${slug}`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/experiments/${slug}.md`,
+      lastModified: new Date(),
+    },
+  ]);
 
-  const routes = ["", "/blog", "/projects", "/experience", "/experiments", "/resume", "/rss", "/about"].map((route) => ({
+  const routes = ["", "/blog", "/projects", "/experience", "/experiments", "/resume", "/rss", "/about", "/vcard"].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
   }));
