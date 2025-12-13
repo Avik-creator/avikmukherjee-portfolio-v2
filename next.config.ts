@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
     };
     return config;
   },
-  pageExtensions: ["ts", "tsx", "js", "jsx", "mdx"],
+  pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   async rewrites() {
     return [
       {
