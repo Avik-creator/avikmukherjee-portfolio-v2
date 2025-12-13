@@ -15,6 +15,7 @@ import { TextScramble } from "@/components/experiments/text-scramble";
 import { SpotlightCard } from "@/components/experiments/spotlight-card";
 import { Typewriter } from "@/components/experiments/typewriter";
 import { ExperimentItemDemo } from "@/components/experiments/experiment-item-demo";
+import { GitHubStars } from "@/components/experiments/github-stars";
 
 
 // Component registry for dynamic rendering
@@ -116,6 +117,29 @@ const componentRegistry: Record<string, React.ReactNode> = {
           description="A text effect that scrambles characters before revealing the final text. Great for headers and loading states."
           year="2025"
         />
+      </div>
+    </div>
+  ),
+  GitHubStars: (
+    <div className="flex flex-col items-center gap-8">
+      <div className="text-center">
+        <p className="text-sm text-gray-500 dark:text-neutral-500 mb-4">
+          Hover over the star count to see the full number
+        </p>
+        <div className="flex items-center justify-center gap-6">
+          <GitHubStars repo="vercel/next.js" stargazersCount={125000} />
+          <GitHubStars repo="facebook/react" stargazersCount={245000} />
+          <GitHubStars repo="microsoft/typescript" stargazersCount={102000} />
+        </div>
+      </div>
+      <div className="text-center">
+        <p className="text-sm text-gray-500 dark:text-neutral-500 mb-4">
+          Smaller repositories
+        </p>
+        <div className="flex items-center justify-center gap-6">
+          <GitHubStars repo="shadcn-ui/ui" stargazersCount={75000} />
+          <GitHubStars repo="t3-oss/create-t3-app" stargazersCount={25000} />
+        </div>
       </div>
     </div>
   ),
@@ -273,6 +297,29 @@ export default async function ExperimentPage({ params }: PageProps) {
                 {dep}
               </span>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* GitHub Repo Info */}
+      {experiment.githubRepo && experiment.stargazersCount !== undefined && (
+        <div
+          className="mb-8 animate-[slideFadeUp_0.66s_ease-out]"
+          style={{ animationFillMode: 'both' }}
+        >
+          <h2 className="text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 mb-3">
+            Repository
+          </h2>
+          <div className="flex items-center gap-2">
+            <GitHubStars repo={experiment.githubRepo} stargazersCount={experiment.stargazersCount} />
+            <a
+              href={`https://github.com/${experiment.githubRepo}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-neutral-100 underline"
+            >
+              View on GitHub
+            </a>
           </div>
         </div>
       )}

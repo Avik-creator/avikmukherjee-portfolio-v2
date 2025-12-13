@@ -1,15 +1,26 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
 
+// Special filename mappings for components that don't follow standard PascalCase to kebab-case
+const fileNameOverrides: Record<string, string> = {
+  GitHubStars: "github-stars",
+};
+
 /**
  * Converts PascalCase component name to kebab-case filename
  * @example "AnimatedCounter" -> "animated-counter"
+ * @example "GitHubStars" -> "github-stars"
  */
 export function getComponentFileName(componentName: string): string {
+  // Check for override first
+  if (fileNameOverrides[componentName]) {
+    return fileNameOverrides[componentName];
+  }
+
   return componentName
-    .replace(/([A-Z])/g, "-$1")
-    .toLowerCase()
-    .slice(1); // Remove leading dash
+    .replace(/([a-z])([A-Z])/g, "$1-$2") // Add dash between lowercase and uppercase
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1-$2") // Add dash between acronym and word
+    .toLowerCase();
 }
 
 /**

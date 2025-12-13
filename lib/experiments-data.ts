@@ -7,6 +7,8 @@ export interface Experiment {
   usage?: string;
   features?: string[];
   dependencies?: string[];
+  githubRepo?: string;
+  stargazersCount?: number;
 }
 
 export const experiments: Experiment[] = [
@@ -23,6 +25,7 @@ export const experiments: Experiment[] = [
       "Accessible with reduced motion support",
     ],
     dependencies: ["motion"],
+    usage: `<AnimatedCounter value={12847} />`,
   },
   {
     slug: "magnetic-button",
@@ -37,6 +40,7 @@ export const experiments: Experiment[] = [
       "Touch-device compatible",
     ],
     dependencies: ["motion"],
+    usage: `<MagneticButton strength={0.4}>\n      <button className="px-8 py-4 bg-white text-gray-900 rounded-xl font-medium shadow-lg">\n        Hover & move around me\n      </button>\n    </MagneticButton>`,
   },
   {
     slug: "text-scramble",
@@ -50,6 +54,7 @@ export const experiments: Experiment[] = [
       "Trigger on mount or hover",
       "Supports any text content",
     ],
+    usage: `<TextScramble text="Hello, World!" className="text-4xl font-bold" />`,
   },
   {
     slug: "spotlight-card",
@@ -63,6 +68,7 @@ export const experiments: Experiment[] = [
       "Smooth gradient transitions",
       "Works with any card content",
     ],
+    usage: `<SpotlightCard className="p-8 border rounded-2xl">\n      <h3 className="text-xl font-semibold mb-2">Spotlight Effect</h3>\n      <p className="text-gray-600">Move your cursor around to see the spotlight follow.</p>\n    </SpotlightCard>`,
   },
   {
     slug: "typewriter",
@@ -76,6 +82,7 @@ export const experiments: Experiment[] = [
       "Delete and retype support",
       "Multiple text sequences",
     ],
+    usage: `<Typewriter texts={["Hello, World!", "Welcome to experiments", "Build amazing UIs"]} typingSpeed={80} />`,
   },
   {
     slug: "experiment-item",
@@ -90,6 +97,22 @@ export const experiments: Experiment[] = [
       "Dark mode support",
       "Accessible and keyboard-friendly",
     ],
+    usage: `<ExperimentItem\n      slug="example"\n      title="Example Item"\n      description="An example experiment item"\n      year="2025"\n    />`,
+  },
+  {
+    slug: "github-stars",
+    title: "GitHub Stars",
+    description: "A compact component that displays GitHub repository star count with a tooltip showing the full number. Perfect for showcasing project popularity and engagement.",
+    year: "2025",
+    component: "GitHubStars",
+    features: [
+      "Compact star count display",
+      "Hover tooltip with full number",
+      "Direct link to GitHub repository",
+      "Accessible and keyboard-friendly",
+      "Dark mode support",
+    ],
+    usage: `<GitHubStars repo="vercel/next.js" stargazersCount={125000} />`,
   },
 ];
 

@@ -37,6 +37,8 @@ export async function GET(
           return `<${componentName} texts={["Hello, World!", "Welcome to experiments"]} typingSpeed={80} />`;
         case "ExperimentItem":
           return `<${componentName}\n      slug="example"\n      title="Example Item"\n      description="An example experiment item"\n      year="2025"\n    />`;
+        case "GitHubStars":
+          return `<${componentName} repo="vercel/next.js" stargazersCount={125000} />`;
         default:
           return `<${componentName} />`;
       }
