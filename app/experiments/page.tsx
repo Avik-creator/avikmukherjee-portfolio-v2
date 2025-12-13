@@ -1,7 +1,7 @@
 import ExperimentItem from "@/components/experiments/experiment-item";
 import PageHeader from "@/components/PageHeader";
 import AnimatedListItem from "@/components/AnimatedListItem";
-import { experiments, type Experiment } from "@/lib/experiments-data";
+import { experiments } from "@/lib/experiments-data";
 
 export default function ExperimentsPage() {
   return (
@@ -12,7 +12,7 @@ export default function ExperimentsPage() {
         description="Interactive components and UI experiments. Click to explore the code and see them in action."
       />
       <div>
-        {experiments.map((experiment: Experiment, index: number) => (
+        {experiments.map((experiment, index) => (
           <AnimatedListItem key={experiment.slug} index={index}>
             <ExperimentItem
               slug={experiment.slug}
