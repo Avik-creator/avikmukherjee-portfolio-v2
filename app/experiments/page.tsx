@@ -19,6 +19,7 @@ export default function ExperimentsPage() {
               title={experiment.title}
               description={experiment.description}
               year={experiment.year}
+              isNew={experiment.isNew}
             />
           </AnimatedListItem>
         ))}

@@ -244,9 +244,16 @@ export default async function ExperimentPage({ params }: PageProps) {
       {/* Header */}
       <div className="mt-4 mb-8">
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-serif font-semibold text-gray-900 dark:text-neutral-100 animate-[slideFadeUp_0.4s_ease-out]">
-            {experiment.title}
-          </h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-serif font-semibold text-gray-900 dark:text-neutral-100 animate-[slideFadeUp_0.4s_ease-out]">
+              {experiment.title}
+            </h1>
+            {experiment.isNew && (
+              <span className="text-xs font-serif font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-all duration-300 animate-[slideFadeUp_0.4s_ease-out]">
+                NEW
+              </span>
+            )}
+          </div>
           <div className="flex items-center gap-3 animate-[slideFadeUp_0.4s_ease-out]">
             <span className="text-sm text-gray-500 dark:text-neutral-500 tabular-nums">
               {experiment.year}
@@ -301,28 +308,6 @@ export default async function ExperimentPage({ params }: PageProps) {
         </div>
       )}
 
-      {/* GitHub Repo Info */}
-      {experiment.githubRepo && experiment.stargazersCount !== undefined && (
-        <div
-          className="mb-8 animate-[slideFadeUp_0.66s_ease-out]"
-          style={{ animationFillMode: 'both' }}
-        >
-          <h2 className="text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 mb-3">
-            Repository
-          </h2>
-          <div className="flex items-center gap-2">
-            <GitHubStars repo={experiment.githubRepo} stargazersCount={experiment.stargazersCount} />
-            <a
-              href={`https://github.com/${experiment.githubRepo}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-neutral-100 underline"
-            >
-              View on GitHub
-            </a>
-          </div>
-        </div>
-      )}
 
       {/* Component Preview */}
       <div

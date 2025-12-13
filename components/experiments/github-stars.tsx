@@ -73,18 +73,11 @@ export function GitHubStars({ repo, stargazersCount }: GitHubStarsProps) {
         rel="noopener noreferrer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700 transition-colors duration-300 relative overflow-hidden"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        className="inline-flex items-center gap-2 text-gray-700 dark:text-stone-300 underline decoration-gray-500 dark:decoration-stone-400 decoration-[0.5px] underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-stone-200 hover:decoration-gray-700 dark:hover:decoration-stone-200 relative"
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >
-        {/* Animated background shimmer */}
-        <motion.div
-          className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
-          initial={{ x: "-100%" }}
-          animate={isHovered ? { x: "100%" } : { x: "-100%" }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-        />
 
         {/* GitHub Icon with smooth rotation */}
         <div className="relative">
@@ -134,9 +127,9 @@ export function GitHubStars({ repo, stargazersCount }: GitHubStarsProps) {
 
         {/* Star count with smooth animation */}
         <motion.span
-          className="text-sm font-semibold tabular-nums text-gray-700 dark:text-neutral-200 relative z-10"
+          className="text-sm font-medium tabular-nums relative z-10"
           animate={{
-            scale: isHovered ? [1, 1.1, 1] : 1,
+            scale: isHovered ? [1, 1.05, 1] : 1,
           }}
           transition={{
             duration: 0.3,
@@ -152,7 +145,7 @@ export function GitHubStars({ repo, stargazersCount }: GitHubStarsProps) {
           height="14"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="text-yellow-500 relative z-10"
+          className="relative z-10"
           animate={
             isHovered
               ? {

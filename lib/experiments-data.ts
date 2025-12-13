@@ -7,8 +7,8 @@ export interface Experiment {
   usage?: string;
   features?: string[];
   dependencies?: string[];
-  githubRepo?: string;
-  stargazersCount?: number;
+  componentProps?: Record<string, any>;
+  isNew?: boolean;
 }
 
 export const experiments: Experiment[] = [
@@ -105,12 +105,19 @@ export const experiments: Experiment[] = [
     description: "A compact component that displays GitHub repository star count with a tooltip showing the full number. Perfect for showcasing project popularity and engagement.",
     year: "2025",
     component: "GitHubStars",
+    isNew: true,
+    componentProps: {
+      githubRepo: "vercel/next.js",
+      stargazersCount: 125000,
+    },
     features: [
       "Compact star count display",
       "Hover tooltip with full number",
       "Direct link to GitHub repository",
       "Accessible and keyboard-friendly",
       "Dark mode support",
+      "Smooth animated counting from zero",
+      "Interactive hover effects with star particles",
     ],
     usage: `<GitHubStars repo="vercel/next.js" stargazersCount={125000} />`,
   },
