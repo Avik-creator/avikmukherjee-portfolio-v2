@@ -16,7 +16,7 @@ export default function AnimatedSection({
   children,
   delay = "0.1s",
   className = "",
-  animationClass = "animate-[slideFadeUp_0.6s_ease-out]",
+  animationClass = "animate-[slideFadeUp_0.25s_ease-out]",
 }: AnimatedSectionProps) {
   return (
     <section

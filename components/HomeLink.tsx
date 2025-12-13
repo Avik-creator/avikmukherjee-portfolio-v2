@@ -12,7 +12,7 @@ interface HomeLinkProps {
 export default function HomeLink({ href, label, description, animationDelay = '0.1s' }: HomeLinkProps) {
   return (
     <section
-      className="mt-6 animate-[slideFadeUp_0.6s_ease-out]"
+      className="mt-6 animate-[slideFadeUp_0.25s_ease-out]"
       style={{ animationDelay, animationFillMode: 'both' }}
     >
       <Link
@@ -23,7 +23,7 @@ export default function HomeLink({ href, label, description, animationDelay = '0
           'hover:translate-x-[-2px]'
         )}>
         <CornerMarkers />
-        <h2 className="grow text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-all duration-300 group-hover:underline-offset-[6px] group-hover:decoration-gray-700 dark:group-hover:decoration-neutral-300">
+        <h2 className="grow text-xl font-serif font-semibold text-gray-900 dark:text-neutral-100 underline decoration-gray-500 dark:decoration-neutral-400/50 underline-offset-4 transition-all duration-300 group-hover:underline-offset-[6px] group-hover:decoration-gray-700 dark:group-hover:decoration-neutral-300">
           {label}
         </h2>
       </Link>

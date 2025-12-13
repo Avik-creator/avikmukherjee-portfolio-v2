@@ -15,9 +15,9 @@ interface AnimatedListItemProps {
 export default function AnimatedListItem({
   children,
   index,
-  baseDelay = 0.1,
-  delayMultiplier = 0.1,
-  animationClass = "animate-[slideFadeUp_0.6s_ease-out]",
+  baseDelay = 0.05,
+  delayMultiplier = 0.03,
+  animationClass = "animate-[slideFadeUp_0.25s_ease-out]",
 }: AnimatedListItemProps) {
   return (
     <div
