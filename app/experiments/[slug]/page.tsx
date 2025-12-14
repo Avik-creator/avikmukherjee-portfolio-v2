@@ -16,7 +16,7 @@ import { SpotlightCard } from "@/components/experiments/spotlight-card";
 import { Typewriter } from "@/components/experiments/typewriter";
 import { ExperimentItemDemo } from "@/components/experiments/experiment-item-demo";
 import { GitHubStars } from "@/components/experiments/github-stars";
-
+import { RetroWindow } from "@/components/experiments/retro-window";
 
 // Component registry for dynamic rendering
 const componentRegistry: Record<string, React.ReactNode> = {
@@ -140,6 +140,19 @@ const componentRegistry: Record<string, React.ReactNode> = {
           <GitHubStars repo="shadcn-ui/ui" stargazersCount={75000} />
           <GitHubStars repo="t3-oss/create-t3-app" stargazersCount={25000} />
         </div>
+      </div>
+    </div>
+  ),
+  RetroWindow: (
+    <div className="flex flex-col items-center gap-8">
+      <div className="text-center">
+        <RetroWindow title="About.txt">
+          <div className="space-y-2">
+            <p>Welcome to Retro UI!</p>
+            <p>These components bring back the nostalgic feel of classic interfaces.</p>
+            <p>Built with modern React and Tailwind CSS.</p>
+          </div>
+      </RetroWindow>
       </div>
     </div>
   ),
@@ -342,4 +355,3 @@ export default async function ExperimentPage({ params }: PageProps) {
     </main>
   );
 }
-

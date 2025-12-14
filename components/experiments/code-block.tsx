@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { useState, useRef, useEffect } from "react";
-import { Check, Copy, ChevronDown, ChevronUp } from "lucide-react";
-import { highlight } from "sugar-high";
+import { useState, useRef, useEffect } from "react"
+import { Check, Copy, ChevronDown, ChevronUp } from "lucide-react"
+import { highlight } from "sugar-high"
 
 interface CodeBlockProps {
-  code: string;
-  language?: string;
-  title?: string;
-  showLineNumbers?: boolean;
-  collapsible?: boolean;
-  defaultCollapsed?: boolean;
-  maxHeight?: number;
+  code: string
+  language?: string
+  title?: string
+  showLineNumbers?: boolean
+  collapsible?: boolean
+  defaultCollapsed?: boolean
+  maxHeight?: number
 }
 
 export default function CodeBlock({
@@ -23,30 +23,38 @@ export default function CodeBlock({
   defaultCollapsed = false,
   maxHeight = 400,
 }: CodeBlockProps) {
-  const [copied, setCopied] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-  const [showExpandButton, setShowExpandButton] = useState(false);
-  const codeRef = useRef<HTMLPreElement>(null);
+  const [copied, setCopied] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
+  const [showExpandButton, setShowExpandButton] = useState(false)
+  const codeRef = useRef<HTMLPreElement>(null)
 
   useEffect(() => {
     if (codeRef.current && collapsible) {
-      setShowExpandButton(codeRef.current.scrollHeight > maxHeight);
+      setShowExpandButton(codeRef.current.scrollHeight > maxHeight)
     }
-  }, [code, collapsible, maxHeight]);
+  }, [code, collapsible, maxHeight])
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(code)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
     } catch (err) {
-      console.error("Failed to copy:", err);
+      console.error("Failed to copy:", err)
     }
-  };
+  }
 
-  const highlightedCode = highlight(code);
+  const safeCode = code ?? ""
+  const lines = safeCode.split("\n")
 
-  const lines = code.split("\n");
+  const highlightLine = (line: string) => {
+    if (!line) return ""
+    try {
+      return highlight(line) || ""
+    } catch {
+      return line || ""
+    }
+  }
 
   return (
     <div className="group relative rounded-lg border border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-900/50 overflow-hidden">
@@ -63,36 +71,28 @@ export default function CodeBlock({
       <div className="relative">
         <pre
           ref={codeRef}
-          className={`overflow-x-auto py-4 text-sm leading-relaxed transition-all duration-300 ${collapsible && isCollapsed && showExpandButton
-              ? `max-h-[${maxHeight}px] overflow-hidden`
-              : ""
-            }`}
-          style={
-            collapsible && isCollapsed && showExpandButton
-              ? { maxHeight: `${maxHeight}px` }
-              : {}
-          }
+          className={`overflow-x-auto py-4 text-sm leading-relaxed font-mono transition-all duration-300 ${
+            collapsible && isCollapsed && showExpandButton ? `max-h-[${maxHeight}px] overflow-hidden` : ""
+          }`}
+          style={collapsible && isCollapsed && showExpandButton ? { maxHeight: `${maxHeight}px` } : {}}
         >
-          <code className="block font-mono">
+          <code className="block">
             {showLineNumbers ? (
               lines.map((line, index) => (
                 <div key={index} className="table-row">
                   <span className="table-cell pr-4 pl-4 text-right text-gray-400 dark:text-neutral-600 select-none w-12">
                     {index + 1}
                   </span>
-                  <span
-                    className="table-cell pr-4"
-                    dangerouslySetInnerHTML={{ __html: highlight(line) || "&nbsp;" }}
-                  />
+                  <span className="table-cell pr-4">
+                    <span style={{ whiteSpace: "pre" }} dangerouslySetInnerHTML={{ __html: highlightLine(line) }} />
+                  </span>
                 </div>
               ))
             ) : (
               <div className="px-4">
                 {lines.map((line, index) => (
                   <div key={index} className="block">
-                    <span
-                      dangerouslySetInnerHTML={{ __html: highlight(line) || "&nbsp;" }}
-                    />
+                    <span style={{ whiteSpace: "pre" }} dangerouslySetInnerHTML={{ __html: highlightLine(line) }} />
                   </div>
                 ))}
               </div>
@@ -139,6 +139,5 @@ export default function CodeBlock({
         </button>
       )}
     </div>
-  );
+  )
 }
-

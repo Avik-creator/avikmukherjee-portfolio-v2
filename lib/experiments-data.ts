@@ -105,7 +105,6 @@ export const experiments: Experiment[] = [
     description: "A compact component that displays GitHub repository star count with a tooltip showing the full number. Perfect for showcasing project popularity and engagement.",
     year: "2025",
     component: "GitHubStars",
-    isNew: true,
     componentProps: {
       githubRepo: "vercel/next.js",
       stargazersCount: 125000,
@@ -120,6 +119,32 @@ export const experiments: Experiment[] = [
       "Interactive hover effects with star particles",
     ],
     usage: `<GitHubStars repo="vercel/next.js" stargazersCount={125000} />`,
+  },
+  {
+    slug: "retro-window",
+    title: "Retro Window",
+    description: "A pixel-perfect retro window UI inspired by classic OS aesthetics. Includes a title bar, window controls (minimize, maximize, close), content area, and status bar with bold 8-bit styling.",
+    year: "2025",
+    isNew: true,
+    component: "RetroWindow",
+
+    features: [
+      "Pixel-perfect retro styling with bold 8-bit shadows",
+      "Title bar with truncated uppercase title",
+      "Window controls: minimize, maximize, close with callbacks",
+      "Minimize toggle hides/shows content area",
+      "Status bar with ready indicator",
+      "Configurable title and child content",
+      "Accessible buttons with hover states",
+      "Lightweight implementation with no external dependencies",
+    ],
+    usage: `<RetroWindow title="About.txt" onClose={() => setShowWindow(false)}>
+              <div className="space-y-2">
+                  <p>Welcome to Retro UI!</p>
+                  <p>These components bring back the nostalgic feel of classic interfaces.</p>
+                  <p>Built with modern React and Tailwind CSS.</p>
+              </div>
+</RetroWindow>`,
   },
 ];
 
