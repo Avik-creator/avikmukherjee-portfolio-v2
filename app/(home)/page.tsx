@@ -17,7 +17,7 @@ export default function Home() {
         <p className="text-gray-600 dark:text-stone-400 leading-relaxed">
           Full-stack developer currently working at{' '}
           <Anchor href="https://www.superalign.ai" target="_blank" className="transition-all duration-200 hover:opacity-80">SuperAlign AI</Anchor>.
-          I build scalable web applications with Next.js, React, and Node.js that help businesses grow and solve real problems.
+          I build scalable web applications that help businesses grow and solve real problems.
         </p>
       </AnimatedSection>
 

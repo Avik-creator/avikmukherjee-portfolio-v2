@@ -8,6 +8,24 @@ interface ProjectsSectionProps {
   projects: Project[];
 }
 
+// Helper function to bold technologies in tech stack
+function formatTechStack(techStack: string) {
+  // Remove parentheses and split by comma
+  const cleaned = techStack.replace(/[()]/g, '').trim();
+  const technologies = cleaned.split(',').map(t => t.trim());
+
+  return (
+    <span className="text-gray-600 dark:text-neutral-500 text-sm italic">
+      ({technologies.map((tech, index) => (
+        <span key={index}>
+          <strong className="font-semibold text-gray-800 dark:text-neutral-200">{tech}</strong>
+          {index < technologies.length - 1 && ', '}
+        </span>
+      ))})
+    </span>
+  );
+}
+
 export default function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
     <section className="animate-[slideFadeUp_0.6s_ease-out]">
@@ -26,9 +44,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
               <h3 className="font-medium text-gray-800 dark:text-neutral-200">
                 {project.title}
               </h3>
-              <p className="text-gray-600 dark:text-neutral-500 text-sm italic">
-                {project.techStack}
-              </p>
+              {formatTechStack(project.techStack)}
             </div>
             <div className="space-y-1 text-gray-600 dark:text-neutral-400 text-sm">
               {project.points.map((point, pointIndex) => (

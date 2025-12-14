@@ -12,6 +12,22 @@ interface TechnicalSkillsSectionProps {
   skills: TechnicalSkills;
 }
 
+// Helper function to bold technologies in comma-separated strings
+function formatTechnologies(techString: string) {
+  const technologies = techString.split(',').map(t => t.trim());
+
+  return (
+    <>
+      {technologies.map((tech, index) => (
+        <span key={index}>
+          <strong className="font-semibold text-gray-800 dark:text-neutral-200">{tech}</strong>
+          {index < technologies.length - 1 && ', '}
+        </span>
+      ))}
+    </>
+  );
+}
+
 export default function TechnicalSkillsSection({ skills }: TechnicalSkillsSectionProps) {
   return (
     <section className="animate-[slideFadeUp_0.8s_ease-out]">
@@ -25,19 +41,19 @@ export default function TechnicalSkillsSection({ skills }: TechnicalSkillsSectio
             <span className="text-gray-800 dark:text-neutral-200">
               Languages:
             </span>{" "}
-            {skills.languages}
+            {formatTechnologies(skills.languages)}
           </p>
           <p>
             <span className="text-gray-800 dark:text-neutral-200">
               Frameworks:
             </span>{" "}
-            {skills.frameworks}
+            {formatTechnologies(skills.frameworks)}
           </p>
           <p>
             <span className="text-gray-800 dark:text-neutral-200">
               Cloud & Platforms:
             </span>{" "}
-            {skills.cloudPlatforms}
+            {formatTechnologies(skills.cloudPlatforms)}
           </p>
         </div>
         <div className="space-y-1">
@@ -45,25 +61,25 @@ export default function TechnicalSkillsSection({ skills }: TechnicalSkillsSectio
             <span className="text-gray-800 dark:text-neutral-200">
               Runtimes:
             </span>{" "}
-            {skills.runtimes}
+            {formatTechnologies(skills.runtimes)}
           </p>
           <p>
             <span className="text-gray-800 dark:text-neutral-200">
               ORM and Database:
             </span>{" "}
-            {skills.ormDatabase}
+            {formatTechnologies(skills.ormDatabase)}
           </p>
           <p>
             <span className="text-gray-800 dark:text-neutral-200">
               Tools:
             </span>{" "}
-            {skills.tools}
+            {formatTechnologies(skills.tools)}
           </p>
           <p>
             <span className="text-gray-800 dark:text-neutral-200">
               Soft Skills:
             </span>{" "}
-            {skills.softSkills}
+            {formatTechnologies(skills.softSkills)}
           </p>
         </div>
       </div>
