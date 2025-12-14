@@ -148,8 +148,8 @@ const componentRegistry: Record<string, React.ReactNode> = {
       <div className="text-center">
         <RetroWindow title="About.txt">
           <div className="space-y-2">
-            <p>Welcome to Retro UI!</p>
-            <p>These components bring back the nostalgic feel of classic interfaces.</p>
+            <p>Welcome to Retro Window</p>
+            <p>These components for giving retro feel to your UI</p>
             <p>Built with modern React and Tailwind CSS.</p>
           </div>
       </RetroWindow>
