@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Eye, Code2, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CodeBlock from "./code-block";
-
+import { OpenInV0Button } from "./open-in-v0-button";
 
 interface ComponentPreviewProps {
   children: React.ReactNode;
@@ -62,7 +62,7 @@ export default function ComponentPreview({
         </div>
 
         {activeTab === "preview" && (
-          <div className="flex items-center gap-2 mr-2">
+          <div className="flex items-center gap-3 mr-2">
             <button
               onClick={handleReplay}
               className="p-2 rounded-md text-gray-500 dark:text-neutral-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-neutral-800 transition-all"
@@ -83,7 +83,7 @@ export default function ComponentPreview({
               className="absolute inset-0 opacity-30"
               style={{
                 backgroundImage: `radial-gradient(circle, rgba(128, 128, 128, 0.3) 1px, transparent 1px)`,
-                backgroundSize: '20px 20px',
+                backgroundSize: "20px 20px",
               }}
             />
 
@@ -105,12 +105,17 @@ export default function ComponentPreview({
               <div className="absolute right-0 bottom-0 h-px w-full bg-gray-400 dark:bg-neutral-600" />
             </div>
 
+            {/* Open in v0 Button */}
+            {v0Url && (
+              <div className="absolute top-4 right-4 z-20">
+                <OpenInV0Button url={v0Url} />
+              </div>
+            )}
+
             {/* Component */}
             <div key={key} className="relative z-10">
               {children}
             </div>
-
-
           </div>
         ) : (
           <CodeBlock
@@ -125,4 +130,3 @@ export default function ComponentPreview({
     </div>
   );
 }
-
