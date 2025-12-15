@@ -13,9 +13,22 @@ export function generatePageContent(experiment: ExperimentData): string {
 
 export default function Page() {
   return (
-    <div className="flex items-center justify-center min-h-screen p-8 bg-gray-50">
-      ${getExampleUsage(experiment.component)}
-    </div>
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-neutral-950 dark:to-neutral-900 flex flex-col items-center justify-center p-8">
+      <div className="w-full max-w-4xl">
+        <div className="mb-12 text-center">
+          <h1 className="text-4xl font-serif font-semibold text-gray-900 dark:text-neutral-100 mb-3">
+            ${experiment.title}
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-neutral-400">
+            ${experiment.description}
+          </p>
+        </div>
+        
+        <div className="rounded-2xl border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 shadow-lg p-12 flex items-center justify-center min-h-[400px]">
+          ${getExampleUsage(experiment.component)}
+        </div>
+      </div>
+    </main>
   );
 }`;
 }
@@ -37,8 +50,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="antialiased">{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className="antialiased bg-gradient-to-br from-gray-50 to-gray-100 dark:from-neutral-950 dark:to-neutral-900 text-gray-900 dark:text-neutral-100">
+        {children}
+      </body>
     </html>
   );
 }`;
