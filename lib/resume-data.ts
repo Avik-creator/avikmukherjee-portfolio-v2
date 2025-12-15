@@ -109,6 +109,7 @@ export const resumeWorkExperience: WorkExperienceItem[] = [
 ];
 
 export const resumeProjects: ProjectItem[] = [
+
   {
     title: "ARCHFLOW",
     techStack: "(Next.js, TypeScript, Tailwind CSS, Zustand, Liveblocks, React Flow, AI SDK, Groq)",

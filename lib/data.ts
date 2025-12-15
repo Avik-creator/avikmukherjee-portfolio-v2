@@ -1,4 +1,19 @@
-export const projects = [
+interface ProjectItem {
+  title: string;
+  year: string;
+  description: string;
+  demoUrl?: string;
+  githubUrl?: string;
+}
+
+export const projects: ProjectItem[] = [
+  {
+    title: "Markdown Video",
+    year: "2025",
+    description: "A Markdown to Video Converter where you can create videos from markdown by following a specific format of Markdown. It is a fun side project, that can be used to generate basic video for presentations and more.",
+     demoUrl: "https://markdowneditor.avikmukherjee.me",
+    githubUrl: "https://github.com/Avik-creator/markdown_video",
+  },
   {
     title: "ArchFlow",
     year: "2025",
@@ -38,6 +53,13 @@ export const projects = [
       "It is a powerful, privacy-focused web analytics platform that helps you to visualize the website's reach. Built it due to Vercel Analytics Quota exhaustion.",
     demoUrl: "https://webtracker.avikmukherjee.me",
     githubUrl: "https://github.com/Avik-creator/webtracker",
+  },
+  {
+    title: "Agentic",
+    year: "2025",
+    description: "AI Powered CLI Tool where you can set your Providers and bring your env keys for doing things like Web Search, GitHub PR Reviews, and generating code as needed.",
+    demoUrl: "https://www.npmjs.com/package/ai-assistant-cli",
+    githubUrl: "https://github.com/Avik-creator/ai_cli"
   },
   {
     title: "Git Wrapped",
