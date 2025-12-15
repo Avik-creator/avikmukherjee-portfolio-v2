@@ -10,7 +10,7 @@ interface AnimatedCounterProps {
   formatOptions?: Intl.NumberFormatOptions;
 }
 
-export function AnimatedCounter({
+export default function AnimatedCounter({
   value,
   duration = 1.5,
   className = "",
@@ -58,4 +58,3 @@ export function AnimatedCounter({
     </motion.span>
   );
 }
-

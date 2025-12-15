@@ -8,7 +8,10 @@ type GitHubStarsProps = {
   stargazersCount: number;
 };
 
-export function GitHubStars({ repo, stargazersCount }: GitHubStarsProps) {
+export default function GitHubStars({
+  repo,
+  stargazersCount,
+}: GitHubStarsProps) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [isInView, setIsInView] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -78,7 +81,6 @@ export function GitHubStars({ repo, stargazersCount }: GitHubStarsProps) {
         whileTap={{ scale: 0.98 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >
-
         {/* GitHub Icon with smooth rotation */}
         <div className="relative">
           <motion.svg
@@ -149,9 +151,9 @@ export function GitHubStars({ repo, stargazersCount }: GitHubStarsProps) {
           animate={
             isHovered
               ? {
-                y: [-2, -6, -2],
-                rotate: [0, 360],
-              }
+                  y: [-2, -6, -2],
+                  rotate: [0, 360],
+                }
               : { y: 0, rotate: 0 }
           }
           transition={{

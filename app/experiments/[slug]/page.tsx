@@ -4,19 +4,22 @@ import BackNavigation from "@/components/back-navigation";
 import ComponentPreview from "@/components/experiments/component-preview";
 import CodeBlock from "@/components/experiments/code-block";
 import { MDXDropdown } from "@/components/experiments/mdx-dropdown";
-import { getExperimentBySlug, getAllExperimentSlugs } from "@/lib/experiments-data";
+import {
+  getExperimentBySlug,
+  getAllExperimentSlugs,
+} from "@/lib/experiments-data";
 import { readComponentCode } from "@/lib/read-component";
 import { generateMDX } from "@/lib/generate-mdx";
 
 // Import all experiment components
-import { AnimatedCounter } from "@/components/experiments/animated-counter";
-import { MagneticButton } from "@/components/experiments/magnetic-button";
-import { TextScramble } from "@/components/experiments/text-scramble";
-import { SpotlightCard } from "@/components/experiments/spotlight-card";
-import { Typewriter } from "@/components/experiments/typewriter";
-import { ExperimentItemDemo } from "@/components/experiments/experiment-item-demo";
-import { GitHubStars } from "@/components/experiments/github-stars";
-import { RetroWindow } from "@/components/experiments/retro-window";
+import AnimatedCounter from "@/components/experiments/animated-counter";
+import MagneticButton from "@/components/experiments/magnetic-button";
+import TextScramble from "@/components/experiments/text-scramble";
+import SpotlightCard from "@/components/experiments/spotlight-card";
+import Typewriter from "@/components/experiments/typewriter";
+import ExperimentItemDemo from "@/components/experiments/experiment-item-demo";
+import GitHubStars from "@/components/experiments/github-stars";
+import RetroWindow from "@/components/experiments/retro-window";
 
 // Component registry for dynamic rendering
 const componentRegistry: Record<string, React.ReactNode> = {
@@ -30,13 +33,20 @@ const componentRegistry: Record<string, React.ReactNode> = {
           <div className="text-3xl font-semibold text-gray-800 dark:text-neutral-200">
             <AnimatedCounter value={99} duration={2} />%
           </div>
-          <div className="text-sm text-gray-500 dark:text-neutral-500">Completion</div>
+          <div className="text-sm text-gray-500 dark:text-neutral-500">
+            Completion
+          </div>
         </div>
         <div className="text-center">
           <div className="text-3xl font-semibold text-gray-800 dark:text-neutral-200">
-            <AnimatedCounter value={2500} formatOptions={{ notation: "compact" }} />
+            <AnimatedCounter
+              value={2500}
+              formatOptions={{ notation: "compact" }}
+            />
           </div>
-          <div className="text-sm text-gray-500 dark:text-neutral-500">Users</div>
+          <div className="text-sm text-gray-500 dark:text-neutral-500">
+            Users
+          </div>
         </div>
       </div>
     </div>
@@ -55,7 +65,9 @@ const componentRegistry: Record<string, React.ReactNode> = {
         className="text-4xl font-bold text-gray-900 dark:text-white"
       />
       <div className="text-center">
-        <p className="text-sm text-gray-500 dark:text-neutral-500 mb-2">Hover to scramble:</p>
+        <p className="text-sm text-gray-500 dark:text-neutral-500 mb-2">
+          Hover to scramble:
+        </p>
         <TextScramble
           text="Interactive Text"
           trigger="hover"
@@ -70,8 +82,8 @@ const componentRegistry: Record<string, React.ReactNode> = {
         Spotlight Effect
       </h3>
       <p className="text-gray-600 dark:text-neutral-400 mb-4">
-        Move your cursor around to see the spotlight follow.
-        This creates a beautiful depth effect.
+        Move your cursor around to see the spotlight follow. This creates a
+        beautiful depth effect.
       </p>
       <div className="flex gap-2">
         <span className="px-3 py-1 text-xs rounded-full bg-gray-200 dark:bg-neutral-700 text-gray-700 dark:text-neutral-300">
@@ -87,7 +99,11 @@ const componentRegistry: Record<string, React.ReactNode> = {
     <div className="text-center">
       <div className="text-3xl font-mono text-gray-900 dark:text-white mb-4">
         <Typewriter
-          texts={["Hello, World!", "Welcome to experiments", "Build amazing UIs"]}
+          texts={[
+            "Hello, World!",
+            "Welcome to experiments",
+            "Build amazing UIs",
+          ]}
           typingSpeed={80}
         />
       </div>
@@ -152,7 +168,7 @@ const componentRegistry: Record<string, React.ReactNode> = {
             <p>These components for giving retro feel to your UI</p>
             <p>Built with modern React and Tailwind CSS.</p>
           </div>
-      </RetroWindow>
+        </RetroWindow>
       </div>
     </div>
   ),
@@ -167,7 +183,9 @@ export async function generateStaticParams() {
   return slugs.map((slug: string) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const experiment = getExperimentBySlug(slug);
 
@@ -181,7 +199,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${experiment.title} — UI Experiment by Avik Mukherjee`,
-    description: `${experiment.description}${featuresText ? ` Features: ${featuresText}.` : ""}${dependenciesText ? ` Built with: ${dependenciesText}.` : ""}`,
+    description: `${experiment.description}${
+      featuresText ? ` Features: ${featuresText}.` : ""
+    }${dependenciesText ? ` Built with: ${dependenciesText}.` : ""}`,
     keywords: [
       experiment.title,
       "UI experiment",
@@ -283,15 +303,20 @@ export default async function ExperimentPage({ params }: PageProps) {
       {experiment.features && experiment.features.length > 0 && (
         <div
           className="mb-8 animate-[slideFadeUp_0.6s_ease-out]"
-          style={{ animationFillMode: 'both' }}
+          style={{ animationFillMode: "both" }}
         >
           <h2 className="text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 mb-3">
             Features
           </h2>
           <ul className="space-y-2">
             {experiment.features.map((feature: string, index: number) => (
-              <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-neutral-400">
-                <span className="text-gray-400 dark:text-neutral-600 mt-1">•</span>
+              <li
+                key={index}
+                className="flex items-start gap-2 text-gray-600 dark:text-neutral-400"
+              >
+                <span className="text-gray-400 dark:text-neutral-600 mt-1">
+                  •
+                </span>
                 {feature}
               </li>
             ))}
@@ -303,7 +328,7 @@ export default async function ExperimentPage({ params }: PageProps) {
       {experiment.dependencies && experiment.dependencies.length > 0 && (
         <div
           className="mb-8 animate-[slideFadeUp_0.65s_ease-out]"
-          style={{ animationFillMode: 'both' }}
+          style={{ animationFillMode: "both" }}
         >
           <h2 className="text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 mb-3">
             Dependencies
@@ -321,11 +346,10 @@ export default async function ExperimentPage({ params }: PageProps) {
         </div>
       )}
 
-
       {/* Component Preview */}
       <div
         className="mb-8 animate-[slideFadeUp_0.7s_ease-out]"
-        style={{ animationFillMode: 'both' }}
+        style={{ animationFillMode: "both" }}
       >
         <h2 className="text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 mb-3">
           Preview
@@ -344,12 +368,16 @@ export default async function ExperimentPage({ params }: PageProps) {
       {experiment.usage && (
         <div
           className="mb-8 animate-[slideFadeUp_0.75s_ease-out]"
-          style={{ animationFillMode: 'both' }}
+          style={{ animationFillMode: "both" }}
         >
           <h2 className="text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100 mb-3">
             Usage
           </h2>
-          <CodeBlock code={experiment.usage} title="Example" showLineNumbers={false} />
+          <CodeBlock
+            code={experiment.usage}
+            title="Example"
+            showLineNumbers={false}
+          />
         </div>
       )}
     </main>
