@@ -11,8 +11,8 @@ export const projects: ProjectItem[] = [
     title: "Markdown Video",
     year: "2025",
     description: "A Markdown to Video Converter where you can create videos from markdown by following a specific format of Markdown. It is a fun side project, that can be used to generate basic video for presentations and more.",
-    demoUrl: "https://github.com/Avik-creator/markdown_video",
-    githubUrl: "https://markdowneditor.avikmukherjee.me"
+     demoUrl: "https://markdowneditor.avikmukherjee.me",
+    githubUrl: "https://github.com/Avik-creator/markdown_video",
   },
   {
     title: "ArchFlow",
@@ -57,7 +57,7 @@ export const projects: ProjectItem[] = [
   {
     title: "Agentic",
     year: "2025",
-    description: "AI Powered CLI Tool where you can set your Providers and bring your env keys for doing stuffs like Web Search, Github PR Reviews and generate code as needed. It is a NPM Package that can be installed globally using npm install -g ai-assistant-cli",
+    description: "AI Powered CLI Tool where you can set your Providers and bring your env keys for doing things like Web Search, GitHub PR Reviews, and generating code as needed.",
     demoUrl: "https://www.npmjs.com/package/ai-assistant-cli",
     githubUrl: "https://github.com/Avik-creator/ai_cli"
   },
