@@ -9,7 +9,7 @@ interface SpotlightCardProps {
   spotlightSize?: number;
 }
 
-export function SpotlightCard({
+export default function SpotlightCard({
   children,
   className = "",
   spotlightColor = "rgba(255, 255, 255, 0.1)",
@@ -46,4 +46,3 @@ export function SpotlightCard({
     </div>
   );
 }
-

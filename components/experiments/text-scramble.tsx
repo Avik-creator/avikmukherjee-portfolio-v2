@@ -10,14 +10,16 @@ interface TextScrambleProps {
   characters?: string;
 }
 
-export function TextScramble({
+export default function TextScramble({
   text,
   className = "",
   speed = 50,
   trigger = "mount",
   characters = "!<>-_\\/[]{}—=+*^?#________",
 }: TextScrambleProps) {
-  const [displayText, setDisplayText] = useState(trigger === "mount" ? "" : text);
+  const [displayText, setDisplayText] = useState(
+    trigger === "mount" ? "" : text
+  );
   const [isAnimating, setIsAnimating] = useState(false);
   const frameRef = useRef(0);
   const resolveRef = useRef<(() => void) | null>(null);
@@ -81,4 +83,3 @@ export function TextScramble({
     </span>
   );
 }
-

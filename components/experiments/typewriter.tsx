@@ -12,7 +12,7 @@ interface TypewriterProps {
   loop?: boolean;
 }
 
-export function Typewriter({
+export default function Typewriter({
   texts,
   className = "",
   typingSpeed = 100,
@@ -59,15 +59,22 @@ export function Typewriter({
         return () => clearTimeout(typeTimer);
       }
     }
-  }, [displayText, textIndex, isDeleting, isPaused, texts, typingSpeed, deletingSpeed, pauseDuration, loop]);
+  }, [
+    displayText,
+    textIndex,
+    isDeleting,
+    isPaused,
+    texts,
+    typingSpeed,
+    deletingSpeed,
+    pauseDuration,
+    loop,
+  ]);
 
   return (
     <span className={className}>
       {displayText}
-      {showCursor && (
-        <span className="animate-pulse">|</span>
-      )}
+      {showCursor && <span className="animate-pulse">|</span>}
     </span>
   );
 }
-

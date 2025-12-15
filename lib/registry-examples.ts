@@ -14,6 +14,8 @@ export function getExampleUsage(componentName: string): string {
       return `<${componentName}\n      slug="example"\n      title="Example Item"\n      description="An example experiment item"\n      year="2025"\n    />`;
     case "GitHubStars":
       return `<${componentName} repo="vercel/next.js" stargazersCount={125000} />`;
+    case "RetroWindow":
+      return `<${componentName} title="About.txt">\n      <div className="space-y-2">\n        <p>Welcome to Retro Window</p>\n        <p>These components give retro feel to your UI</p>\n        <p>Built with modern React and Tailwind CSS.</p>\n      </div>\n    </${componentName}>`;
     default:
       return `<${componentName} />`;
   }
