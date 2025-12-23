@@ -59,11 +59,9 @@ export const resumeWorkExperience: WorkExperienceItem[] = [
     location: 'Hyderabad',
     period: 'August 2025-Present',
     points: [
-      '• Built a Chrome Extension to capture and analyze user interactions with multiple AI platforms (e.g., ChatGPT, Claude, Gemini, Perplexity).',
-      '• Implemented real-time request interception and blocking, preventing sensitive data from being sent and alerting users through custom popups.',
-      '• Collaborated across frontend, backend, and security teams to integrate captured insights into analytics workflows and improve monitoring accuracy.',
+      '• Built a browser-level security Chrome Extension to intercept and analyze user requests across AI platforms (ChatGPT, Claude, Gemini, Perplexity), blocking sensitive data in real time and alerting users via custom popups.',
       '• Designed and implemented a high-performance DuckDB analytics pipeline, processing ~70GB of logs in ~4 minutes to enable fast aggregation and domain-level security analysis over structured log formats.',
-      '• Engineered a streaming + batch log pipeline using Fluvio and ClickHouse, supporting real-time metrics, batching, and long-term analytical storage.',
+      '• Engineered a streaming + batch log pipeline using Fluvio and ClickHouse, supporting real-time metrics, batching, and long-term analytical storage.'
     ],
   },
   {
