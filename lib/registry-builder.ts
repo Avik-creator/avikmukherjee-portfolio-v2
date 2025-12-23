@@ -1,4 +1,8 @@
-import { generatePageContent, generateLayoutContent } from "./registry-files";
+import {
+  generatePageContent,
+  generateLayoutContent,
+  generateGlobalsCssContent,
+} from "./registry-files";
 
 interface ExperimentData {
   component: string;
@@ -36,6 +40,12 @@ export function buildRegistryItem(
     type: "registry:ui",
     registryDependencies: [],
     files: [
+      {
+        type: "registry:file",
+        path: "app/globals.css",
+        target: "app/globals.css",
+        content: generateGlobalsCssContent(),
+      },
       {
         type: "registry:file",
         path: "app/layout.tsx",
