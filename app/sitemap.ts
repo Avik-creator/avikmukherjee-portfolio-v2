@@ -1,5 +1,5 @@
-import { getAllPosts } from "@/lib/mdx";
-import { getAllExperimentSlugs } from "@/lib/experiments-data";
+import { getAllPosts } from "@/lib/utils/mdx";
+import { getAllExperimentSlugs } from "@/lib/experiments/experiments-data";
 import type { MetadataRoute } from "next";
 
 // Use the deployed site origin so sitemap URLs match the host serving the file

@@ -1,7 +1,7 @@
 import ExperimentItem from "@/components/experiments/experiment-item";
 import PageHeader from "@/components/PageHeader";
 import AnimatedListItem from "@/components/AnimatedListItem";
-import { experiments } from "@/lib/experiments-data";
+import { experiments } from "@/lib/experiments/experiments-data";
 
 export default function ExperimentsPage() {
   return (

@@ -7,9 +7,9 @@ import { MDXDropdown } from "@/components/experiments/mdx-dropdown";
 import {
   getExperimentBySlug,
   getAllExperimentSlugs,
-} from "@/lib/experiments-data";
-import { readComponentCode } from "@/lib/read-component";
-import { generateMDX } from "@/lib/generate-mdx";
+} from "@/lib/experiments/experiments-data";
+import { readComponentCode } from "@/lib/utils/read-component";
+import { generateMDX } from "@/lib/utils/generate-mdx";
 
 // Import all experiment components
 import AnimatedCounter from "@/components/experiments/animated-counter";
@@ -199,9 +199,8 @@ export async function generateMetadata({
 
   return {
     title: `${experiment.title} — UI Experiment by Avik Mukherjee`,
-    description: `${experiment.description}${
-      featuresText ? ` Features: ${featuresText}.` : ""
-    }${dependenciesText ? ` Built with: ${dependenciesText}.` : ""}`,
+    description: `${experiment.description}${featuresText ? ` Features: ${featuresText}.` : ""
+      }${dependenciesText ? ` Built with: ${dependenciesText}.` : ""}`,
     keywords: [
       experiment.title,
       "UI experiment",

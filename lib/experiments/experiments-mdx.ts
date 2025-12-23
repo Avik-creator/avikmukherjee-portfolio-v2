@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { getExperimentBySlug, getAllExperimentSlugs } from "./experiments-data";
-import { readComponentCode } from "./read-component";
-import { generateMDX } from "./generate-mdx";
+import { readComponentCode } from "../utils/read-component";
+import { generateMDX } from "../utils/generate-mdx";
 
 const experimentsDirectory = path.join(process.cwd(), "content/experiments");
 

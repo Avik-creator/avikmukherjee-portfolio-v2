@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { getAllPosts, getPostBySlug } from "@/lib/mdx";
+import { getAllPosts, getPostBySlug } from "@/lib/utils/mdx";
 
 
 export async function generateStaticParams() {

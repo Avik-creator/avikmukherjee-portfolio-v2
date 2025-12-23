@@ -1,7 +1,7 @@
-import { getAllPosts } from "@/lib/mdx";
-import type { Post } from "@/lib/mdx";
-import { Experience, projects } from "@/lib/data";
-import { experiments } from "@/lib/experiments-data";
+import { getAllPosts } from "@/lib/utils/mdx";
+import type { Post } from "@/lib/utils/mdx";
+import { Experience, projects } from "@/lib/data/data";
+import { experiments } from "@/lib/experiments/experiments-data";
 
 function toRfc822Date(dateString: string): string {
   // Try native parse first

@@ -1,8 +1,7 @@
 import ProjectItem from "@/components/ProjectItem";
 import PageHeader from "@/components/PageHeader";
 import AnimatedListItem from "@/components/AnimatedListItem";
-import { projects } from "@/lib/data";
-import { Metadata } from "next";
+import { projects } from "@/lib/data/data";
 
 
 

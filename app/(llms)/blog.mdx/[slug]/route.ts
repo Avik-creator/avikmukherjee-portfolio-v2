@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getAllPosts, getPostBySlug } from "@/lib/mdx";
+import { getAllPosts, getPostBySlug } from "@/lib/utils/mdx";
 
 export const dynamic = "force-static";
 

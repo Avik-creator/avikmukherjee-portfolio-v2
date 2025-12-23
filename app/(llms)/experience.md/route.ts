@@ -1,4 +1,4 @@
-import { Experience } from "@/lib/data";
+import { Experience } from "@/lib/data/data";
 
 const content = `# Experience
 

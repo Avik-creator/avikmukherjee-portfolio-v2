@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { getAllExperimentSlugs } from "@/lib/experiments-data";
-import { getExperimentMDXBySlug } from "@/lib/experiments-mdx";
+import { getAllExperimentSlugs } from "@/lib/experiments/experiments-data";
+import { getExperimentMDXBySlug } from "@/lib/experiments/experiments-mdx";
 
 export const dynamic = "force-static";
 

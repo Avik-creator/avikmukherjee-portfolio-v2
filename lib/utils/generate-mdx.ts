@@ -1,4 +1,4 @@
-import type { Experiment } from "./experiments-data";
+import type { Experiment } from "../experiments/experiments-data";
 
 export function generateMDX(experiment: Experiment, componentCode: string, usage?: string): string {
   const featuresList = experiment.features?.map(f => `- ${f}`).join("\n") || "";

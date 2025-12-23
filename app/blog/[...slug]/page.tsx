@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { getAllPosts, getPostBySlug } from "@/lib/mdx"
+import { getAllPosts, getPostBySlug } from "@/lib/utils/mdx"
 import { CustomMDX } from "@/components/mdx";
 import BackNavigation from "@/components/back-navigation";
 

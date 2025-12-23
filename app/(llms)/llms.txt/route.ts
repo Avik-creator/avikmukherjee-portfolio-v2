@@ -1,5 +1,5 @@
-import { getAllPosts } from "@/lib/mdx";
-import { experiments } from "@/lib/experiments-data";
+import { getAllPosts } from "@/lib/utils/mdx";
+import { experiments } from "@/lib/experiments/experiments-data";
 
 const baseUrl = "https://avikmukherjee.me";
 

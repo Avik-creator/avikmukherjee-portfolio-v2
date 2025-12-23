@@ -1,6 +1,6 @@
-import { getExperimentBySlug } from "@/lib/experiments-data";
-import { readComponentCode } from "@/lib/read-component";
-import { buildRegistryItem } from "@/lib/registry-builder";
+import { getExperimentBySlug } from "@/lib/experiments/experiments-data";
+import { readComponentCode } from "@/lib/utils/read-component";
+import { buildRegistryItem } from "@/lib/registry-components/registry-builder";
 
 export async function GET(
   _: unknown,

@@ -1,7 +1,7 @@
-import { getAllPosts } from "@/lib/mdx";
-import { projects, Experience } from "@/lib/data";
-import { experiments } from "@/lib/experiments-data";
-import { getAllExperimentMDX } from "@/lib/experiments-mdx";
+import { getAllPosts } from "@/lib/utils/mdx";
+import { projects, Experience } from "@/lib/data/data";
+import { experiments } from "@/lib/experiments/experiments-data";
+import { getAllExperimentMDX } from "@/lib/experiments/experiments-mdx";
 
 const baseUrl = "https://avikmukherjee.me";
 const displayName = "Avik Mukherjee";

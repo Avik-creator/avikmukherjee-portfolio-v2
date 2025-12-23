@@ -1,8 +1,7 @@
 import ExperienceItem from "@/components/ExperienceItem";
 import PageHeader from "@/components/PageHeader";
 import AnimatedListItem from "@/components/AnimatedListItem";
-import { Experience } from "@/lib/data";
-import { Metadata } from "next";
+import { Experience } from "@/lib/data/data";
 
 
 export default function Page() {

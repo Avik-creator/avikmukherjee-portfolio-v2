@@ -1,4 +1,4 @@
-import { projects } from "@/lib/data";
+import { projects } from "@/lib/data/data";
 
 const content = `# Projects
 

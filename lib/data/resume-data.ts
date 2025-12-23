@@ -1,5 +1,5 @@
 import { m } from 'motion/react';
-import { Experience } from './data';
+import { Experience } from '../data/data';
 
 export interface WorkExperienceItem {
   company: string;

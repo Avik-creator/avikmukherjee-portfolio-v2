@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import VCard from "vcard-creator";
-import { Experience } from "@/lib/data";
+import { Experience } from "@/lib/data/data";
 
 const baseUrl = "https://avikmukherjee.me";
 
