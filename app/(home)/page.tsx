@@ -17,16 +17,12 @@ export default function Home() {
         <p className="text-gray-600 dark:text-stone-400 leading-relaxed">
           Full-stack developer currently working at{' '}
           <Anchor href="https://www.superalign.ai" target="_blank" className="transition-all duration-200 hover:opacity-80">SuperAlign AI</Anchor>.
-          I build scalable web applications that help businesses grow and solve real problems.
+         building high-throughput analytics, security pipelines, and developer tooling.
         </p>
       </AnimatedSection>
 
-      <AnimatedSection delay="0.08s" className="mt-6">
-        <p className="text-gray-700 dark:text-neutral-400">This is something I remind myself of every day.</p>
-      </AnimatedSection>
-
       <QuoteBlock
-        quote="Every morning you have two choices: Continue to sleep with your dreams or wake up and chase them 💪🏻"
+        quote="My approach to building software is simple: clarity over cleverness, performance over abstraction, and shipping over perfection."
         animationDelay="0.11s"
       />
 

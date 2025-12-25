@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import CornerMarkers from "@/components/CornerMarkers"
+import { ArrowUpRight } from "lucide-react"
 
 interface ExperienceItemProps {
   title: string
@@ -23,9 +24,18 @@ export default function ExperienceItem({ title, year, company, description, comp
         >
           <CornerMarkers />
           <h3 className="grow font-medium text-gray-800 dark:text-neutral-200 underline decoration-gray-400 dark:decoration-neutral-400/50 underline-offset-[3px] transition-colors">
-            <Link href={companySite} target="_blank" rel="noopener noreferrer">
-              {title} @{company}
-            </Link>
+              <Link
+                href={companySite}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1"
+              >
+                {title} @{company}
+                <ArrowUpRight
+                  size={12}
+                  className="opacity-0 translate-y-[1px] transition-all duration-150 group-hover:opacity-60 group-hover:translate-y-0"
+                />
+              </Link>
           </h3>
 
           <span className="text-gray-600 dark:text-neutral-500 text-sm shrink-0">{year}</span>
