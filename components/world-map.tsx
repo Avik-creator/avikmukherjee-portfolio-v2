@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
+import { CURRENT_LOCATION, LOCATION_LOOKUP } from "@/lib/data/data";
 import { ExperienceType } from "@/lib/data/types";
 
 interface WorldMapProps {
@@ -41,11 +42,14 @@ export function WorldMap({
     const width = MAP_WIDTH;
     const height = MAP_HEIGHT;
 
+    const defaultCenter: [number, number] = [0, 20];
+    const centerCoords = LOCATION_LOOKUP[CURRENT_LOCATION] ?? defaultCenter;
+
     const proj = d3
       .geoNaturalEarth1()
       .scale(350)
       .translate([width / 2, height / 2])
-      .center([0, 20]);
+      .center(centerCoords);
 
     setProjection(() => proj);
 
