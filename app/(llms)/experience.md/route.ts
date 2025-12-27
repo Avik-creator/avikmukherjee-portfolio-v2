@@ -1,10 +1,14 @@
-import { Experience } from "@/lib/data/data";
+import { ExperienceData } from "@/lib/data/data";
 
 const content = `# Experience
 
-${Experience.map((item) => {
-  const companyLink = item.companySite ? `[${item.company}](${item.companySite})` : item.company;
-  const description = item.description ? `\n\n${item.description.map((desc) => `- ${desc}`).join("\n")}` : "";
+${ExperienceData.map((item) => {
+  const companyLink = item.companySite
+    ? `[${item.company}](${item.companySite})`
+    : item.company;
+  const description = item.description
+    ? `\n\n${item.description.map((desc) => `- ${desc}`).join("\n")}`
+    : "";
   return `## ${item.title} | ${companyLink}\n\nDuration: ${item.year}${description}`;
 }).join("\n\n")}
 `;

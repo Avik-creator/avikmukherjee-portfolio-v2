@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
 
-
 const nextConfig: NextConfig = {
   /* config options here */
   productionBrowserSourceMaps: true,
@@ -13,6 +12,9 @@ const nextConfig: NextConfig = {
     return config;
   },
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
+  images: {
+    domains: ["cdn.prod.website-files.com", "media.licdn.com", "i.ibb.co"],
+  },
   async rewrites() {
     return [
       {

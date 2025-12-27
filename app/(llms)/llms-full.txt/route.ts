@@ -1,5 +1,5 @@
 import { getAllPosts } from "@/lib/utils/mdx";
-import { projects, Experience } from "@/lib/data/data";
+import { projects, ExperienceData } from "@/lib/data/data";
 import { experiments } from "@/lib/experiments/experiments-data";
 import { getAllExperimentMDX } from "@/lib/experiments/experiments-mdx";
 
@@ -40,32 +40,44 @@ Currently exploring new domains in technology while staying focused on building 
 
 const experienceText = `## Experience
 
-${Experience.map((item) => {
-  const companyLink = item.companySite ? `[${item.company}](${item.companySite})` : item.company;
-  const description = item.description ? `\n\n${item.description.map((desc) => `- ${desc}`).join("\n")}` : "";
+${ExperienceData.map((item) => {
+  const companyLink = item.companySite
+    ? `[${item.company}](${item.companySite})`
+    : item.company;
+  const description = item.description
+    ? `\n\n${item.description.map((desc) => `- ${desc}`).join("\n")}`
+    : "";
   return `### ${item.title} | ${companyLink}\n\nDuration: ${item.year}${description}`;
 }).join("\n\n")}
 `;
 
 const projectsText = `## Projects
 
-${projects.map((item) => {
-  const demoUrl = item.demoUrl ? `\n\nDemo URL: ${item.demoUrl}` : "";
-  const githubUrl = item.githubUrl ? `\n\nGitHub URL: ${item.githubUrl}` : "";
-  const description = item.description ? `\n\n${item.description.trim()}` : "";
-  return `### ${item.title} (${item.year})${demoUrl}${githubUrl}${description}`;
-}).join("\n\n")}
+${projects
+  .map((item) => {
+    const demoUrl = item.demoUrl ? `\n\nDemo URL: ${item.demoUrl}` : "";
+    const githubUrl = item.githubUrl ? `\n\nGitHub URL: ${item.githubUrl}` : "";
+    const description = item.description
+      ? `\n\n${item.description.trim()}`
+      : "";
+    return `### ${item.title} (${item.year})${demoUrl}${githubUrl}${description}`;
+  })
+  .join("\n\n")}
 `;
 
 async function getBlogContent() {
   const allPosts = await getAllPosts();
   const text = await Promise.all(
-    allPosts.map(
-      async (item) => {
-        const dateStr = item.date ? new Date(item.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "Unknown";
-        return `---\ntitle: "${item.title}"\ndescription: "${item.excerpt}"\nlast_updated: "${dateStr}"\nsource: "${baseUrl}/blog/${item.slug}"\n---\n\n${item.content}`;
-      }
-    )
+    allPosts.map(async (item) => {
+      const dateStr = item.date
+        ? new Date(item.date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        : "Unknown";
+      return `---\ntitle: "${item.title}"\ndescription: "${item.excerpt}"\nlast_updated: "${dateStr}"\nsource: "${baseUrl}/blog/${item.slug}"\n---\n\n${item.content}`;
+    })
   );
   return text.join("\n\n");
 }

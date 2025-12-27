@@ -1,24 +1,6 @@
-export interface Experience {
-  id?: string;
-  title?: string;
-  year?: string;
-  company: string;
-  role?: string;
-  startDate: string;
-  endDate: string;
-  description: string[];
-  companySite: string;
-  location: {
-    lat: number;
-    lng: number;
-    city: string;
-    country: string;
-    isRemote?: boolean;
-  };
-  color: "light" | "medium" | "dark" | "white";
-}
+import { ExperienceType } from "./types";
 
-export const ExperienceData = [
+export const ExperienceData: ExperienceType[] = [
   {
     title: "V0 Ambassador",
     year: "December 2025 - Present",
@@ -36,7 +18,10 @@ export const ExperienceData = [
       country: "USA",
       isRemote: true,
     },
+    startDate: "December 2025",
+    endDate: "Present",
     color: "white",
+    logo: "https://media.licdn.com/dms/image/v2/D560BAQGExdlha9-_8g/company-logo_200_200/B56ZhsDcEVHMAM-/0/1754159497775/v0dev_logo?e=1768435200&v=beta&t=cw8_cLaDKnZ1Zvk8P-BznvOYL9Wsq-awTy66utwZAbg",
   },
   {
     title: "Software Engineer",
@@ -55,7 +40,10 @@ export const ExperienceData = [
       country: "India",
       isRemote: false,
     },
+    startDate: "August 2025",
+    endDate: "Present",
     color: "white",
+    logo: "https://media.licdn.com/dms/image/v2/D560BAQEuD1Gq9h3D0w/company-logo_200_200/B56ZYkcgOqHoAI-/0/1744368174401/superalign_logo?e=1768435200&v=beta&t=ADTWdNKyxWD9ihXDgu2nx-PTUcrw5KLmZJUAA1WJt44",
   },
   {
     title: "Software Engineer Intern",
@@ -72,9 +60,12 @@ export const ExperienceData = [
       lng: 78.4867,
       city: "Hyderabad",
       country: "India",
-      isRemote: false,
+      isRemote: true,
     },
     color: "white",
+    startDate: "May 2025",
+    endDate: "July 2025",
+    logo: "https://media.licdn.com/dms/image/v2/D560BAQEuD1Gq9h3D0w/company-logo_200_200/B56ZYkcgOqHoAI-/0/1744368174401/superalign_logo?e=1768435200&v=beta&t=ADTWdNKyxWD9ihXDgu2nx-PTUcrw5KLmZJUAA1WJt44",
   },
   {
     title: "Junior Engineer Trainee (Intern)",
@@ -93,7 +84,10 @@ export const ExperienceData = [
       country: "India",
       isRemote: true,
     },
+    startDate: "Sept 2024",
+    endDate: "March 2025",
     color: "light",
+    logo: "https://cdn.prod.website-files.com/654fb5fc4fc1773cbb038465/6550d15d75979089cb8793ea_Logo.svg",
   },
   {
     title: "Junior React Native Developer (Intern)",
@@ -114,7 +108,10 @@ export const ExperienceData = [
       country: "Poland",
       isRemote: true,
     },
+    startDate: "Nov 2023",
+    endDate: "Feb 2024",
     color: "medium",
+    logo: "https://cdn.prod.website-files.com/654fb5fc4fc1773cbb038465/6550d15d75979089cb8793ea_Logo.svg",
   },
   {
     title: "LEAD",
@@ -126,6 +123,8 @@ export const ExperienceData = [
       "Built a community of 600+ tech enthusiasts.",
       "Collaborated with organizations for event execution.",
     ],
+    startDate: "July 2023",
+    endDate: "July 2024",
     companySite:
       "https://gdg.community.dev/gdg-on-campus-maulana-abul-kalam-azad-university-of-technology-kalyani-india/",
     location: {
@@ -135,6 +134,7 @@ export const ExperienceData = [
       country: "India",
     },
     color: "medium",
+    logo: "https://media.licdn.com/dms/image/v2/D560BAQEzZsTawYpfEA/company-logo_200_200/company-logo_200_200/0/1692637407875/dscmakaut_logo?e=1768435200&v=beta&t=bfNyZ5HEHCeiuvAoJ5TXn1iQ04rp9tPsccwcawNRxdI",
   },
   {
     title: "Software Developer (Intern)",
@@ -153,7 +153,10 @@ export const ExperienceData = [
       country: "India",
       isRemote: true,
     },
+    startDate: "June 2023",
+    endDate: "Aug 2023",
     color: "medium",
+    logo: "https://media.licdn.com/dms/image/v2/D4D0BAQGDbCHadNt3XA/company-logo_200_200/B4DZYgDykVHwAI-/0/1744294587182/auctopus_technologies_logo?e=1768435200&v=beta&t=JSnDSK52abjndx6GPA-Q4o5l0uMmlRP1Yp-0cgtytIA",
   },
   {
     title: "Web Developer",
@@ -170,7 +173,10 @@ export const ExperienceData = [
       city: "Kolkata",
       country: "India",
     },
+    startDate: "July 2022",
+    endDate: "July 2023",
     color: "dark",
+    logo: "https://i.ibb.co/s6NCmyM/REPL.png",
   },
   {
     title: "Content Writer (Intern)",
@@ -188,7 +194,10 @@ export const ExperienceData = [
       country: "India",
       isRemote: true,
     },
+    startDate: "Nov 2022",
+    endDate: "Feb 2023",
     color: "dark",
+    logo: "https://media.licdn.com/dms/image/v2/C4D0BAQG8yvh2oESsIA/company-logo_200_200/company-logo_200_200/0/1652806695638/aditya_farrad_production_logo?e=1768435200&v=beta&t=iH9D0XM4veA5rCwbV9_XNi5l2wjV1DEDFpjsnAMXLew",
   },
   {
     title: "Content Writer (Intern)",
@@ -206,6 +215,9 @@ export const ExperienceData = [
       country: "India",
       isRemote: true,
     },
+    startDate: "May 2019",
+    endDate: "Aug 2019",
     color: "dark",
+    logo: "https://media.licdn.com/dms/image/v2/C510BAQGnSHf-htBtxA/company-logo_200_200/company-logo_200_200/0/1630610714444/qwerty_thoughts_logo?e=1768435200&v=beta&t=IpGgsd3_P6xA2KD4ACytGxS0Nm1wlM26zqdFWpQhHWw",
   },
 ];

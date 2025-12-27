@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
-import type { Experience } from "@/lib/data/experience";
+import { ExperienceType } from "@/lib/data/types";
 
 interface WorldMapProps {
-  experiences: Experience[];
-  selectedExperience: Experience | null;
-  onSelectExperience: (exp: Experience | null) => void;
+  experiences: ExperienceType[];
+  selectedExperience: ExperienceType | null;
+  onSelectExperience: (exp: ExperienceType | null) => void;
 }
 
 const MAP_WIDTH = 2000;
@@ -21,7 +21,7 @@ export function WorldMap({
 }: WorldMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [worldData, setWorldData] = useState<any>(null);
-  const [hoveredExp, setHoveredExp] = useState<Experience | null>(null);
+  const [hoveredExp, setHoveredExp] = useState<ExperienceType | null>(null);
   const [projection, setProjection] = useState<d3.GeoProjection | null>(null);
 
   useEffect(() => {
@@ -175,7 +175,7 @@ export function WorldMap({
     });
   }, [worldData, experiences]);
 
-  const getMarkerPosition = (exp: Experience): [number, number] | null => {
+  const getMarkerPosition = (exp: ExperienceType): [number, number] | null => {
     if (!projection) return null;
     return projection([exp.location.lng, exp.location.lat]);
   };

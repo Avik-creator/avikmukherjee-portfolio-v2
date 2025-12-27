@@ -1,7 +1,7 @@
-import { Experience, ExperienceData } from "./experience";
-
+import { ExperienceData } from "./experience";
+import { ExperienceType } from "@/lib/data/types";
 // Normalized experiences array for components that expect `id`, `role`, `startDate`, and `endDate`.
-export const experiences: Experience[] = ExperienceData.map(
+export const experiences: ExperienceType[] = ExperienceData.map(
   (item, idx: number) => {
     const slugBase = (item.company || "experience")
       .toLowerCase()
@@ -27,8 +27,9 @@ export const experiences: Experience[] = ExperienceData.map(
       endDate,
       description: item.description ?? [],
       companySite: item.companySite ?? "",
+      logo: item.logo ?? undefined,
       location: item.location,
       color: item.color ?? "white",
-    } as Experience;
+    } as ExperienceType;
   }
 );

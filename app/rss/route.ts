@@ -1,6 +1,6 @@
 import { getAllPosts } from "@/lib/utils/mdx";
 import type { Post } from "@/lib/utils/mdx";
-import { Experience, projects } from "@/lib/data/data";
+import { ExperienceData, projects } from "@/lib/data/data";
 import { experiments } from "@/lib/experiments/experiments-data";
 
 function toRfc822Date(dateString: string): string {
@@ -31,7 +31,11 @@ function getYearDate(value: string | undefined): string {
   return new Date().toUTCString();
 }
 
-function generateRSSFeed(posts: Post[], blogUrl: string, portfolioUrl: string): string {
+function generateRSSFeed(
+  posts: Post[],
+  blogUrl: string,
+  portfolioUrl: string
+): string {
   const blogItems = posts
     .map((post) => {
       const postUrl = `${blogUrl}/${post.slug}`;
@@ -75,14 +79,18 @@ function generateRSSFeed(posts: Post[], blogUrl: string, portfolioUrl: string): 
     })
     .join("");
 
-  const experienceItems = Experience.map((exp) => {
+  const experienceItems = ExperienceData.map((exp) => {
     const linkHost = exp.companySite ? new URL(exp.companySite).host : "";
     const link =
       linkHost && linkHost === portfolioHost
         ? exp.companySite!
         : `${portfolioUrl}/experience`;
     const title = escapeCdata(`${exp.title} at ${exp.company}`);
-    const description = escapeCdata(Array.isArray(exp.description) ? exp.description.join(" ") : exp.description ?? "");
+    const description = escapeCdata(
+      Array.isArray(exp.description)
+        ? exp.description.join(" ")
+        : exp.description ?? ""
+    );
     const pubDate = getYearDate(exp.year);
 
     return `
@@ -109,7 +117,9 @@ function generateRSSFeed(posts: Post[], blogUrl: string, portfolioUrl: string): 
         detailedDescription += ` Features: ${experiment.features.join(", ")}.`;
       }
       if (experiment.dependencies && experiment.dependencies.length > 0) {
-        detailedDescription += ` Built with: ${experiment.dependencies.join(", ")}.`;
+        detailedDescription += ` Built with: ${experiment.dependencies.join(
+          ", "
+        )}.`;
       }
       detailedDescription += ` MDX Documentation: ${mdxLink}`;
 
@@ -125,8 +135,12 @@ function generateRSSFeed(posts: Post[], blogUrl: string, portfolioUrl: string): 
             <link>${link}</link>
             <guid>${link}</guid>
             <pubDate>${pubDate}</pubDate>
-            <description><![CDATA[<p>${escapeCdata(detailedDescription)}</p>]]></description>
-            <category>${categories.map(cat => escapeCdata(cat)).join("</category><category>")}</category>
+            <description><![CDATA[<p>${escapeCdata(
+              detailedDescription
+            )}</p>]]></description>
+            <category>${categories
+              .map((cat) => escapeCdata(cat))
+              .join("</category><category>")}</category>
         </item>`;
     })
     .join("");

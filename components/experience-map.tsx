@@ -4,21 +4,22 @@ import type React from "react";
 import { useState, useRef, useEffect } from "react";
 import { X, Wifi, ChevronLeft, ChevronRight } from "lucide-react";
 import { WorldMap } from "@/components/world-map";
-import type { Experience } from "@/lib/data/experience";
+import { ExperienceType } from "@/lib/data/types";
 import { experiences as defaultExperiences } from "@/lib/data/experiences-normalized";
 import CornerMarkers from "@/components/CornerMarkers";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 interface ExperienceMapProps {
-  experiences?: Experience[];
+  experiences?: ExperienceType[];
 }
 
 export function ExperienceMap({
   experiences = defaultExperiences,
 }: ExperienceMapProps) {
   const [selectedExperience, setSelectedExperience] =
-    useState<Experience | null>(null);
+    useState<ExperienceType | null>(null);
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -59,7 +60,7 @@ export function ExperienceMap({
     setIsDragging(false);
   };
 
-  const getExperiencesAtLocation = (exp: Experience): Experience[] => {
+  const getExperiencesAtLocation = (exp: ExperienceType): ExperienceType[] => {
     return experiences.filter(
       (e) =>
         e.location.lat === exp.location.lat &&
@@ -260,11 +261,23 @@ export function ExperienceMap({
                           ))}
                         </svg>
                       </div>
-                      <div
-                        className={`w-2 h-2 rounded-full ${
-                          colorClassMap[selectedExperience.color]
-                        } z-10`}
-                      />
+                      {selectedExperience.logo ? (
+                        <div className="w-10 h-10 relative z-10">
+                          <Image
+                            src={selectedExperience.logo}
+                            alt={`${selectedExperience.company} logo`}
+                            fill
+                            sizes="40px"
+                            className="object-contain"
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          className={`w-2 h-2 rounded-full ${
+                            colorClassMap[selectedExperience.color]
+                          } z-10`}
+                        />
+                      )}
                     </div>
                     <div>
                       <p className="text-xs text-neutral-500 uppercase tracking-wider mb-1">

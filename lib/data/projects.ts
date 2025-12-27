@@ -1,12 +1,6 @@
-export interface ProjectItem {
-  title: string;
-  year: string;
-  description: string;
-  demoUrl?: string;
-  githubUrl?: string;
-}
+import { ProjectItemType } from "./types";
 
-export const projects: ProjectItem[] = [
+export const projects: ProjectItemType[] = [
   {
     title: "Markdown Video",
     year: "2025",
