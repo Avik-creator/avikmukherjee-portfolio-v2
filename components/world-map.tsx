@@ -42,14 +42,30 @@ export function WorldMap({
     const width = MAP_WIDTH;
     const height = MAP_HEIGHT;
 
-    const defaultCenter: [number, number] = [0, 20];
-    const centerCoords = LOCATION_LOOKUP[CURRENT_LOCATION] ?? defaultCenter;
+    // Create projection that fits all experience locations
+    const tempProj = d3.geoNaturalEarth1().scale(1).translate([0, 0]);
+
+    // Calculate bounds of all experience locations
+    let minLng = 180,
+      maxLng = -180,
+      minLat = 90,
+      maxLat = -90;
+    experiences.forEach((exp) => {
+      minLng = Math.min(minLng, exp.location.lng);
+      maxLng = Math.max(maxLng, exp.location.lng);
+      minLat = Math.min(minLat, exp.location.lat);
+      maxLat = Math.max(maxLat, exp.location.lat);
+    });
+
+    // Set projection to center on the bounding box
+    const centerLng = (minLng + maxLng) / 2;
+    const centerLat = (minLat + maxLat) / 2;
 
     const proj = d3
       .geoNaturalEarth1()
-      .scale(350)
+      .scale(280)
       .translate([width / 2, height / 2])
-      .center(centerCoords);
+      .center([centerLng, centerLat]);
 
     setProjection(() => proj);
 
