@@ -1,40 +1,76 @@
-import Anchor from '@/components/Anchor';
-import AnimatedSection from '@/components/AnimatedSection';
+import Anchor from "@/components/Anchor";
+import AnimatedSection from "@/components/AnimatedSection";
 
 interface ReachSectionProps {
   animationDelay?: string;
 }
 
-export default function ReachSection({ animationDelay = '1.2s' }: ReachSectionProps) {
+export default function ReachSection({
+  animationDelay = "1.2s",
+}: ReachSectionProps) {
   return (
     <AnimatedSection delay={animationDelay} className="mt-12">
-      <h2 className="text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100">reach</h2>
+      <h2 className="text-lg font-serif font-semibold text-gray-900 dark:text-neutral-100">
+        reach
+      </h2>
       <div className="mt-2 flex flex-wrap gap-2">
         <span className="whitespace-nowrap text-gray-700 dark:text-neutral-400">
           <span>connect on </span>
-          <Anchor href="https://x.com/avikm744" target="_blank" className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block">
-            {'𝕏'}
+          <Anchor
+            href="https://x.com/avikm744"
+            target="_blank"
+            className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block"
+          >
+            {"𝕏"}
           </Anchor>
-          <span className="mx-1 text-gray-400 dark:text-neutral-400/50 transition-opacity duration-200">·</span>
-          <Anchor href="https://github.com/Avik-creator" target="_blank" className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block">
+          <span className="mx-1 text-gray-400 dark:text-neutral-400/50 transition-opacity duration-200">
+            ·
+          </span>
+          <Anchor
+            href="https://github.com/Avik-creator"
+            target="_blank"
+            className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block"
+          >
             GitHub
           </Anchor>
-          <span className="mx-1 text-gray-400 dark:text-neutral-400/50 transition-opacity duration-200">·</span>
-          <Anchor href="https://www.linkedin.com/in/avik-mukherjee-8ab9911bb/" target="_blank" className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block">
+          <span className="mx-1 text-gray-400 dark:text-neutral-400/50 transition-opacity duration-200">
+            ·
+          </span>
+          <Anchor
+            href="https://www.linkedin.com/in/avik-mukherjee-8ab9911bb/"
+            target="_blank"
+            className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block"
+          >
             LinkedIn
           </Anchor>
-          <span className="mx-1 text-gray-400 dark:text-neutral-400/50 transition-opacity duration-200">·</span>
-          <Anchor href="https://peerlist.io/avikmukherjee/" target="_blank" className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block">
+          <span className="mx-1 text-gray-400 dark:text-neutral-400/50 transition-opacity duration-200">
+            ·
+          </span>
+          <Anchor
+            href="https://peerlist.io/avikmukherjee/"
+            target="_blank"
+            className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block"
+          >
             Peerlist
           </Anchor>
-          <span className="mx-1 text-gray-400 dark:text-neutral-400/50 transition-opacity duration-200">·</span>
-          <Anchor href="https://cal.com/avik-mukherjee-2fq9cw" target="_blank" className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block">
-            Cal.com
+          <span className="mx-1 text-gray-400 dark:text-neutral-400/50 transition-opacity duration-200">
+            ·
+          </span>
+          <Anchor
+            href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0RHIQtrcnpylj6iyWSlKxKntaKul7LGnTRkcE2V8hFVy214nidXmqFvYwIpIEtZormXE-o7qRB?gv=true&mode=WEEK"
+            target="_blank"
+            className="transition-all duration-200 hover:opacity-70 hover:scale-105 inline-block"
+          >
+            Chat
           </Anchor>
         </span>
         <span className="text-gray-700 dark:text-neutral-400">
           — or send me an email at{" "}
-          <Anchor href="mailto:avikm744@gmail.com" target="_blank" className="transition-all duration-200 hover:opacity-70 hover:underline underline-offset-2">
+          <Anchor
+            href="mailto:avikm744@gmail.com"
+            target="_blank"
+            className="transition-all duration-200 hover:opacity-70 hover:underline underline-offset-2"
+          >
             avikm744@gmail.com
           </Anchor>
         </span>
@@ -42,4 +78,3 @@ export default function ReachSection({ animationDelay = '1.2s' }: ReachSectionPr
     </AnimatedSection>
   );
 }
-
