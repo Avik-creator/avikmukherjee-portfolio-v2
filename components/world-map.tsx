@@ -63,7 +63,7 @@ export function WorldMap({
 
     const proj = d3
       .geoNaturalEarth1()
-      .scale(280)
+      .scale(250)
       .translate([width / 2, height / 2])
       .center([centerLng, centerLat]);
 
