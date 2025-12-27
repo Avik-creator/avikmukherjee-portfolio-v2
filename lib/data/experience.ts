@@ -87,7 +87,7 @@ export const ExperienceData: ExperienceType[] = [
     startDate: "Sept 2024",
     endDate: "March 2025",
     color: "light",
-    logo: "https://cdn.prod.website-files.com/654fb5fc4fc1773cbb038465/6550d15d75979089cb8793ea_Logo.svg",
+    logo: "https://media.licdn.com/dms/image/v2/D560BAQGZUGc1DskC9w/company-logo_200_200/B56ZoK_6WkIcAQ-/0/1761121118122/datafoundryai_logo?e=1768435200&v=beta&t=hD64hCN0TkNHx7NFm1DrdVU4OBw8YpsZhbs00vMDGn8",
   },
   {
     title: "Junior React Native Developer (Intern)",
