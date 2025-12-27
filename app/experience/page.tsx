@@ -1,25 +1,31 @@
 import ExperienceItem from "@/components/ExperienceItem";
 import PageHeader from "@/components/PageHeader";
 import AnimatedListItem from "@/components/AnimatedListItem";
-import { Experience } from "@/lib/data/data";
-
+import { ExperienceMap } from "@/components/experience-map";
+import { experiences } from "@/lib/data/experiences-normalized";
 
 export default function Page() {
-  const allExperiences = Experience;
   return (
     <main className="mb-32 text-gray-700 dark:text-neutral-400">
       <PageHeader
         backHref="/"
         title="experience"
-        description="Companies I've worked with to deliver software solutions and drive technical growth of the company."
+        description="Places where I shipped production software and, where relevant, contributed to developer communities and ecosystem growth."
       />
+
+      {/* Interactive World Map */}
+      <div className="mb-12">
+        <ExperienceMap experiences={experiences} />
+      </div>
+
+      {/* Experience List */}
       <div className="space-y-0">
-        {allExperiences.map((experience, index) => (
-          <AnimatedListItem key={index} index={index}>
+        {experiences.map((experience, index) => (
+          <AnimatedListItem key={experience.id} index={index}>
             <ExperienceItem
-              title={experience.title}
+              title={experience.role as string}
               company={experience.company}
-              year={experience.year}
+              year={`${experience.startDate} - ${experience.endDate}`}
               description={experience.description}
               companySite={experience.companySite}
             />
@@ -27,5 +33,5 @@ export default function Page() {
         ))}
       </div>
     </main>
-  )
+  );
 }

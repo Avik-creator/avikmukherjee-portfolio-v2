@@ -1,0 +1,211 @@
+export interface Experience {
+  id?: string;
+  title?: string;
+  year?: string;
+  company: string;
+  role?: string;
+  startDate: string;
+  endDate: string;
+  description: string[];
+  companySite: string;
+  location: {
+    lat: number;
+    lng: number;
+    city: string;
+    country: string;
+    isRemote?: boolean;
+  };
+  color: "light" | "medium" | "dark" | "white";
+}
+
+export const ExperienceData = [
+  {
+    title: "V0 Ambassador",
+    year: "December 2025 - Present",
+    company: "Vercel (V0)",
+    description: [
+      "Represent v0 in the community and engage with developers to showcase AI-powered application development.",
+      "Contribute to improving the Platform Experience for the users by providing feedback and suggestions.",
+      "Help other developers by answering their questions and providing guidance.",
+    ],
+    companySite: "https://v0.app",
+    location: {
+      lat: 37.7749,
+      lng: -122.4194,
+      city: "San Francisco",
+      country: "USA",
+      isRemote: true,
+    },
+    color: "white",
+  },
+  {
+    title: "Software Engineer",
+    year: "August 2025 - Present",
+    company: "SuperAlign",
+    description: [
+      "Built a browser-level security Chrome Extension to intercept and analyze user requests across AI platforms (ChatGPT, Claude, Gemini, Perplexity), blocking sensitive data in real time and alerting users via custom popups.",
+      "Designed and implemented a high-performance DuckDB analytics pipeline, processing ~70GB of logs in ~4 minutes to enable fast aggregation and domain-level security analysis over structured log formats.",
+      "Engineered a streaming + batch log pipeline using Fluvio and ClickHouse, supporting real-time metrics, batching, and long-term analytical storage.",
+    ],
+    companySite: "https://www.superalign.ai",
+    location: {
+      lat: 17.385,
+      lng: 78.4867,
+      city: "Hyderabad",
+      country: "India",
+      isRemote: false,
+    },
+    color: "white",
+  },
+  {
+    title: "Software Engineer Intern",
+    year: "May 2025 - July 2025",
+    company: "SuperAlign",
+    description: [
+      "Worked on the Frontend using NextJS, ShadcnUI, TailwindCSS and TypeScript",
+      "Worked on Backend using HonoJS, DuckDB",
+      "Implemented a python webscrapper to scrape data from the web and store it in a markdown file",
+    ],
+    companySite: "https://www.superalign.ai",
+    location: {
+      lat: 17.385,
+      lng: 78.4867,
+      city: "Hyderabad",
+      country: "India",
+      isRemote: false,
+    },
+    color: "white",
+  },
+  {
+    title: "Junior Engineer Trainee (Intern)",
+    year: "Sept 2024 – March 2025",
+    company: "DataFoundry",
+    description: [
+      "Worked on Azure Data pipelines for data preprocessing and generating CSV files.",
+      "Implemented Localizations for the web application using i18next and React.",
+      "Implemented Permission Based Access Control for the web application.",
+    ],
+    companySite: "https://datafoundry.ai",
+    location: {
+      lat: 12.9716,
+      lng: 77.5946,
+      city: "Bengaluru",
+      country: "India",
+      isRemote: true,
+    },
+    color: "light",
+  },
+  {
+    title: "Junior React Native Developer (Intern)",
+    year: "Nov 2023 – Feb 2024",
+    company: "Dank",
+    description: [
+      "Collaborated with the development team to ensure timely delivery of applications.",
+      "Led feature development for core 40% of the application, with a focus on performance optimization.",
+      "Built and maintained core features like feed, comments, and user profiles.",
+      "Worked on the frontend using React Native.",
+    ],
+    companySite:
+      "https://play.google.com/store/apps/details?id=com.joindank.dankapp",
+    location: {
+      lat: 52.237,
+      lng: 21.017,
+      city: "Warsaw",
+      country: "Poland",
+      isRemote: true,
+    },
+    color: "medium",
+  },
+  {
+    title: "LEAD",
+    year: "July 2023 – July 2024",
+    company: "GDG",
+    description: [
+      "Organized workshops, hackathons, and events to help students grow.",
+      "Conducted sessions on technologies like Flutter and Google Cloud Platform.",
+      "Built a community of 600+ tech enthusiasts.",
+      "Collaborated with organizations for event execution.",
+    ],
+    companySite:
+      "https://gdg.community.dev/gdg-on-campus-maulana-abul-kalam-azad-university-of-technology-kalyani-india/",
+    location: {
+      lat: 22.9868,
+      lng: 88.4337,
+      city: "Kalyani",
+      country: "India",
+    },
+    color: "medium",
+  },
+  {
+    title: "Software Developer (Intern)",
+    year: "June 2023 – Aug 2023",
+    company: "Auctopustechnologies",
+    description: [
+      "Created responsive interfaces with React and efficient API integrations.",
+      "Implemented Redux for managing network discovery states and automated subnet reporting (30% system response improvement).",
+      "Wrote Cypress test cases, reducing manual testing by 50%.",
+    ],
+    companySite: "https://www.auctopustechnologies.com/home",
+    location: {
+      lat: 28.7041,
+      lng: 77.1025,
+      city: "Delhi",
+      country: "India",
+      isRemote: true,
+    },
+    color: "medium",
+  },
+  {
+    title: "Web Developer",
+    year: "July 2022 – July 2023",
+    company: "Repl",
+    description: [
+      "Built the frontend using React and plain CSS.",
+      "Deployed the website on Firebase.",
+    ],
+    companySite: "https://repl-us.web.app",
+    location: {
+      lat: 22.5726,
+      lng: 88.3639,
+      city: "Kolkata",
+      country: "India",
+    },
+    color: "dark",
+  },
+  {
+    title: "Content Writer (Intern)",
+    year: "Nov 2022 – Feb 2023",
+    company: "Framedmedia",
+    description: [
+      "Wrote technical articles on React, Node, and miscellaneous topics like gaming.",
+      "Authored 50+ articles during the internship.",
+    ],
+    companySite: "https://framedmedia.com",
+    location: {
+      lat: 28.7041,
+      lng: 77.1025,
+      city: "Delhi",
+      country: "India",
+      isRemote: true,
+    },
+    color: "dark",
+  },
+  {
+    title: "Content Writer (Intern)",
+    year: "May 2019 – Aug 2019",
+    company: "Qwerty Thoughts",
+    description: [
+      "Wrote spiritual articles focusing on Hindu mythology and spirituality.",
+      "Authored 30+ articles during the internship.",
+    ],
+    companySite: "https://www.linkedin.com/company/qwerty-thoughts",
+    location: {
+      lat: 28.7041,
+      lng: 77.1025,
+      city: "Delhi",
+      country: "India",
+      isRemote: true,
+    },
+    color: "dark",
+  },
+];
