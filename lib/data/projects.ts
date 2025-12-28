@@ -2,6 +2,13 @@ import { ProjectItemType } from "./types";
 
 export const projects: ProjectItemType[] = [
   {
+    title: "CodeReviewer",
+    year: "2025",
+    description: "An AI-powered GitHub bot that performs context-aware PR reviews using RAG, cutting review time and production bugs by automating deep code analysis.",
+    demoUrl: "https://codereviewer.avikmukherjee.me",
+    githubUrl: "https://github.com/Avik-creator/CodeReview",
+  },
+  {
     title: "Markdown Video",
     year: "2025",
     description:
