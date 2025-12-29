@@ -57,7 +57,7 @@ export default function Home() {
         animationDelay="0.26s"
       />
 
-      <ReachSection animationDelay="0.29s" />
+      <ReachSection animationDelay="0.30s" />
     </main>
   );
 }
