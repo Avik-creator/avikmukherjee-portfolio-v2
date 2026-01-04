@@ -1,6 +1,14 @@
 import { ProjectItemType } from "./types";
 
 export const projects: ProjectItemType[] = [
+   {
+    title: "Plane Discord Bot",
+    year: "2026",
+    description: "Serverless Discord bot built on Cloudflare Workers that integrates Plane for issue management and generates personalized AI-powered daily summaries using Gemini.",
+    demoUrl:"https://github.com/Avik-creator/plane-discord-bot-main",
+    githubUrl:"https://github.com/Avik-creator/plane-discord-bot-main"
+    
+  },
   {
     title: "CodeReviewer",
     year: "2025",
