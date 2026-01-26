@@ -67,7 +67,7 @@ export default function ReachSection({
         <span className="text-gray-700 dark:text-neutral-400">
           — or send me an email at{" "}
           <Anchor
-            href="mailto:avikm744@gmail.com"
+            href="mailto:avik@avikmukherjee.me"
             target="_blank"
             className="transition-all duration-200 hover:opacity-70 hover:underline underline-offset-2"
           >
