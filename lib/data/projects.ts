@@ -2,6 +2,13 @@ import { ProjectItemType } from "./types";
 
 export const projects: ProjectItemType[] = [
    {
+     title: "Security Scanner",
+      year: "2026",
+      description: "SecurityScanner — Fast CLI security scanner for AI agent ecosystems. Detects prompt injection, command execution risks, secret leakage, and supply-chain threats across SKILL repos, MCP servers, browser/IDE extensions, and codebases. Built with Bun + TypeScript, supports JSON/SARIF outputs, CI enforcement, and live TUI scanning.",
+      demoUrl: "https://github.com/Avik-creator/security-scanner",
+      githubUrl: "https://github.com/Avik-creator/security-scanner"
+   },
+   {
     title: "Plane Discord Bot",
     year: "2026",
     description: "Serverless Discord bot built on Cloudflare Workers that integrates Plane for issue management and generates personalized AI-powered daily summaries using Gemini.",
