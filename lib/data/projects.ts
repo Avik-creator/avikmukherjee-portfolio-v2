@@ -1,10 +1,17 @@
 import { ProjectItemType } from "./types";
 
 export const projects: ProjectItemType[] = [
+    {
+     title: "AI Gateway",
+      year: "2026",
+      description: "A unified LLM API Gateway with automatic fallback, tool support, multimodal content handling, persistent memory with vector embeddings, and SSE streaming. Private Repo.",
+      demoUrl: "https://github.com/Avik-creator/ai_gateway_python",
+      githubUrl: "https://github.com/Avik-creator/ai_gateway_python"
+   },
    {
      title: "Security Scanner",
       year: "2026",
-      description: "SecurityScanner — Fast CLI security scanner for AI agent ecosystems. Detects prompt injection, command execution risks, secret leakage, and supply-chain threats across SKILL repos, MCP servers, browser/IDE extensions, and codebases. Built with Bun + TypeScript, supports JSON/SARIF outputs, CI enforcement, and live TUI scanning.",
+      description: "SecurityScanner — Fast CLI security scanner for AI agent ecosystems. Detects prompt injection, command execution risks, secret leakage, and supply-chain threats across SKILL repos, MCP servers, browser/IDE extensions, and codebases. Built with Bun + TypeScript, supports JSON/SARIF outputs, CI enforcement, and live TUI scanning. Private Repo.",
       demoUrl: "https://github.com/Avik-creator/security-scanner",
       githubUrl: "https://github.com/Avik-creator/security-scanner"
    },
