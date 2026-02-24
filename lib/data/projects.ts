@@ -2,6 +2,13 @@ import { ProjectItemType } from "./types";
 
 export const projects: ProjectItemType[] = [
     {
+        title: "LinkDrop",
+        year: "2026",
+        description: "A Link Manager for my personal usage created using v0. Kind of vibe-coded this whole thing, but for personal usage, it is ok.",
+        demoUrl: "https://linkmanager.avikmukherjee.me",
+        githubUrl: "https://github.com/Avik-creator/Link-Manager"
+    },
+    {
      title: "AI Gateway",
       year: "2026",
       description: "A unified LLM API Gateway with automatic fallback, tool support, multimodal content handling, persistent memory with vector embeddings, and SSE streaming. Private Repo.",
