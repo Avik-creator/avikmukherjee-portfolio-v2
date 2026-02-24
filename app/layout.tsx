@@ -188,6 +188,13 @@ export default function RootLayout({
           data-domain="avikmukherjee.me"
           src="https://webtracker.avikmukherjee.me/tracking-script.js"
         />
+
+       <Script
+          src="https://bridgecord.avikmukherjee.me/embed.js"
+          data-project-id="UWnQ094mNUhj"
+          strategy="lazyOnload"
+        />
+          
       </head>
       <body
         className={cn(
