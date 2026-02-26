@@ -2,6 +2,13 @@ import { ProjectItemType } from "./types";
 
 export const projects: ProjectItemType[] = [
     {
+        title: "BridgeCord",
+        year: "2026",
+        description: "Live chat that lives in Discord. A lightweight, embeddable chat widget that connects your website visitors directly to your Discord server.",
+        demoUrl: "https://bridgecord.avikmukherjee.me",
+        githubUrl: "https://github.com/Avik-creator/Discord-Live-Chat"
+    },
+    {
         title: "LinkDrop",
         year: "2026",
         description: "A Link Manager for my personal usage created using v0. Kind of vibe-coded this whole thing, but for personal usage, it is ok.",
