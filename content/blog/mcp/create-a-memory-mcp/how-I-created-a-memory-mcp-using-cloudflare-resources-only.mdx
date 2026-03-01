@@ -1,0 +1,450 @@
+---
+title: "How I Built a Persistent Memory MCP Using Only Cloudflare"
+publishDate: "02 March 2026"
+description: "Building a production-ready memory system for AI agents without the infrastructure headache"
+tags: ["Cloudflare", "MCP", "AI Agents", "D1", "Vectorize", "Workers AI"]
+slug: "memory-mcp-cloudflare"
+---
+
+AI agents are impressive.
+
+Until they forget everything.
+
+Stateless LLM calls are fine for demos. You can build a slick chatbot, show it off at a meetup, and everyone claps. But the moment you try to build something real — an agent that remembers user preferences, context, patterns, the things that actually matter — you hit a wall so hard you'll feel it in your bones:
+
+> There is no memory.
+
+Every. Single. Time.
+
+So I built one.
+
+Not using **Supabase**. Not using **Pinecone**. Not using **OpenAI embeddings**. Not because those are bad (they're excellent), but because I wanted something lean.
+
+Just Cloudflare.
+
+Workers. D1. Vectorize. Workers AI.
+
+That's it.
+
+## The Problem: Agents Without Memory Are Just **Fancy Autocomplete**
+
+Here's the thing about AI agents — they're only as useful as their context window allows. And context windows, no matter how large, are finite. Plus, they reset every time you start a new conversation.
+
+If your agent can't remember:
+
+- What the user prefers
+- What you've already discussed
+- Long-term facts about the world
+- Important tool outputs from previous runs
+
+…it's not an agent. It's **autocomplete with delusions**.
+
+You end up in ridiculous situations:
+
+> **User:** Remember I like dark mode.
+> **Agent:** Absolutely!
+> *(new conversation)*
+> **User:** What mode do I prefer?
+> **Agent:** I have no idea! Would you like me to suggest some themes?
+
+Death.
+
+So I needed:
+
+- Persistent storage that survives restarts
+- Semantic retrieval (not just keyword matching)
+- Low latency (nobody wants slow agents)
+- Zero infrastructure overhead (I hate ops)
+- Horizontal scaling (in case this thing actually works)
+
+And I absolutely did NOT want a **Frankenstein stack**. You know the type — five different services, three SDKs, and a prayer that nothing breaks at 2 AM.
+
+## The Stack: Pure Cloudflare
+
+Here's the entire architecture, end to end:
+
+```
+Agent
+  ↓
+MCP Server (SSE)
+  ↓
+Cloudflare Worker (Hono)
+  ↓
+D1 (source of truth)
+  ↓
+Vectorize (semantic index)
+  ↓
+Workers AI (embeddings)
+```
+
+Everything runs on Cloudflare.
+
+No external APIs. No separate vector DB vendor. No background workers. No `npm install` for random packages I'll forget to update.
+
+Just four Cloudflare products working together like they were meant to.
+
+## D1: The Source of Truth
+
+Let me tell you something that took me too long to learn:
+
+> **Vector databases are NOT databases.**
+
+They're indexes. Smart, useful indexes — but indexes nonetheless.
+
+If you treat Vectorize as your primary storage, you will regret it. Data drift. Sync issues. The dreaded "it's in there somewhere but I can't find it."
+
+So D1 stores the canonical memory record:
+
+```sql
+CREATE TABLE memories (
+  id TEXT PRIMARY KEY,
+  userId TEXT NOT NULL,
+  tier TEXT NOT NULL,
+  content TEXT NOT NULL,
+  importance REAL DEFAULT 0.5,
+  source TEXT,
+  created_at INTEGER NOT NULL,
+  updated_at INTEGER
+);
+```
+
+I added `tier` because not all memory is equal. Some things need to stick around forever (user preferences, important facts), while other things are just context for the current conversation.
+
+- `short` → recent context (ephemeral)
+- `long` → durable user facts (persistent)
+
+**Without tiers, everything becomes noise. Fast.** And noise is the enemy of useful memory.
+
+## Vectorize: Semantic Retrieval
+
+For semantic search, I created a Vectorize index:
+
+```bash
+wrangler vectorize create mcp-memory-index \
+  --dimensions=1024 \
+  --metric=cosine
+```
+
+Why 1024 dimensions?
+
+Because `@cf/baai/bge-m3` — Cloudflare's embedding model — returns 1024-dimensional vectors.
+
+If you mismatch these, **nothing works**. And the error messages are... let's say "not helpful."
+
+Ask me how I know.
+
+## Workers AI: Embeddings Without Leaving the Building
+
+Instead of calling OpenAI's API (and paying their prices, and managing another API key, and handling rate limits from yet another service), I used:
+
+```typescript
+const embeddings = await env.AI.run("@cf/baai/bge-m3", {
+  text: content
+});
+```
+
+No API keys. No extra billing. No network hop outside Cloudflare's edge.
+
+This is what makes the stack genuinely clean. Everything stays inside one ecosystem. One bill. One dashboard. One set of docs to cry over at 3 AM.
+
+## The Critical Part: Write Order
+
+Most people get this wrong. I'm not going to name any specific blog posts I've seen, but... I've seen some things.
+
+They write to the vector DB first.
+
+**Bad idea. Terrible idea.** The kind of idea that seems fine until production has 47 memories with no matching records in the primary database.
+
+**Correct order:**
+
+1. Insert into D1 (the truth)
+2. Generate embedding
+3. Insert into Vectorize (the index)
+4. **Rollback D1 if vector fails**
+
+This is non-negotiable. D1 is the source of truth. Vectorize is just search acceleration.
+
+**If you write vector first and DB second, you will get data corruption.** It's not a question of if — it's a question of when.
+
+## Retrieval: Cosine Similarity Is Not Enough
+
+Naive approach:
+
+> "Sort by similarity score and call it a day."
+
+That fails long term. Here's why:
+
+Imagine your user tells you something important once (score: 0.95). Then they have 50 mundane conversations (scores: 0.6-0.7). The important memory gets buried.
+
+Old memory dominates forever if you don't do anything about it.
+
+So I added recency weighting:
+
+```typescript
+const recency = Math.exp(-ageInSeconds / halfLifeInSeconds);
+const finalScore = semanticScore * (1 + recency * 0.1);
+```
+
+This ensures:
+
+- **Strong relevance always wins** — if something is truly similar, it floats to top
+- **Recent memory gets a small boost** — a gentle nudge so recent context isn't drowned out
+- **Old irrelevant memories decay naturally** — they don't disappear, but they stop dominating
+
+**Without this, agents become weird over time.** They start preferring old nonsense over recent context. It's like their memory is full of static.
+
+## MCP Integration: Where Everything Broke
+
+Okay. Here's where I lost the most time.
+
+The hardest bug wasn't memory. It wasn't vector search. It was MCP itself.
+
+You can't just mount an MCP server inside Hono like a normal router. I tried:
+
+```typescript
+const mcp = new MyMCP();
+app.mount('/mcp', mcp);
+```
+
+**This was a mistake.**
+
+The error messages are... creative:
+
+```
+TypeError: Cannot read properties of undefined (reading 'duration')
+```
+
+**Thanks, JavaScript. Very helpful. Real diagnostic work there.**
+
+After much weeping and gnashing of teeth, the correct pattern emerged:
+
+```typescript
+app.all("/:userId/sse", async (c) => {
+  const agent = new MyMCP();
+  return agent.fetch(c.req.raw, c.env, {
+    props: { userId }
+  });
+});
+```
+
+Key insights:
+
+- **Instantiate per request** — MCP servers aren't meant to be singletons
+- **Let MCP own its lifecycle** — don't try to manage its state
+- **Pass env properly** — your bindings won't work otherwise
+
+Once I figured this out, SSE worked perfectly. But those three days? Those were dark.
+
+
+## Wait, Where's the Auth?
+
+Right now, the `userId` is passed in the URL. `/user123/memory/search`. No auth. No checks. Just... trust.
+
+In my defense:
+1. This is a **personal tool** first
+2. I wanted to validate the **memory architecture** before adding auth complexity
+
+For production, you'll want to add auth. Here are some ways to do it as needed:
+
+### Option 1: Cloudflare Access / Zero Trust
+
+Cloudflare Access sits in front of your worker and handles auth for you:
+
+- **SSO integration**
+- **OAuth providers** (Google, GitHub, etc.)
+- Device posture checks
+- Zero trust — no VPN needed
+
+You wrap your worker behind Cloudflare Access, and by the time a request hits your code, you already know who they are.
+
+```typescript
+app.use("*", async (c, next) => {
+  const user = c.get("user"); // Populated by Cloudflare Access
+  if (!user) return c.text("Unauthorized", 401);
+  await next();
+});
+```
+
+### Option 2: JWT Validation in Worker
+
+If you want more control, validate JWTs yourself:
+
+```typescript
+app.use("*", async (c, next) => {
+  const authHeader = c.req.header("Authorization");
+  if (!authHeader?.startsWith("Bearer ")) {
+    return c.text("Missing token", 401);
+  }
+  
+  const token = authHeader.slice(7);
+  const payload = await verifyJWT(token, c.env.JWT_SECRET);
+  
+  if (!payload) return c.text("Invalid token", 401);
+  c.set("userId", payload.sub);
+  
+  await next();
+});
+```
+
+Then you extract `userId` from the context, not the URL. **Much safer.**
+
+### Option 3: API Keys
+
+For **server-to-server** communication:
+
+```sql
+CREATE TABLE api_keys (
+  key_hash TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  created_at INTEGER NOT NULL,
+  expires_at INTEGER
+);
+```
+
+Hash the incoming key, look it up, associate with a user. Classic.
+
+
+
+Pick whichever fits your use case. The memory system itself doesn't care about auth — it just needs a `userId` it can trust.
+
+
+## The Rule That Matters Most
+
+**Infrastructure is easy.**
+
+**Memory discipline is hard.**
+
+If your agent writes memory every single turn — "I called the weather API and got sunny" — your system degrades no matter how good your vector search is. You end up with 10,000 memories of utter noise, and retrieval becomes impossible.
+
+So I enforce a strict write policy:
+
+**The agent only writes memory when:**
+
+- User expresses a durable preference ("I prefer Python over JavaScript")
+- User states a long-term fact ("I'm vegan")
+- Explicit "remember this" instruction
+- Important tool output that should persist
+
+Everything else is noise. Let it go.
+
+**Memory quality is determined by write policy, not retrieval algorithm.** This is the most important sentence in this entire post.
+
+
+
+## Deployment: One Command
+
+Everything deploys with:
+
+```bash
+bunx wrangler deploy
+```
+
+With the required bindings in `wrangler.jsonc`:
+
+```jsonc
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mcp-memory-cloudflare",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-02-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "mcp-memory-db",
+      "database_id": "your-database-id-here",
+      "remote": true
+    }
+  ],
+  "vectorize": [
+    {
+      "binding": "VECTORIZE",
+      "index_name": "mcp-memory-vectorize",
+      "remote": true
+    }
+  ],
+  "ai": {
+    "binding": "AI"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "MCP_OBJECT",
+        "class_name": "MyMCP"
+      }
+    ]
+  }
+}
+```
+
+That `nodejs_compat` flag? **Mandatory.** Some dependencies (looking at you, certain UUID libraries) rely on Node.js built-ins like `path`. Miss this flag and your build fails with the most cryptic error you've ever seen.
+
+I may or may not have redeployed 12 times before reading that line in the docs.
+
+
+
+## What I Ended Up With
+
+After all this:
+
+- **Persistent AI memory** that survives restarts
+- **Semantic search** that actually works
+- **Tiered storage** (short vs long) to prevent noise
+- **Recency-aware ranking** so old stuff doesn't dominate
+- **Fully serverless** — no servers to manage
+- **Zero external vendors** — just Cloudflare
+
+All inside Cloudflare.
+
+No Kubernetes. No Docker. No background jobs. No separate vector infrastructure.
+
+Just code that runs at the edge.
+
+
+
+## What This Taught Me
+
+1. **Vector DB is not your database** — use it as an index, not the source of truth
+2. **Memory tiers prevent entropy** — without them, everything becomes noise
+3. **Recency weighting matters more than you think** — it's the difference between useful and useless
+4. **MCP must be mounted correctly** — instantiate per request, pass env properly
+5. **Write discipline is everything** — retrieval can't fix bad write habits
+
+Most people obsess over model choice. "Should I use GPT-4? What about Claude? Maybe Sonnet?"
+
+But if your agent can't remember cleanly — if it loses context, stores garbage, retrieves irrelevant junk — it doesn't matter how smart the model is.
+
+**You're building a very expensive forgetful machine.**
+
+## Conclusion
+
+AI agents are getting smarter every day. But intelligence without memory is just expensive autocomplete.
+
+This project taught me that building memory for agents isn't about fancy vector databases or complex retrieval algorithms. It's about:
+
+- **Discipline** — knowing what to store and when
+- **Architecture** — separating the source of truth from the index
+- **Simplicity** — using tools that work well together instead of stitching Frankenstein stacks
+
+Cloudflare gave me all of this without requiring me to become a DevOps engineer. D1 stores the truth. Vectorize searches it fast. Workers AI generates embeddings. Workers runs the code. That's it.
+
+If you're building agents and want them to actually remember things:
+
+1. Start with D1 as your source of truth
+2. Add Vectorize for semantic search
+3. Use Workers AI for embeddings
+4. Enforce strict write policies
+5. Add auth later when you need it
+
+You don't need five services. You need clarity on what matters.
+
+## Connect with Me
+
+If you want to chat about AI agents, Cloudflare, MCP, or just say hi:
+
+- **GitHub**: [github.com/Avik-creator](https://github.com/Avik-creator)
+- **X/Twitter**: [x.com/avik744](https://x.com/avik744)
+- **LinkedIn**: [linkedin.com/in/avik-mukherjee](https://linkedin.com/in/avik-mukherjee)
+- **Website**: [avikmukherjee.com](https://avikmukherjee.com)
+
+Star the [repo](https://github.com/Avik-creator/mcp-memory-cloudflare) if you found it useful. Feedback welcome.
