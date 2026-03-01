@@ -1,23 +1,27 @@
-import Anchor from '@/components/Anchor';
-import Header from '@/components/Header';
-import HomeLink from '@/components/HomeLink';
-import QuoteBlock from '@/components/QuoteBlock';
-import ReachSection from '@/components/ReachSection';
-import AnimatedSection from '@/components/AnimatedSection';
+import Anchor from "@/components/Anchor";
+import Header from "@/components/Header";
+import HomeLink from "@/components/HomeLink";
+import QuoteBlock from "@/components/QuoteBlock";
+import ReachSection from "@/components/ReachSection";
+import AnimatedSection from "@/components/AnimatedSection";
 
 export default function Home() {
   return (
     <main className="mb-32 text-gray-700 dark:text-neutral-400">
-      <Header
-        name="Avik Mukherjee"
-        location="Hyderabad, India."
-      />
+      <Header name="Avik Mukherjee" location="Hyderabad, India." />
 
       <AnimatedSection delay="0.05s" className="mt-6">
         <p className="text-gray-600 dark:text-stone-400 leading-relaxed">
-          Full-stack developer currently working at{' '}
-          <Anchor href="https://www.superalign.ai" target="_blank" className="transition-all duration-200 hover:opacity-80">SuperAlign AI</Anchor>.
-         building high-throughput analytics, security pipelines, and developer tooling.
+          Full-stack developer currently working at{" "}
+          <Anchor
+            href="https://www.superalign.ai"
+            target="_blank"
+            className="transition-all duration-200 hover:opacity-80"
+          >
+            SuperAlign AI
+          </Anchor>
+          . building high-throughput analytics, security pipelines, and
+          developer tooling.
         </p>
       </AnimatedSection>
 

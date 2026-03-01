@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "@/components/footer/footer";
 import { Instrument_Serif } from "next/font/google";
-import { GeistMono } from 'geist/font/mono';
+import { GeistMono } from "geist/font/mono";
 import { cn } from "@/lib/utils";
 import Script from "next/script";
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -20,7 +20,8 @@ export const metadata: Metadata = {
     template: "%s | Avik Mukherjee",
     default: "Avik Mukherjee",
   },
-  description: "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. Explore projects, experience, and technical writing.",
+  description:
+    "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. Explore projects, experience, and technical writing.",
   keywords: [
     "developer",
     "web",
@@ -38,11 +39,12 @@ export const metadata: Metadata = {
     "portfolio",
     "projects",
     "blog",
-    "India"
+    "India",
   ],
   openGraph: {
     title: "Avik Mukherjee — Full-Stack Web Developer & Software Engineer",
-    description: "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. Explore projects, experience, and technical writing.",
+    description:
+      "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. Explore projects, experience, and technical writing.",
     url: "https://www.avikmukherjee.me/",
     siteName: "Avik Mukherjee's Portfolio",
     images: [
@@ -133,12 +135,11 @@ export const metadata: Metadata = {
     creator: "@avikm744",
     site: "@avikm744",
     siteId: "@avikm744",
-    description: "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. Explore projects, experience, and technical writing.",
-    images: ["/og-image.webp"]
+    description:
+      "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. Explore projects, experience, and technical writing.",
+    images: ["/og-image.webp"],
   },
 };
-
-
 
 export default function RootLayout({
   children,
@@ -188,19 +189,16 @@ export default function RootLayout({
           data-domain="avikmukherjee.me"
           src="https://webtracker.avikmukherjee.me/tracking-script.js"
         />
-
-      
       </head>
       <body
         className={cn(
           GeistMono.variable,
-          'flex min-h-screen mx-auto flex-col font-mono text-sm',
-          'bg-white dark:bg-neutral-950',
-          'text-gray-900 dark:text-neutral-100'
-        )}>
-        <main className="flex-1 pt-24">{children}
-
-        </main>
+          "flex min-h-screen mx-auto flex-col font-mono text-sm",
+          "bg-white dark:bg-neutral-950",
+          "text-gray-900 dark:text-neutral-100",
+        )}
+      >
+        <main className="flex-1 pt-24">{children}</main>
         <Footer />
         <SpeedInsights />
         <Analytics />

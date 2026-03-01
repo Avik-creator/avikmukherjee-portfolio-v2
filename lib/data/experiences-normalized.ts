@@ -25,6 +25,7 @@ export const experiences: ExperienceType[] = ExperienceData.map(
       role: item.title ?? item.company,
       startDate,
       endDate,
+      category: item.category,
       description: item.description ?? [],
       companySite: item.companySite ?? "",
       logo: item.logo ?? undefined,

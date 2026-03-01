@@ -16,6 +16,7 @@ export interface ExperienceType {
     country: string;
     isRemote?: boolean;
   };
+  category: string;
   color: "light" | "medium" | "dark" | "white";
 }
 

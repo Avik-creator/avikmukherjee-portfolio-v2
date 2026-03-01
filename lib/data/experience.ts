@@ -10,6 +10,7 @@ export const ExperienceData: ExperienceType[] = [
       "Contribute to improving the Platform Experience for the users by providing feedback and suggestions.",
       "Help other developers by answering their questions and providing guidance.",
     ],
+    category: "Community",
     companySite: "https://v0.app",
     location: {
       lat: 37.7749,
@@ -21,12 +22,13 @@ export const ExperienceData: ExperienceType[] = [
     startDate: "December 2025",
     endDate: "Present",
     color: "white",
-    logo: "https://media.licdn.com/dms/image/v2/D560BAQGExdlha9-_8g/company-logo_200_200/B56ZhsDcEVHMAM-/0/1754159497775/v0dev_logo?e=1768435200&v=beta&t=cw8_cLaDKnZ1Zvk8P-BznvOYL9Wsq-awTy66utwZAbg",
+    logo: "/companylogos/v0.jpg",
   },
   {
     title: "Software Engineer",
     year: "August 2025 - Present",
     company: "SuperAlign",
+    category: "Work",
     description: [
       "Built a browser-level security Chrome Extension to intercept and analyze user requests across AI platforms (ChatGPT, Claude, Gemini, Perplexity), blocking sensitive data in real time and alerting users via custom popups.",
       "Designed and implemented a high-performance DuckDB analytics pipeline, processing ~70GB of logs in ~4 minutes to enable fast aggregation and domain-level security analysis over structured log formats.",
@@ -43,12 +45,13 @@ export const ExperienceData: ExperienceType[] = [
     startDate: "August 2025",
     endDate: "Present",
     color: "white",
-    logo: "https://media.licdn.com/dms/image/v2/D560BAQEuD1Gq9h3D0w/company-logo_200_200/B56ZYkcgOqHoAI-/0/1744368174401/superalign_logo?e=1768435200&v=beta&t=ADTWdNKyxWD9ihXDgu2nx-PTUcrw5KLmZJUAA1WJt44",
+    logo: "/companylogos/superalign.jpeg",
   },
   {
     title: "Software Engineer Intern",
     year: "May 2025 - July 2025",
     company: "SuperAlign",
+    category: "Work",
     description: [
       "Worked on the Frontend using NextJS, ShadcnUI, TailwindCSS and TypeScript",
       "Worked on Backend using HonoJS, DuckDB",
@@ -65,12 +68,13 @@ export const ExperienceData: ExperienceType[] = [
     color: "white",
     startDate: "May 2025",
     endDate: "July 2025",
-    logo: "https://media.licdn.com/dms/image/v2/D560BAQEuD1Gq9h3D0w/company-logo_200_200/B56ZYkcgOqHoAI-/0/1744368174401/superalign_logo?e=1768435200&v=beta&t=ADTWdNKyxWD9ihXDgu2nx-PTUcrw5KLmZJUAA1WJt44",
+    logo: "/companylogos/superalign.jpeg",
   },
   {
     title: "Junior Engineer Trainee (Intern)",
     year: "Sept 2024 – March 2025",
     company: "DataFoundry",
+    category: "Work",
     description: [
       "Worked on Azure Data pipelines for data preprocessing and generating CSV files.",
       "Implemented Localizations for the web application using i18next and React.",
@@ -87,12 +91,13 @@ export const ExperienceData: ExperienceType[] = [
     startDate: "Sept 2024",
     endDate: "March 2025",
     color: "light",
-    logo: "https://media.licdn.com/dms/image/v2/D560BAQGZUGc1DskC9w/company-logo_200_200/B56ZoK_6WkIcAQ-/0/1761121118122/datafoundryai_logo?e=1768435200&v=beta&t=hD64hCN0TkNHx7NFm1DrdVU4OBw8YpsZhbs00vMDGn8",
+    logo: "/companylogos/datafoundry.png",
   },
   {
     title: "Junior React Native Developer (Intern)",
     year: "Nov 2023 – Feb 2024",
     company: "Dank",
+    category: "Work",
     description: [
       "Collaborated with the development team to ensure timely delivery of applications.",
       "Led feature development for core 40% of the application, with a focus on performance optimization.",
@@ -111,12 +116,13 @@ export const ExperienceData: ExperienceType[] = [
     startDate: "Nov 2023",
     endDate: "Feb 2024",
     color: "medium",
-    logo: "https://cdn.prod.website-files.com/654fb5fc4fc1773cbb038465/6550d15d75979089cb8793ea_Logo.svg",
+    logo: "/companylogos/dank.jpeg",
   },
   {
     title: "LEAD",
     year: "July 2023 – July 2024",
     company: "GDG",
+    category: "Community",
     description: [
       "Organized workshops, hackathons, and events to help students grow.",
       "Conducted sessions on technologies like Flutter and Google Cloud Platform.",
@@ -134,12 +140,13 @@ export const ExperienceData: ExperienceType[] = [
       country: "India",
     },
     color: "medium",
-    logo: "https://media.licdn.com/dms/image/v2/D560BAQEzZsTawYpfEA/company-logo_200_200/company-logo_200_200/0/1692637407875/dscmakaut_logo?e=1768435200&v=beta&t=bfNyZ5HEHCeiuvAoJ5TXn1iQ04rp9tPsccwcawNRxdI",
+    logo: "/companylogos/gdglogo.jpeg",
   },
   {
     title: "Software Developer (Intern)",
     year: "June 2023 – Aug 2023",
     company: "Auctopustechnologies",
+    category: "Work",
     description: [
       "Created responsive interfaces with React and efficient API integrations.",
       "Implemented Redux for managing network discovery states and automated subnet reporting (30% system response improvement).",
@@ -156,12 +163,13 @@ export const ExperienceData: ExperienceType[] = [
     startDate: "June 2023",
     endDate: "Aug 2023",
     color: "medium",
-    logo: "https://media.licdn.com/dms/image/v2/D4D0BAQGDbCHadNt3XA/company-logo_200_200/B4DZYgDykVHwAI-/0/1744294587182/auctopus_technologies_logo?e=1768435200&v=beta&t=JSnDSK52abjndx6GPA-Q4o5l0uMmlRP1Yp-0cgtytIA",
+    logo: "/companylogos/auctopustechnologies.jpeg",
   },
   {
     title: "Web Developer",
     year: "July 2022 – July 2023",
     company: "Repl",
+    category: "Community",
     description: [
       "Built the frontend using React and plain CSS.",
       "Deployed the website on Firebase.",
@@ -182,6 +190,7 @@ export const ExperienceData: ExperienceType[] = [
     title: "Content Writer (Intern)",
     year: "Nov 2022 – Feb 2023",
     company: "Framedmedia",
+    category: "Work",
     description: [
       "Wrote technical articles on React, Node, and miscellaneous topics like gaming.",
       "Authored 50+ articles during the internship.",
@@ -197,12 +206,13 @@ export const ExperienceData: ExperienceType[] = [
     startDate: "Nov 2022",
     endDate: "Feb 2023",
     color: "dark",
-    logo: "https://media.licdn.com/dms/image/v2/C4D0BAQG8yvh2oESsIA/company-logo_200_200/company-logo_200_200/0/1652806695638/aditya_farrad_production_logo?e=1768435200&v=beta&t=iH9D0XM4veA5rCwbV9_XNi5l2wjV1DEDFpjsnAMXLew",
+    logo: "/companylogos/framedmedia.jpeg",
   },
   {
     title: "Content Writer (Intern)",
     year: "May 2019 – Aug 2019",
     company: "Qwerty Thoughts",
+    category: "Work",
     description: [
       "Wrote spiritual articles focusing on Hindu mythology and spirituality.",
       "Authored 30+ articles during the internship.",
@@ -218,6 +228,6 @@ export const ExperienceData: ExperienceType[] = [
     startDate: "May 2019",
     endDate: "Aug 2019",
     color: "dark",
-    logo: "https://media.licdn.com/dms/image/v2/C510BAQGnSHf-htBtxA/company-logo_200_200/company-logo_200_200/0/1630610714444/qwerty_thoughts_logo?e=1768435200&v=beta&t=IpGgsd3_P6xA2KD4ACytGxS0Nm1wlM26zqdFWpQhHWw",
+    logo: "/companylogos/qwertythoughts.jpeg",
   },
 ];
