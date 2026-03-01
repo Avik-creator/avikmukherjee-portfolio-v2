@@ -327,7 +327,7 @@ So I enforce a strict write policy:
 
 Everything else is noise. Let it go.
 
-**Memory quality is determined by write policy, not retrieval algorithm.** This is the most important sentence in this entire post.
+**Memory quality is determined by write policy, not retrieval algorithm.**
 
 
 
@@ -400,8 +400,6 @@ No Kubernetes. No Docker. No background jobs. No separate vector infrastructure.
 
 Just code that runs at the edge.
 
-
-
 ## What This Taught Me
 
 1. **Vector DB is not your database** — use it as an index, not the source of truth
@@ -420,7 +418,7 @@ But if your agent can't remember cleanly — if it loses context, stores garbage
 
 AI agents are getting smarter every day. But intelligence without memory is just expensive autocomplete.
 
-This project taught me that building memory for agents isn't about fancy vector databases or complex retrieval algorithms. It's about:
+Building memory for agents isn't about fancy vector databases or complex retrieval algorithms. It's about:
 
 - **Discipline** — knowing what to store and when
 - **Architecture** — separating the source of truth from the index
@@ -428,15 +426,8 @@ This project taught me that building memory for agents isn't about fancy vector 
 
 Cloudflare gave me all of this without requiring me to become a DevOps engineer. D1 stores the truth. Vectorize searches it fast. Workers AI generates embeddings. Workers runs the code. That's it.
 
-If you're building agents and want them to actually remember things:
-
-1. Start with D1 as your source of truth
-2. Add Vectorize for semantic search
-3. Use Workers AI for embeddings
-4. Enforce strict write policies
-5. Add auth later when you need it
-
 You don't need five services. You need clarity on what matters.
+
 
 ## Connect with Me
 
@@ -444,7 +435,8 @@ If you want to chat about AI agents, Cloudflare, MCP, or just say hi:
 
 - **GitHub**: [github.com/Avik-creator](https://github.com/Avik-creator)
 - **X/Twitter**: [x.com/avik744](https://x.com/avik744)
-- **LinkedIn**: [linkedin.com/in/avik-mukherjee](https://linkedin.com/in/avik-mukherjee)
+- **Peerlist**: [peerlis.com/avik](https://peerlist.io/avikmukherjee)
+- **LinkedIn**: [linkedin.com/in/avik-mukherjee](https://www.linkedin.com/in/avik-mukherjee-8ab9911bb/)
 - **Website**: [avikmukherjee.com](https://avikmukherjee.com)
 
 Star the [repo](https://github.com/Avik-creator/mcp-memory-cloudflare) if you found it useful. Feedback welcome.
