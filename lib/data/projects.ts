@@ -5,8 +5,8 @@ export const projects: ProjectItemType[] = [
         title: "Skills Registry",
         year: "2026",
         description: "Built an AI skills registry and CLI that indexes 200k+ skills and enables discovery and installation across 45+ AI coding agents (private repository).",
-        demoUrl: "https://github.com/Avik-creator/skills-registry",
-        githubUrl: "https://github.com/Avik-creator/skills-registry"
+        demoUrl: "https://github.com/Avik-creator/skill-registry-public",
+        githubUrl: "https://github.com/Avik-creator/skill-registry-public"
     },
     {
         title: "BridgeCord",
