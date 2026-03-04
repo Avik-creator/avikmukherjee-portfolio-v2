@@ -2,6 +2,13 @@ import { ProjectItemType } from "./types";
 
 export const projects: ProjectItemType[] = [
     {
+        title: "Skills Registry",
+        year: "2026",
+        description: "Built an AI skills registry and CLI that indexes 200k+ skills and enables discovery and installation across 45+ AI coding agents (private repository).",
+        demoUrl: "https://github.com/Avik-creator/skills-registry",
+        githubUrl: "https://github.com/Avik-creator/skills-registry"
+    },
+    {
         title: "BridgeCord",
         year: "2026",
         description: "Live chat that lives in Discord. A lightweight, embeddable chat widget that connects your website visitors directly to your Discord server.",
