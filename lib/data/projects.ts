@@ -33,8 +33,8 @@ export const projects: ProjectItemType[] = [
      title: "Security Scanner",
       year: "2026",
       description: "SecurityScanner — Fast CLI security scanner for AI agent ecosystems. Detects prompt injection, command execution risks, secret leakage, and supply-chain threats across SKILL repos, MCP servers, browser/IDE extensions, and codebases. Built with Bun + TypeScript, supports JSON/SARIF outputs, CI enforcement, and live TUI scanning. Private Repo.",
-      demoUrl: "https://github.com/Avik-creator/security-scanner",
-      githubUrl: "https://github.com/Avik-creator/security-scanner"
+      demoUrl: "https://github.com/Avik-creator/security-scanner-public",
+      githubUrl: "https://github.com/Avik-creator/security-scanner-public"
    },
    {
     title: "Plane Discord Bot",
