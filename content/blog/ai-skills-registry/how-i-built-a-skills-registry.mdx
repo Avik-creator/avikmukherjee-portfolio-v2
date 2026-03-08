@@ -1,0 +1,211 @@
+---
+title: "How I Built a Skills Registry to Sync AI Agent Capabilities"
+publishDate: "08 March 2026"
+description: "Creating a unified CLI system to manage and synchronize AI skills across 45+ coding agents"
+tags: ["AI Agents", "CLI", "Cursor", "Claude Code", "Codex", "Developer Tools"]
+slug: "ai-skills-registry"
+---
+
+I've spent the last few months jumping between different AI coding agents.
+
+Cursor for some projects. Claude Code for others. Codex when I'm feeling adventurous. OpenCode when I want something lightweight. And honestly? It's been fantastic — each tool has its own strengths, its own vibe, its own way of making me more productive.
+
+But there's one thing that's been driving me absolutely crazy:
+
+**Skills don't transfer.**
+
+This is already solved by skills.sh. But I wanted to learn how it's built.
+
+## The Inspiration
+
+I wasn't the first to think of this. **skills.sh** by Vercel exists — it's a CLI that installs skills for AI agents, supports dozens of agents, and has a whole marketplace at skills.sh. It's impressive. 9k stars impressive.
+
+I didn't build this to compete or fix anything. I just wanted to learn.
+
+I wanted to understand:
+- How a CLI actually parses GitHub URLs and npm packages
+- How to detect installed agents on a machine
+- How skill files get copied to different locations
+- How to build a small Next.js marketplace on the side
+
+So I studied how skills.sh works, then built my own version from scratch.
+
+## The Problem: Every Agent Is Its Own Island
+
+Here's what happens:
+
+You spend hours crafting the perfect system prompt for Cursor. It makes code reviews amazing. You switch to Claude Code for a different project, and... nothing. You have to rebuild everything from scratch.
+
+Or you find an incredible MCP server that works beautifully in one agent. You try to use it elsewhere. Good luck.
+
+> "This skill would be perfect for Codex too."  
+> — Me, every single time, crying internally.
+
+The AI coding agent ecosystem is fragmented. Each tool has its own:
+- Skill/extension format
+- Configuration location
+- Plugin API
+
+And there's no standard. No shared vocabulary. Nothing.
+
+You're locked into whichever agent you chose. Not because the others are worse — but because your skills don't follow you.
+
+## The Idea: One Registry, Every Agent
+
+What if there was a single place to:
+- Discover reusable AI skills
+- Install them from GitHub or a registry
+- Sync them across ALL your agents automatically
+
+Install once. Use everywhere.
+
+That became the goal.
+
+## The Architecture
+
+<div align="center">
+
+```
+┌─────────────┐
+│   User      │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────────────────────────┐
+│      AI Skills Registry CLI     │
+└──────┬──────────────────┬───────┘
+       │                  │
+       ▼                  ▼
+┌──────────────┐    ┌──────────────┐
+│ GitHub/npm   │    │ Local Cache │
+└──────┬───────┘    └──────┬──────┘
+       │                   │
+       └─────────┬─────────┘
+                 │
+                 ▼
+       ┌─────────────────────┐
+       │   Agent Sync Layer  │
+       └──────────┬──────────┘
+                  │
+      ┌────────────┼────────────┐
+      ▼            ▼            ▼
+   ┌──────┐   ┌────────┐   ┌───────┐
+   │Cursor│   │Claude  │   │Codex  │
+   └──────┘   └────────┘   └───────┘
+      + 40+ more agents
+```
+
+</div>
+
+The CLI is the heart. It handles:
+- Discovery (search the registry or browse marketplace)
+- Installation (fetch from GitHub, npm, or registry)
+- Caching (local storage so you're not re-downloading)
+- Sync (detects installed agents and copies skills to them)
+
+## Supported Agents
+
+The CLI detects installed agents on your machine and syncs skills to them automatically. Currently supports 45+ agents including Cursor, Claude Code, Codex, OpenCode, and many others.
+
+## The CLI Interface
+
+```bash
+# Install a skill from GitHub or registry
+ai-skills install <skill>
+
+# Remove a skill
+ai-skills remove <skill-name>
+
+# List installed skills
+ai-skills list
+
+# Search the registry
+ai-skills search <query>
+
+# Sync to all agents
+ai-skills sync
+
+# Configure the CLI
+ai-skills config
+```
+
+Simple. Familiar. No new concepts to learn — if you've used `npm` or `brew`, this feels natural.
+
+## Under the Hood (Briefly)
+
+The CLI is built with Bun and TypeScript. It parses input URLs to figure out if it's GitHub, npm, GitLab, or local — each source needs different handling.
+
+Agent detection works by checking common install paths and running a few quick commands to see if the agent binary exists. Each agent has its own config object defining where skills should go.
+
+The marketplace is a small Next.js app with a registry API that handles pagination and search. Skills are stored as JSON with metadata extracted from each skill's `SKILL.md` frontmatter.
+
+That's about it. Nothing revolutionary — just a learning project that turned out useful.
+
+## What It Actually Solves
+
+Let me give you a real example:
+
+I built a code review skill for Cursor. It checks for security issues, suggests improvements, enforces our team's patterns. It took maybe 2 hours to perfect.
+
+Before this project? That skill lived in Cursor. Only Cursor.
+
+Now? I run `ai-skills sync` and it's available in Claude Code, Codex, Cline — everywhere I work.
+
+**That's the point.**
+
+The skill lives in one place (the registry). The CLI distributes it everywhere. You maintain it once, you use it everywhere.
+
+## Why a Marketplace Too
+
+The CLI handles management, but I also wanted a place to *discover* what's out there.
+
+So there's a web marketplace where:
+- Developers can browse skills by category
+- See ratings, descriptions, compatibility
+- Install directly via the CLI or web
+
+Because the real value isn't just *your* skills syncing — it's the ecosystem. Someone builds something useful, it goes in the registry, everyone benefits.
+
+## What's Private (For Now)
+
+The implementation exists — there's a CLI, a Next.js marketplace, skill validation, GitHub/npm/local source support, and a sync engine that handles 45+ agents. It works.
+
+But I'm keeping the code private for now. This post covers the *concept* and what I learned building it.
+
+## What This Taught Me
+
+1. **Fragmentation is the enemy of productivity** — having 10 tools is great until none of them share anything
+2. **CLI-first design is underrated** — developers live in terminals; a good CLI is more powerful than any GUI
+3. **Sync is harder than it looks** — each agent has different file structures, conventions, and loading mechanisms
+4. **Registry design matters** — discoverability is just as important as installability
+5. **One install, everywhere use** — this is the dream, and it's achievable with the right abstraction
+
+## The Bigger Picture
+
+AI coding agents are getting incredibly powerful. But their ecosystems are still young and fragmented.
+
+This project is my attempt at exploring what a *shared skill infrastructure* could look like. Not lock-in to one agent — but *portability* across all of them.
+
+The vision: you build a skill once, and it works wherever you work.
+
+That's the future I'm building toward.
+
+## Conclusion
+
+skills.sh proved this idea works. The registry model, the CLI, the marketplace — it all makes sense.
+
+I just wanted my own version. Built it. Learned a lot. That's the point.
+
+And honestly? It's already useful for my own workflow. That counts for something.
+
+## Connect with Me
+
+Want to chat about AI agents, developer tools, or just say hi:
+
+- **GitHub**: [github.com/Avik-creator](https://github.com/Avik-creator)
+- **X/Twitter**: [x.com/avik744](https://x.com/avik744)
+- **Peerlist**: [peerlis.com/avik](https://peerlist.io/avikmukherjee)
+- **LinkedIn**: [linkedin.com/in/avik-mukherjee](https://linkedin.com/in/avik-mukherjee-8ab9911bb/)
+- **Website**: [avikmukherjee.com](https://avikmukherjee.com)
+
+Star the [repo](https://github.com/Avik-creator/skill-registry-public) if you found it useful. The implementation is private for now — but the ideas are free.
