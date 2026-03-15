@@ -69,7 +69,7 @@ export const readingList: ReadingItem[] = [
     author: "Robert C. Martin",
     year: 2017,
     type: "book",
-    status: "planning-to-read",
+    status: "reading",
     url: "https://www.oreilly.com/library/view/clean-architecture/9780134494272/",
     description:
       "Robert C. Martin's seminal work on software architecture. Explores the principles of clean architecture, focusing on the separation of concerns and the importance of a well-designed system architecture.",
