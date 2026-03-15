@@ -65,28 +65,15 @@ export const readingList: ReadingItem[] = [
   },
   {
     id: "book-3",
-    title: "Head First Design Patterns",
-    author: "Eric Freeman & Elisabeth Robson",
-    year: 2020,
+    title: "Clean Architecture",
+    author: "Robert C. Martin",
+    year: 2017,
     type: "book",
     status: "planning-to-read",
-    url: "https://www.oreilly.com/library/view/head-first-design/9781492077992/",
+    url: "https://www.oreilly.com/library/view/clean-architecture/9780134494272/",
     description:
-      "Brain-friendly guide to design patterns using Java. Covers the Gang of Four patterns with visual, hands-on explanations and real-world scenarios.",
+      "Robert C. Martin's seminal work on software architecture. Explores the principles of clean architecture, focusing on the separation of concerns and the importance of a well-designed system architecture.",
     dateAdded: "2025-05-22",
     tags: ["design-patterns", "oop", "engineering"],
-  },
-  {
-    id: "book-4",
-    title: "Designing Data-Intensive Applications — 2nd Edition",
-    author: "Martin Kleppmann & Chris Riccomini",
-    year: 2026,
-    type: "book",
-    status: "planning-to-read",
-    url: "https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/",
-    description:
-      "Updated edition integrating new technologies and emerging trends in distributed systems, cloud services, and modern data architecture.",
-    dateAdded: "2025-05-22",
-    tags: ["systems", "databases", "engineering"],
-  },
+  }
 ];
