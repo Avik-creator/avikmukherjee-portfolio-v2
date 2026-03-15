@@ -47,7 +47,7 @@ export const readingList: ReadingItem[] = [
     url: "https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/",
     description:
       "Foundations of data systems — reliable, scalable, and maintainable applications. Part 1 covers data models, storage engines, encoding, and replication.",
-    dateAdded: "2025-05-01",
+    dateAdded: "2026-02-01",
     tags: ["systems", "databases", "engineering"],
   },
   {
@@ -60,7 +60,7 @@ export const readingList: ReadingItem[] = [
     url: "https://refactoringui.com/",
     description:
       "Practical UI design tactics explained from a developer's point-of-view. From the creators of Tailwind CSS — learn to make your ideas look awesome without relying on a designer.",
-    dateAdded: "2025-05-20",
+    dateAdded: "2026-02-20",
     tags: ["design", "ui", "css"],
   },
   {
@@ -73,7 +73,7 @@ export const readingList: ReadingItem[] = [
     url: "https://www.oreilly.com/library/view/clean-architecture/9780134494272/",
     description:
       "Robert C. Martin's seminal work on software architecture. Explores the principles of clean architecture, focusing on the separation of concerns and the importance of a well-designed system architecture.",
-    dateAdded: "2025-05-22",
+    dateAdded: "2026-03-22",
     tags: ["design-patterns", "oop", "engineering"],
   }
 ];
