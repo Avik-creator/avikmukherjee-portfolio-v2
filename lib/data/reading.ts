@@ -75,5 +75,18 @@ export const readingList: ReadingItem[] = [
       "Robert C. Martin's seminal work on software architecture. Explores the principles of clean architecture, focusing on the separation of concerns and the importance of a well-designed system architecture.",
     dateAdded: "2026-03-22",
     tags: ["design-patterns", "oop", "engineering"],
+  },
+  {
+    id: "article-1",
+    title: "In-Built App Notifications in Avenue Ticketing",
+    author: "Ayush Chugh",
+    year: 2026,
+    type: "article",
+    status: "finished",
+    url: "https://x.com/aayushchugh/status/2033122128938377251?s=20",
+    description:
+      "It covers a deep dive into the implementation of in-built app notifications in Avenue Ticketing. Will try to do a POC for this feature.",
+    dateAdded: "2026-03-22",
+    tags: ["engineering", "realtime", "push-notifications"],
   }
 ];
