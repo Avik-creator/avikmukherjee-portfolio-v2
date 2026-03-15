@@ -88,5 +88,18 @@ export const readingList: ReadingItem[] = [
       "It covers a deep dive into the implementation of in-built app notifications in Avenue Ticketing. Will try to do a POC for this feature.",
     dateAdded: "2026-03-22",
     tags: ["engineering", "realtime", "push-notifications"],
-  }
+  },
+  {
+    id: "article-2",
+    title: "Prompt Caching",
+    author: "Sam Rose",
+    year: 2026,
+    type: "article",
+    status: "finished",
+    url: "https://ngrok.com/blog/prompt-caching",
+    description:
+      "How does prompt caching work?",
+    dateAdded: "2026-03-22",
+    tags: ["LLM", "caching", "engineering"],
+  },
 ];

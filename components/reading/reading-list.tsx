@@ -9,7 +9,7 @@ import { Search, X } from "lucide-react";
 export default function ReadingList() {
   const [search, setSearch] = useState("");
 
-  const filtered = useMemo(() => {
+  const { books, articles } = useMemo(() => {
     const query = search.trim().toLowerCase();
     const base = !query
       ? readingList
@@ -21,13 +21,18 @@ export default function ReadingList() {
             (item.tags ?? []).some((t) => t.toLowerCase().includes(query))
         );
 
-    return [...base].sort((a, b) => {
+    const sorted = [...base].sort((a, b) => {
       // Pin currently-reading items to the top
       if (a.status === "reading" && b.status !== "reading") return -1;
       if (b.status === "reading" && a.status !== "reading") return 1;
       // Everything else sorted by publish year ascending
       return a.year - b.year;
     });
+
+    return {
+      books: sorted.filter(item => item.type === "book"),
+      articles: sorted.filter(item => item.type === "article")
+    };
   }, [search]);
 
   return (
@@ -66,22 +71,7 @@ export default function ReadingList() {
       </div>
 
       {/* ── List ───────────────────────────────────────────────────────── */}
-      {filtered.length > 0 ? (
-        <ul className="flex flex-col">
-          {filtered.map((item, index) => (
-            <li
-              key={item.id}
-              className="animate-[slideFadeUp_0.25s_ease-out]"
-              style={{
-                animationDelay: `${(index + 1) * 0.04 + 0.05}s`,
-                animationFillMode: "both",
-              }}
-            >
-              <ReadingItemCard item={item} />
-            </li>
-          ))}
-        </ul>
-      ) : (
+      {books.length === 0 && articles.length === 0 ? (
         <div className="py-12 text-center">
           <p className="text-gray-400 dark:text-neutral-600 text-[13px]">
             no items match your search.
@@ -93,12 +83,60 @@ export default function ReadingList() {
             clear search
           </button>
         </div>
+      ) : (
+        <>
+          {/* Books Section */}
+          {books.length > 0 && (
+            <div className="space-y-3">
+              <h2 className="text-sm font-medium text-gray-800 dark:text-neutral-200 uppercase tracking-wide">
+                Books
+              </h2>
+              <ul className="flex flex-col">
+                {books.map((item, index) => (
+                  <li
+                    key={item.id}
+                    className="animate-[slideFadeUp_0.25s_ease-out]"
+                    style={{
+                      animationDelay: `${(index + 1) * 0.04 + 0.05}s`,
+                      animationFillMode: "both",
+                    }}
+                  >
+                    <ReadingItemCard item={item} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Articles Section */}
+          {articles.length > 0 && (
+            <div className="space-y-3">
+              <h2 className="text-sm font-medium text-gray-800 dark:text-neutral-200 uppercase tracking-wide">
+                Articles
+              </h2>
+              <ul className="flex flex-col">
+                {articles.map((item, index) => (
+                  <li
+                    key={item.id}
+                    className="animate-[slideFadeUp_0.25s_ease-out]"
+                    style={{
+                      animationDelay: `${(books.length + index + 1) * 0.04 + 0.05}s`,
+                      animationFillMode: "both",
+                    }}
+                  >
+                    <ReadingItemCard item={item} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </>
       )}
 
       {/* ── Footer count ───────────────────────────────────────────────── */}
-      {filtered.length > 0 && (
+      {(books.length > 0 || articles.length > 0) && (
         <p className="text-[11px] text-gray-400 dark:text-neutral-700 text-right tabular-nums">
-          {filtered.length} {filtered.length === 1 ? "item" : "items"}
+          {books.length + articles.length} {books.length + articles.length === 1 ? "item" : "items"}
         </p>
       )}
     </div>
