@@ -55,13 +55,19 @@ export default function Home() {
         animationDelay="0.23s"
       />
       <HomeLink
+        href="/reading"
+        label="reading"
+        description="Articles and books I'm reading, finished, or want to read. Tracking my learning and staying accountable."
+        animationDelay="0.26s"
+      />
+      <HomeLink
         href="/about"
         label="about"
         description="Learn more about my journey, background, and what drives me as a developer."
-        animationDelay="0.26s"
+        animationDelay="0.29s"
       />
 
-      <ReachSection animationDelay="0.29s" />
+      <ReachSection animationDelay="0.32s" />
     </main>
   );
 }
