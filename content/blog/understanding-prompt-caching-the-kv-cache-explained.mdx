@@ -1,0 +1,255 @@
+---
+title: "Understanding Prompt Caching: The KV Cache Explained"
+publishDate: "16 March 2026"
+description: "A deep dive into how prompt caching actually works under the hood — from tokenization and attention mechanisms to the KV matrices that make LLMs 10x faster and cheaper"
+tags: ["LLM", "AI Infrastructure", "Prompt Caching", "Performance"]
+slug: "understanding-prompt-caching-kv-cache"
+---
+
+I was reading through [ngrok's blog post on prompt caching](https://ngrok.com/blog/prompt-caching) recently, and it finally clicked for me how this technology actually works under the hood. I've been using LLMs for a while now, but I never really understood *why* cached tokens are cheaper or how the whole mechanism functions.
+
+So I dug in, took notes, and this is my breakdown of what's actually happening when providers talk about "prompt caching."
+
+Here's the core insight that changed everything for me:
+
+> **Prompt caching works by storing the Key (K) and Value (V) matrices from the attention mechanism so the model doesn't recompute them for the same prompt prefix.**
+
+That's the whole thing. But to really understand why that matters, you need to understand how LLMs process text in the first place.
+
+## The Problem: LLMs Waste Computation
+
+Here's what I didn't realize: every time an LLM generates a new token, it recomputes the attention for *all previous tokens*. Every. Single. Time.
+
+Let's say you have the prompt:
+
+```
+Mary had a little
+```
+
+When the model generates "lamb," it's not just computing attention for "little" → "lamb." It's recomputing:
+- "Mary" → all previous tokens
+- "had" → all previous tokens
+- "a" → all previous tokens
+- "little" → all previous tokens
+
+And then finally computing "lamb" → all previous tokens.
+
+This happens because of how transformer attention works. Each token needs to "look back" at everything that came before it to understand context. But here's the key insight: **once you've computed how "Mary" attends to previous tokens, that calculation never changes**.
+
+The attention weights for "Mary" are fixed. They don't change when you generate "lamb" or "little" or anything else. So why are we recomputing them every single time?
+
+This is the waste that prompt caching solves.
+
+## How Transformers Actually Work
+
+To understand the solution, you need to understand the problem in more detail. Let me walk through the pipeline:
+
+### Step 1: Tokenization
+
+First, text gets converted into tokens (numbers):
+
+```
+"Check out ngrok.ai"
+↓
+[4383, 842, 1657, 17690, 75584]
+```
+
+LLMs don't see words or characters—they see tokens from their vocabulary.
+
+### Step 2: Embeddings
+
+Each token becomes a vector in high-dimensional space:
+
+```
+token 4383 → [0.32, -0.11, 0.87, ...]
+```
+
+These vectors are typically 4096-12000 dimensions. They encode semantic meaning—similar concepts end up close together in this space.
+
+### Step 3: Attention (The Expensive Part)
+
+This is where the magic happens. For each token, the model computes three matrices:
+
+```
+Q (Query) = embeddings × WQ
+K (Key) = embeddings × WK
+V (Value) = embeddings × WV
+```
+
+Think of it like this:
+- **Q**: What am I looking for?
+- **K**: What information do I have?
+- **V**: What's the actual content?
+
+The model then computes attention scores:
+
+```
+scores = Q × Kᵀ
+weights = softmax(scores)
+output = weights × V
+```
+
+This tells each token which previous tokens matter most for predicting the next word.
+
+## The Solution: Cache the K and V Matrices
+
+Here's the breakthrough: **the K and V matrices for previous tokens never change**.
+
+Once you've computed how "Mary" contributes to the context (its K and V values), those values are fixed. They don't depend on future tokens. Only the Q matrix changes for each new token.
+
+So instead of recomputing:
+
+```
+K = embeddings × WK
+V = embeddings × WV
+```
+
+for every token every time, you just **cache them**.
+
+Hence: **KV Cache**.
+
+## How This Changes Generation
+
+Without caching:
+
+```
+Generate token 1: compute K,V for entire prompt
+Generate token 2: compute K,V for entire prompt + token 1
+Generate token 3: compute K,V for entire prompt + tokens 1,2
+...
+```
+
+With caching:
+
+```
+Generate token 1: compute K,V for entire prompt → cache them
+Generate token 2: load cached K,V, compute K,V for token 1 only
+Generate token 3: load cached K,V, compute K,V for tokens 1,2 only
+...
+```
+
+The difference is massive—though I should note this is a slight simplification:
+
+**Without cache**: O(N²) computation for generation
+**With cache**: O(N) computation for incremental generation
+
+The initial prefill (processing the prompt for the first time) is still quadratic, but KV caching dramatically reduces the cost of generating each subsequent token. For long conversations or repeated prompts, this is where the real savings come from.
+
+For a 100k token prompt with 96 layers and 32 attention heads, this isn't just an optimization—it's the difference between working and not working.
+
+## Why Cached Tokens Are 10x Cheaper
+
+This finally explained the pricing model for me. When providers say "cached tokens are 90% cheaper," they're not being generous. They're passing on actual cost savings.
+
+If your prompt prefix is cached, the GPU:
+- Skips recomputing `embedding × WK` for thousands of tokens
+- Skips recomputing `embedding × WV` for thousands of tokens
+- Just loads pre-computed matrices from memory
+
+**Result**:
+- Less compute → lower cost
+- Less computation → faster response
+- Better GPU utilization → higher throughput
+
+Everyone wins.
+
+## Cache Lifetime and Partial Hits
+
+Caches typically last somewhere between 5-10 minutes, though this varies significantly by provider. Anthropic, OpenAI, and Google all handle cache lifetime differently, so it's worth checking the specific documentation for your provider. If another request comes in with the same prefix within that window, you get a cache hit.
+
+But here's what I found interesting: **you don't need exact matches**.
+
+```
+Request A:
+system prompt + docs + "What is X?"
+
+Request B:
+system prompt + docs + "How does Y work?"
+```
+
+The shared prefix (system prompt + docs) can be cached. Only the unique parts get computed fresh.
+
+This is why prompt structure matters so much.
+
+## What This Means for How I Build
+
+Understanding this changed how I think about prompt design. Here's what I'm doing differently now:
+
+### 1. Structure Prompts with Static Prefixes
+
+```
+System instructions
+Context/documents
+Format rules
+----------------
+User query (changes every time)
+```
+
+Everything above the line should be identical across requests. Everything below can change.
+
+### 2. Stop Adding Dynamic Data at the Start
+
+I used to do this:
+
+```
+Request ID: abc123
+Timestamp: 2026-03-16
+System prompt...
+```
+
+This breaks caching. Every unique prefix is a cache miss. Now I put dynamic data at the end or in metadata fields.
+
+### 3. RAG Systems Are Perfect for This
+
+Retrieval-Augmented Generation is ideal for prompt caching:
+
+```
+System instructions (static)
+Retrieved documents (semi-static)
+User question (dynamic)
+```
+
+If multiple users ask questions about the same documents, the document embeddings can be cached and reused.
+
+## Why This Matters
+
+Most engineers I talk to don't understand this. They send prompts like:
+
+```
+entire chat history + user message
+```
+
+without thinking about structure. The result: higher costs, slower responses, and wasted compute.
+
+Understanding KV caching is the difference between:
+- Building a demo that doesn't scale
+- Building a production system that's efficient
+
+## The Bottom Line
+
+Prompt caching stores the K and V matrices from the attention computation so they don't need to be recomputed for identical prompt prefixes. That's the technical reality.
+
+But the practical reality is simpler:
+
+> **Structure your prompts so the maximum prefix is reusable across requests.**
+
+That's it. Do that, and you get:
+- 10x cheaper tokens
+- 10x faster responses
+- Predictable costs at scale
+
+The ngrok article opened my eyes to what's actually happening under the hood. Now when I see "cached tokens" in my API bills, I know exactly what that means—and more importantly, how to maximize it.
+
+If you're building LLM systems, I'd recommend reading the [original article](https://ngrok.com/blog/prompt-caching) yourself. There's something valuable about understanding the machinery behind the abstraction, and it might change how you think about prompt design the same way it did for me.
+
+## Connect with Me
+
+If you want to chat about LLM infrastructure, prompt engineering, or just say hi:
+
+- **GitHub**: [github.com/Avik-creator](https://github.com/Avik-creator)
+- **X/Twitter**: [x.com/avik744](https://x.com/avik744)
+- **Peerlist**: [peerlist.io/avik](https://peerlist.io/avikmukherjee)
+- **LinkedIn**: [linkedin.com/in/avik-mukherjee](https://www.linkedin.com/in/avik-mukherjee-8ab9911bb/)
+- **Website**: [avikmukherjee.com](https://avikmukherjee.com)
+
+Feedback welcome. Cache responsibly.
