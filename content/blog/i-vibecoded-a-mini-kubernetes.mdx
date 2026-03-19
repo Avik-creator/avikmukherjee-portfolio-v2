@@ -19,8 +19,6 @@ And here's the thing: vibecoding something you don't fully understand is actuall
 
 This is my honest breakdown of every file, every function, every design decision — including the ones I had to google after the code was already written. Consider this a preview of what learning Kubernetes properly will actually be like.
 
----
-
 ## What Even Is Kubernetes?
 
 Before the code, you need the mental model. Most introductions say "Kubernetes is a container orchestrator." True. But that tells you nothing about *what it actually does*.
@@ -114,7 +112,6 @@ type HeartbeatRequest struct {
 
 Every 3 seconds, an agent sends this to the scheduler. Full snapshot of everything running on that node. The scheduler merges it into its actual state map. This is how the scheduler knows what's really happening without ever querying Docker itself.
 
----
 
 ## `internal/agent/docker.go` — Talking to Docker
 
@@ -231,8 +228,6 @@ func (h *HealthChecker) StopProbe(containerID string) {
 ```
 
 Called before stopping a container. Prevents probe errors from firing into a dead container after it's been removed. Order matters: stop the watcher, then stop the thing being watched.
-
----
 
 ## `internal/agent/server.go` — The Agent HTTP Server
 
