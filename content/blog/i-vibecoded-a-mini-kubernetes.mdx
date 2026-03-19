@@ -1,0 +1,709 @@
+---
+title: "I Vibecoded a Mini Kubernetes to Understand the Real One"
+publishDate: "19 March 2026"
+description: "A stripped-down Kubernetes implementation built in a weekend to preview how the real thing works — reconciliation loops, heartbeats, desired state, and rolling updates explained through code."
+tags: ["Kubernetes", "Go", "Distributed Systems", "DevOps", "Learning"]
+slug: "vibecoded-mini-kubernetes"
+ogImage: "/og-images/kube-lite.png"
+---
+
+# I Vibecoded a Mini Kubernetes to Understand the Real One
+
+I've been curious about Kubernetes for a while now. I've glanced at YAML files, seen what a Pod looks like, followed a tutorial or two. But I couldn't explain *why* it works the way it does from first principles. I knew I'd need to learn it properly at some point — but for now, I wanted to get a feel for the core ideas.
+
+So I did something a little unhinged. I vibecoded one.
+
+Not the real Kubernetes — that's millions of lines of Go written by hundreds of engineers over a decade. I'm talking about a stripped-down version called `kube-lite`. No etcd. No kubelet. No 47-component control plane. Just the core ideas, implemented end-to-end with AI help, in a weekend.
+
+And here's the thing: vibecoding something you don't fully understand is actually a fantastic way to preview what you're getting into. You get working code. You read it. You ask why. You change things. You break things. You get a feel for the problems the real thing solves.
+
+This is my honest breakdown of every file, every function, every design decision — including the ones I had to google after the code was already written. Consider this a preview of what learning Kubernetes properly will actually be like.
+
+---
+
+## What Even Is Kubernetes?
+
+Before the code, you need the mental model. Most introductions say "Kubernetes is a container orchestrator." True. But that tells you nothing about *what it actually does*.
+
+Here's the insight that finally made it click for me:
+
+**Kubernetes is a loop that continuously compares what you want to what's running, and acts on the difference.**
+
+The "what you want" is called **desired state**. The "what's running" is called **actual state**. The difference is **drift**. The loop that closes the drift is called the **reconciliation loop**.
+
+That's the whole thing. Every other concept — Deployments, ReplicaSets, Services, Controllers — is either a way to *express* desired state, or a piece of machinery that *drives* actual state toward it.
+
+Real-world analogy: a thermostat. You set 72°F. Room is 68°F. Gap = 4°F. Heater turns on. Loop checks again. Repeats until gap = 0. Kubernetes is that thermostat, but for containers running across hundreds of machines.
+
+### What you need to build a basic one
+
+1. A **control plane** (the scheduler) — holds desired state, makes decisions
+2. **Worker nodes** (agents) — actually run containers, report what's running
+3. A **heartbeat mechanism** — agents tell the scheduler "I'm still alive"
+4. A **reconciliation loop** — the engine closing the gap
+5. A **way to talk to Docker** — since containers are what we're actually running
+
+That's exactly what kube-lite builds, one piece at a time.
+
+---
+
+## The Architecture (Before Any Code)
+
+```
+User / CLI / React UI
+         │
+    POST /deploy, GET /nodes ...
+         │
+    ┌─── SCHEDULER (:8080) ───┐
+    │  NodeRegistry            │  ← who's alive?
+    │  StateStore              │  ← desired vs actual
+    │  Reconcile loop          │  ← close the gap
+    │  RolloutController       │  ← rolling updates
+    └──────────┬───────────────┘
+               │ HTTP
+    ┌─── AGENT (:8081) ───┐
+    │  DockerRunner        │  ← talks to Docker daemon
+    │  HealthChecker       │  ← per-container HTTP probes
+    │  Heartbeat loop      │  ← reports state every 3s
+    └──────────────────────┘
+```
+
+Key boundary: **the scheduler never touches Docker**. It only talks to agents over HTTP. Agents own Docker. This is important — it's the same separation Kubernetes enforces between the API server and kubelets.
+
+---
+
+## `pkg/types/types.go` — The Shared Language
+
+Before writing any logic, you define your data structures. Both the scheduler and agent import this package. It's the contract between them.
+
+```go
+type WorkloadSpec struct {
+    ID       string
+    Name     string
+    Image    string
+    Replicas int
+    Env      map[string]string
+    Ports    []PortMapping
+    RestartPolicy RestartPolicy
+    HealthCheck   *HealthCheckSpec
+}
+```
+
+`WorkloadSpec` is **desired state**. This is what you, the user, submit. "I want 3 replicas of nginx:latest with these ports." The system doesn't run this directly — it stores it and works toward it.
+
+```go
+type ContainerInstance struct {
+    ID         string
+    WorkloadID string
+    NodeID     string
+    State      ContainerState
+    ExitCode   int
+    IP         string
+    Health     HealthStatus
+    ...
+}
+```
+
+`ContainerInstance` is **actual state**. This is what's reported by agents via heartbeats. "Container abc123 is running on node foo, IP 172.17.0.3, health: healthy."
+
+The reconciler's entire job is: for each `WorkloadSpec`, look at all `ContainerInstance`s for that workload, count them, compare to `Replicas`, act on the difference.
+
+```go
+type HeartbeatRequest struct {
+    NodeID     string
+    Containers []ContainerInstance
+}
+```
+
+Every 3 seconds, an agent sends this to the scheduler. Full snapshot of everything running on that node. The scheduler merges it into its actual state map. This is how the scheduler knows what's really happening without ever querying Docker itself.
+
+---
+
+## `internal/agent/docker.go` — Talking to Docker
+
+This file wraps the Docker SDK. Every method maps 1-to-1 to a Docker API call.
+
+```go
+type DockerRunner struct {
+    cli *client.Client
+}
+
+func NewDockerRunner() (*DockerRunner, error) {
+    cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+    ...
+}
+```
+
+`client.FromEnv` means it reads `DOCKER_HOST` from environment variables — the standard way Docker clients find the daemon. `WithAPIVersionNegotiation()` means it'll figure out which API version the daemon supports automatically. You almost always want both.
+
+### `Run()` — the most important method
+
+```go
+func (d *DockerRunner) Run(ctx context.Context, req kl.RunRequest) (string, error) {
+    reader, err := d.cli.ImagePull(ctx, req.Image, client.ImagePullOptions{})
+    io.Copy(io.Discard, reader) // drain pull output
+    reader.Close()
+    ...
+```
+
+`ImagePull` is a no-op if the image is already on the machine. But you still have to drain and close the reader — if you don't, Docker's response stream never terminates and the call hangs.
+
+```go
+    portBindings := network.PortMap{}
+    exposedPorts := network.PortSet{}
+    for _, p := range req.Ports {
+        containerPort := network.MustParsePort(fmt.Sprintf("%d/%s", p.ContainerPort, proto))
+        exposedPorts[containerPort] = struct{}{}
+        portBindings[containerPort] = []network.PortBinding{
+            {HostPort: fmt.Sprintf("%d", p.HostPort)},
+        }
+    }
+```
+
+Two separate concepts here that confused me at first. `ExposedPorts` says "this container listens on port 80." `PortBindings` says "bind host port 3000 to container port 80." You need both. `HostPort: "0"` means "let the OS pick an available port" — important for running multiple replicas on the same machine.
+
+```go
+    if _, err := d.cli.ContainerStart(ctx, resp.ID, client.ContainerStartOptions{}); err != nil {
+        d.cli.ContainerRemove(context.Background(), resp.ID, client.ContainerRemoveOptions{Force: true})
+        return "", fmt.Errorf("starting container %s: %w", resp.ID, err)
+    }
+```
+
+This is the line that took the longest to get right. `ContainerCreate` and `ContainerStart` are two separate calls. If `ContainerStart` fails — say, the port is already taken — Docker has already created the container and reserved the port binding. Without the `ContainerRemove` call after failure, that container sits in "created" state forever, and every future attempt fails with "port already allocated." This is a resource cleanup problem that doesn't show up until you try to restart a failed deployment.
+
+---
+
+## `internal/agent/health.go` — HTTP Health Probes
+
+This is how the agent knows if a container is actually healthy, not just running.
+
+```go
+type HealthChecker struct {
+    srv     *Server
+    mu      sync.Mutex
+    cancels map[string]context.CancelFunc
+}
+```
+
+One entry per container. The value is a `context.CancelFunc` — calling it kills that container's probe goroutine. This is Go's idiomatic way to cancel background work.
+
+```go
+func (h *HealthChecker) StartProbe(containerID string, spec *kl.HealthCheckSpec) {
+    if spec == nil {
+        return  // no spec = no probe = container is always considered healthy
+    }
+    ctx, cancel := context.WithCancel(context.Background())
+    h.cancels[containerID] = cancel
+    ...
+    go func() {
+        ticker := time.NewTicker(interval)
+        h.srv.updateHealth(containerID, kl.HealthStarting, 0)
+        failures := 0
+        for {
+            select {
+            case <-ctx.Done():
+                return
+            case <-ticker.C:
+                if err := httpProbe(ctx, url, timeout); err != nil {
+                    failures++
+                    if failures >= threshold {
+                        h.srv.updateHealth(containerID, kl.HealthUnhealthy, failures)
+                    }
+                } else {
+                    failures = 0
+                    h.srv.updateHealth(containerID, kl.HealthHealthy, 0)
+                }
+            }
+        }
+    }()
+}
+```
+
+Walk through this goroutine carefully because it's a clean pattern worth understanding:
+
+- `select` on two channels: `ctx.Done()` (stop signal) and `ticker.C` (tick every N seconds)
+- On tick: fire an HTTP GET at the container's health endpoint
+- Consecutive failures only matter after hitting the threshold — one blip doesn't mark a container unhealthy
+- On success: reset `failures` to 0. You have to earn healthy back after failing.
+- `updateHealth` writes directly into `Server.containers[containerID]` — the same map the heartbeat loop reads. So health results automatically flow to the scheduler within 3 seconds.
+
+```go
+func (h *HealthChecker) StopProbe(containerID string) {
+    cancel()
+    delete(h.cancels, containerID)
+}
+```
+
+Called before stopping a container. Prevents probe errors from firing into a dead container after it's been removed. Order matters: stop the watcher, then stop the thing being watched.
+
+---
+
+## `internal/agent/server.go` — The Agent HTTP Server
+
+The agent exposes 5 routes. The scheduler calls them.
+
+```go
+mux.HandleFunc("POST /run", s.handleRun)
+mux.HandleFunc("POST /stop/{containerID}", s.handleStop)
+mux.HandleFunc("GET /status/{containerID}", s.handleStatus)
+mux.HandleFunc("GET /logs/{containerID}", s.handleLogs)
+mux.HandleFunc("GET /health", s.handleHealth)
+```
+
+### `handleRun` — the most subtle handler
+
+```go
+runCtx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+defer cancel()
+
+containerID, err := s.runner.Run(runCtx, req)
+```
+
+Notice `context.Background()` instead of `r.Context()`. This is deliberate, and it took a painful runtime bug to discover why.
+
+When the scheduler sends `POST /run`, it has a 5-minute HTTP client timeout. If the image pull takes longer than that, the scheduler gives up and closes the connection. `r.Context()` is tied to that connection — when it closes, the context is cancelled, and Docker stops pulling mid-image.
+
+By using `context.Background()`, the Docker operation runs on its own 10-minute timeout, completely independent of the scheduler's connection. The scheduler can time out and retry; the agent keeps pulling. Without this, you get "context canceled" on the agent side every time you pull a new image on a slow connection.
+
+```go
+initialHealth := kl.HealthUnknown
+if req.HealthCheck == nil {
+    initialHealth = kl.HealthHealthy
+}
+```
+
+If no health check is configured, the container is immediately considered healthy. This is the same default Kubernetes uses — a container with no probe is assumed healthy as soon as it starts. Otherwise it starts as `HealthUnknown` and transitions based on probe results.
+
+### The heartbeat goroutine
+
+```go
+func (s *Server) registerAndHeartbeat() {
+    advertise := s.listenAddr
+    if strings.HasPrefix(advertise, ":") {
+        advertise = "127.0.0.1" + advertise
+    }
+```
+
+Subtle but critical. `:8081` is a valid *bind* address — it tells the OS "listen on all interfaces on port 8081." But it's not a routable address. If the agent registers with address `:8081`, the scheduler will later try to call `http://:8081/run` which means nothing.
+
+So before registering, if the listen address has no host, `127.0.0.1` is prepended. The scheduler then calls `http://127.0.0.1:8081/run`, which works on a single machine. In a real multi-machine setup, you'd read the machine's actual IP instead.
+
+```go
+    for range ticker.C {
+        s.syncContainerStates(context.Background())  // inspect Docker
+
+        // build snapshot from local map
+        instances := []kl.ContainerInstance for each container
+
+        hb := kl.HeartbeatRequest{NodeID: s.nodeID, Containers: instances}
+        if err := s.postJSON(s.schedulerAddr+"/heartbeat", hb); err != nil {
+            if err == errReregister {
+                // scheduler returned 422: re-register
+            }
+        }
+    }
+```
+
+Every 3 seconds:
+1. Ask Docker what state each container is actually in (it might have crashed)
+2. Bundle the full container snapshot into a heartbeat
+3. Send it to the scheduler
+4. If scheduler says 422 (unknown node) → re-register
+
+The 422 path handles the case where the scheduler restarted and lost its in-memory node registry. Without this, a restarted scheduler would never hear from existing agents again.
+
+---
+
+## `internal/scheduler/registry.go` — Node Registry
+
+```go
+const (
+    heartbeatInterval = 3 * time.Second
+    deadThreshold     = 3 * heartbeatInterval  // 9 seconds
+)
+```
+
+The 9-second threshold is the most important constant in the file. Miss 3 consecutive heartbeats and you're dead. Why 3? One missed beat could be a slow network. Two could be a GC pause. Three in a row almost certainly means the process is gone. This is the same logic real distributed systems use.
+
+```go
+func (r *NodeRegistry) Heartbeat(nodeID string) error {
+    e, ok := r.nodes[nodeID]
+    if !ok {
+        return fmt.Errorf("unknown node %s", nodeID)  // → agent gets 422, re-registers
+    }
+    e.lastHeartbeat = time.Now()
+    e.node.Status = kl.NodeAlive
+    return nil
+}
+```
+
+```go
+func (r *NodeRegistry) CheckDeadNodes() {
+    for _, e := range r.nodes {
+        if e.node.Status == kl.NodeAlive && now.Sub(e.lastHeartbeat) > deadThreshold {
+            e.node.Status = kl.NodeDead
+        }
+    }
+}
+```
+
+`CheckDeadNodes` runs every 5 seconds from a background goroutine in the scheduler. It doesn't remove dead nodes — it just marks them dead. The reconciler then won't pick them when assigning new work. This is important: a dead node might come back (network partition vs crashed process). Marking instead of deleting gives you the chance to detect revival.
+
+---
+
+## `internal/scheduler/state.go` — The Source of Truth
+
+This is where the design really clicks. Two maps. One mutex.
+
+```go
+type StateStore struct {
+    workloads map[string]*workloadEntry        // workloadID → desired state
+    instances map[string]*kl.ContainerInstance // containerID → actual state
+}
+
+type workloadEntry struct {
+    spec    kl.WorkloadSpec
+    pending map[string]struct{}  // started but not yet in a heartbeat
+}
+```
+
+That `pending` set is the key insight I didn't expect. Here's the problem it solves:
+
+**Without pending tracking:**
+```
+t=0: EffectiveCount = 0, desired = 3
+     reconciler starts 3 containers
+t=1: EffectiveCount = 0 (heartbeat hasn't arrived yet)
+     reconciler starts 3 MORE containers  ← over-provisioned!
+t=5: heartbeat arrives, 6 containers running
+```
+
+**With pending tracking:**
+```
+t=0: EffectiveCount = 0, desired = 3
+     reconciler starts 3 containers → MarkPending for each
+t=1: EffectiveCount = 0 running + 3 pending = 3
+     reconciler sees 3 effective, desired 3, nothing to do ✓
+t=5: heartbeat arrives → SyncHeartbeat promotes pending → running
+     pending={}, running=3, EffectiveCount still = 3 ✓
+```
+
+```go
+func (s *StateStore) EffectiveCount(workloadID string) int {
+    count := len(e.pending)  // containers we asked for but haven't confirmed yet
+    for _, inst := range s.instances {
+        if inst.WorkloadID == workloadID && inst.State == kl.ContainerRunning {
+            count++
+        }
+    }
+    return count
+}
+```
+
+This is how over-provisioning is prevented. The gap between "we asked an agent to start a container" and "the agent confirmed it via heartbeat" can be several seconds. During that gap, pending acts as a reservation.
+
+---
+
+## `internal/scheduler/scheduler.go` — The Brain
+
+### The single-goroutine invariant
+
+This is the most important design decision in the entire codebase, and honestly one I had to understand after the code was written.
+
+```go
+type Scheduler struct {
+    ...
+    reconcileTrigger chan struct{}  // buffered, capacity 1
+}
+```
+
+The reconcile loop runs in exactly one goroutine:
+
+```go
+func (s *Scheduler) reconcileLoop(ctx context.Context) {
+    t := time.NewTicker(5 * time.Second)
+    for {
+        select {
+        case <-t.C:
+            s.reconcile(ctx)
+        case <-s.reconcileTrigger:
+            // drain the ticker so we don't double-reconcile right after a trigger
+            select {
+            case <-t.C:
+            default:
+            }
+            s.reconcile(ctx)
+        }
+    }
+}
+```
+
+And `Deploy()` never calls `reconcile()` directly:
+
+```go
+func (s *Scheduler) Deploy(_ context.Context, spec kl.WorkloadSpec) error {
+    s.state.UpsertWorkload(spec)
+    s.triggerReconcile()  // just send a signal
+    return nil
+}
+```
+
+Why? Without this, `Deploy()` and the background ticker could both call `reconcile()` at the same time. Both see `EffectiveCount=0`. Both start 3 containers. Now you have 6.
+
+By making `Deploy()` only mutate state and fire a signal, and making the reconcile loop the *only* thing that ever starts containers, you guarantee at most one reconcile runs at a time. No mutex needed on the reconcile logic itself.
+
+The channel has capacity 1 — if a trigger is already queued, adding another is a no-op. At most one pending reconcile at any moment.
+
+### `reconcileWorkload` — the core loop
+
+```go
+func (s *Scheduler) reconcileWorkload(ctx context.Context, spec kl.WorkloadSpec) {
+    effective := s.state.EffectiveCount(spec.ID)
+    desired := spec.Replicas
+
+    if effective < desired {
+        toStart := desired - effective
+        for i := 0; i < toStart; i++ {
+            s.startReplica(ctx, spec, spec.Image)
+        }
+        return
+    }
+
+    for _, inst := range s.state.InstancesFor(spec.ID) {
+        if inst.State != kl.ContainerExited && inst.State != kl.ContainerStopped {
+            continue
+        }
+        switch spec.RestartPolicy {
+        case kl.RestartAlways:
+            s.restartInstance(ctx, spec, inst)
+        case kl.RestartOnFailure:
+            if inst.ExitCode != 0 {
+                s.restartInstance(ctx, spec, inst)
+            }
+        }
+    }
+
+    if effective > desired {
+        running := s.state.RunningInstancesFor(spec.ID)
+        excess := len(running) - desired
+        for i := 0; i < excess; i++ {
+            s.stopInstance(ctx, running[i])
+        }
+    }
+}
+```
+
+Three cases, evaluated in order:
+
+1. **Under-provisioned** → start containers. Return early — don't scale down at the same time.
+2. **Container exited** → apply restart policy. `RestartAlways` restarts everything. `RestartOnFailure` restarts only non-zero exits. `RestartNever` does nothing.
+3. **Over-provisioned** → stop excess containers.
+
+This is a simplified version of what Kubernetes's ReplicaSet controller does. The real one has more edge cases, but the core logic is identical.
+
+### `autoAssignHostPorts`
+
+```go
+func autoAssignHostPorts(ports []kl.PortMapping, replicas int) []kl.PortMapping {
+    if replicas <= 1 || len(ports) == 0 {
+        return ports
+    }
+    out := make([]kl.PortMapping, len(ports))
+    for i, p := range ports {
+        out[i] = kl.PortMapping{
+            HostPort:      0,  // Docker picks an available port
+            ContainerPort: p.ContainerPort,
+            Protocol:      p.Protocol,
+        }
+    }
+    return out
+}
+```
+
+When you run 3 replicas, all 3 containers need to bind container port 80. But they can't all bind the same host port 3000. So for multi-replica workloads, host ports are zeroed out — Docker picks a unique available ephemeral port for each container. Use `kl discover <name>` to find out what ports were actually assigned. This is the same model Kubernetes uses: don't statically bind host ports on multi-replica workloads.
+
+---
+
+## `internal/scheduler/rollout.go` — Rolling Updates Without Downtime
+
+This is the most complex piece. A rolling update replaces containers one at a time so users never see an outage.
+
+```go
+type rolloutEntry struct {
+    state    kl.RolloutState
+    spec     kl.WorkloadSpec       // spec with OLD image
+    newImage string
+    waitingNew     map[string]time.Time  // new containers → their health deadline
+    oldContainerIDs []string             // old containers still to stop
+}
+```
+
+The state machine runs via `advance()`, called every 5 seconds:
+
+**Step 1 — Check deadlines:**
+```go
+for cid, deadline := range e.waitingNew {
+    if now.After(deadline) {
+        rc.abort(ctx, e, false)  // new container didn't become healthy in 60s
+        return
+    }
+    if inst.Health == kl.HealthUnhealthy {
+        rc.abort(ctx, e, false)  // explicitly unhealthy
+        return
+    }
+}
+```
+
+Any new container that fails to become healthy within 60 seconds triggers an abort. The rollout stops. Existing old-image containers keep running.
+
+**Step 2 — Promote healthy new containers:**
+```go
+for cid := range e.waitingNew {
+    isHealthy := inst.Health == kl.HealthHealthy ||
+        (e.spec.HealthCheck == nil && inst.State == kl.ContainerRunning)
+    if !isHealthy { continue }
+
+    delete(e.waitingNew, cid)
+    e.state.UpdatedReplicas++
+
+    // stop one old container
+    oldID := e.oldContainerIDs[0]
+    e.oldContainerIDs = e.oldContainerIDs[1:]
+    go rc.sched.stopInstance(ctx, oldInst)
+}
+```
+
+One new container healthy → stop one old container. The queue is a FIFO: first-in, first-out. This is the "one in, one out" wave pattern that gives you zero downtime.
+
+**Step 3 — Check for completion:**
+```go
+if len(e.oldContainerIDs) == 0 && len(e.waitingNew) == 0 {
+    rc.finish(ctx, e)  // update workload spec to new image permanently
+}
+```
+
+When there are no more old containers to stop and no new containers waiting for health confirmation, the rollout is done. `finish()` updates the `WorkloadSpec` with the new image so the reconciler uses it going forward.
+
+**Step 4 — Start next wave:**
+```go
+canStart := e.maxSurge - len(e.waitingNew)
+for canStart > 0 && len(e.oldContainerIDs) > 0 {
+    rc.sched.startReplica(ctx, newSpec, e.newImage)
+    e.waitingNew[pending] = time.Now().Add(healthTimeout)
+    canStart--
+}
+```
+
+`maxSurge` controls how many new containers can run simultaneously above the desired count. `maxSurge=1` means at any point: `desired + 1` containers running max. Higher surge = faster rollout, more resource usage.
+
+---
+
+## `internal/scheduler/server.go` — The Scheduler's HTTP Interface
+
+Two groups of routes: agent-facing and user-facing.
+
+**Agent-facing:**
+```
+POST /register  → registry.Register()
+POST /heartbeat → registry.Heartbeat() + state.SyncHeartbeat()
+```
+
+The heartbeat handler returns **422 Unprocessable Entity** if the node ID is unknown. The agent's heartbeat loop treats 422 specifically as a signal to re-register. This is the mechanism that handles scheduler restarts gracefully.
+
+**User-facing:**
+```
+POST /deploy         → sched.Deploy()
+PUT  /workloads/:id/scale  → sched.Scale()
+DELETE /workloads/:id      → sched.Delete()
+GET  /discover/:name       → sched.Discover()
+GET  /logs/:containerID    → proxy to agent
+```
+
+The logs proxy is worth looking at:
+
+```go
+// find which node the container is on
+inst, ok := s.sched.state.GetInstance(containerID)
+node, ok := s.sched.registry.GetNode(inst.NodeID)
+
+// forward to that agent
+url := fmt.Sprintf("http://%s/logs/%s?tail=%s&follow=%s", node.Address, ...)
+resp, _ := http.Get(url)
+io.Copy(w, resp.Body)  // stream it back
+```
+
+Callers (the CLI, the UI) never need to know which node a container is on. They ask the scheduler, the scheduler looks it up and proxies the stream. This is how Kubernetes `kubectl logs` works too — you talk to the API server, it figures out which node and proxies.
+
+**CORS middleware:**
+```go
+func corsMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Access-Control-Allow-Origin", "*")
+        if r.Method == http.MethodOptions {
+            w.WriteHeader(http.StatusNoContent)
+            return
+        }
+        next.ServeHTTP(w, r)
+    })
+}
+```
+
+Needed because the React UI runs on `:5173` but the scheduler is on `:8080`. Browsers block cross-origin requests by default. This wraps the entire mux and adds the header to every response plus handles preflight `OPTIONS` requests.
+
+---
+
+## What I Actually Learned
+
+I want to be honest: I vibecoded most of this. I described what I wanted, the AI wrote it, and I read through it after. Some things I understood immediately. Others I had to look up, break, fix, and look up again.
+
+But that process gave me a genuine preview of what learning Kubernetes will be like. Here's what stuck:
+
+**The reconciliation loop is not clever. It's just a loop.** It runs, compares numbers, makes calls. The sophistication comes from making it correct under concurrency and partial failure — not from any fancy algorithm.
+
+**Distributed systems bugs are timing bugs.** The context cancellation bug (scheduler times out, Docker pull gets cancelled), the over-provisioning bug (two goroutines both see effective=0), the "port already allocated" bug (orphaned containers holding port bindings) — all of these only showed up at runtime, under real conditions. Reading code doesn't find them. Running code does.
+
+**Desired state is a superpower.** Once you store what you *want* separately from what *is*, the system becomes self-healing almost for free. Crash a container. The reconciler sees drift on the next tick and starts a new one. Kill an agent. The scheduler marks it dead and the reconciler starts replacements on other nodes. You don't write restart logic. You write reconcile logic.
+
+**The heartbeat timeout constant matters more than almost anything else.** 9 seconds (3 missed beats × 3 second interval) is a judgment call. Too low: false positives, healthy nodes marked dead. Too high: slow failure detection, users wait. The real Kubernetes defaults to 5 minutes for node failure detection. Ours is 9 seconds. Both are right for their context.
+
+---
+
+## What's Missing vs Real Kubernetes
+
+A lot. Intentionally. Real Kubernetes has:
+- **etcd** — a distributed database for state, not an in-memory map
+- **Persistent volumes** — storage that outlives containers
+- **Networking plugins** (CNI) — containers on different machines can talk to each other
+- **RBAC** — who's allowed to do what
+- **Namespaces** — logical isolation
+- **Hundreds of resource types** — Services, ConfigMaps, Secrets, Ingress...
+
+`kube-lite` is a learning project, not a production system. But the core loop — reconcile desired vs actual, heartbeat for liveness, rolling updates for deployments — that part is real. Those concepts transfer directly.
+
+---
+
+## The Bottom Line
+
+Building something you don't fully understand is a legitimate way to preview what you're getting into. You get working code fast. Then you read it, question it, and understand *why* each decision exists.
+
+The core insight from this whole project:
+
+**Kubernetes is a control loop. Desired state in. Actual state in. Act on the difference. Repeat.**
+
+Everything else is implementation details.
+
+If you're curious about Kubernetes and want to get a feel for it before diving deep, try implementing pieces of it yourself. You don't need to finish. You don't need it to be production-ready. Just build enough to feel the problems the real thing is solving.
+
+---
+
+## Connect with Me
+
+If you want to talk distributed systems, Go, Kubernetes, or just what it's like to vibe code your way to understanding something:
+
+GitHub: [github.com/Avik-creator](https://github.com/Avik-creator)
+X/Twitter: [x.com/avik744](https://x.com/avik744)
+Peerlist: [peerlist.io/avik](https://peerlist.io/avik)
+LinkedIn: [linkedin.com/in/avik-mukherjee](https://linkedin.com/in/avik-mukherjee)
+Website: [avikmukherjee.com](https://avikmukherjee.com)
+
+Feedback welcome. Reconcile responsibly.
