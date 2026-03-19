@@ -45,8 +45,6 @@ Real-world analogy: a thermostat. You set 72°F. Room is 68°F. Gap = 4°F. Heat
 
 That's exactly what kube-lite builds, one piece at a time.
 
----
-
 ## The Architecture (Before Any Code)
 
 ```
@@ -70,7 +68,6 @@ User / CLI / React UI
 
 Key boundary: **the scheduler never touches Docker**. It only talks to agents over HTTP. Agents own Docker. This is important — it's the same separation Kubernetes enforces between the API server and kubelets.
 
----
 
 ## `pkg/types/types.go` — The Shared Language
 
@@ -171,7 +168,6 @@ Two separate concepts here that confused me at first. `ExposedPorts` says "this 
 
 This is the line that took the longest to get right. `ContainerCreate` and `ContainerStart` are two separate calls. If `ContainerStart` fails — say, the port is already taken — Docker has already created the container and reserved the port binding. Without the `ContainerRemove` call after failure, that container sits in "created" state forever, and every future attempt fails with "port already allocated." This is a resource cleanup problem that doesn't show up until you try to restart a failed deployment.
 
----
 
 ## `internal/agent/health.go` — HTTP Health Probes
 
@@ -312,8 +308,6 @@ Every 3 seconds:
 
 The 422 path handles the case where the scheduler restarted and lost its in-memory node registry. Without this, a restarted scheduler would never hear from existing agents again.
 
----
-
 ## `internal/scheduler/registry.go` — Node Registry
 
 ```go
@@ -348,8 +342,6 @@ func (r *NodeRegistry) CheckDeadNodes() {
 ```
 
 `CheckDeadNodes` runs every 5 seconds from a background goroutine in the scheduler. It doesn't remove dead nodes — it just marks them dead. The reconciler then won't pick them when assigning new work. This is important: a dead node might come back (network partition vs crashed process). Marking instead of deleting gives you the chance to detect revival.
-
----
 
 ## `internal/scheduler/state.go` — The Source of Truth
 
@@ -401,8 +393,6 @@ func (s *StateStore) EffectiveCount(workloadID string) int {
 ```
 
 This is how over-provisioning is prevented. The gap between "we asked an agent to start a container" and "the agent confirmed it via heartbeat" can be several seconds. During that gap, pending acts as a reservation.
-
----
 
 ## `internal/scheduler/scheduler.go` — The Brain
 
@@ -522,8 +512,6 @@ func autoAssignHostPorts(ports []kl.PortMapping, replicas int) []kl.PortMapping 
 
 When you run 3 replicas, all 3 containers need to bind container port 80. But they can't all bind the same host port 3000. So for multi-replica workloads, host ports are zeroed out — Docker picks a unique available ephemeral port for each container. Use `kl discover <name>` to find out what ports were actually assigned. This is the same model Kubernetes uses: don't statically bind host ports on multi-replica workloads.
 
----
-
 ## `internal/scheduler/rollout.go` — Rolling Updates Without Downtime
 
 This is the most complex piece. A rolling update replaces containers one at a time so users never see an outage.
@@ -596,8 +584,6 @@ for canStart > 0 && len(e.oldContainerIDs) > 0 {
 
 `maxSurge` controls how many new containers can run simultaneously above the desired count. `maxSurge=1` means at any point: `desired + 1` containers running max. Higher surge = faster rollout, more resource usage.
 
----
-
 ## `internal/scheduler/server.go` — The Scheduler's HTTP Interface
 
 Two groups of routes: agent-facing and user-facing.
@@ -650,8 +636,6 @@ func corsMiddleware(next http.Handler) http.Handler {
 
 Needed because the React UI runs on `:5173` but the scheduler is on `:8080`. Browsers block cross-origin requests by default. This wraps the entire mux and adds the header to every response plus handles preflight `OPTIONS` requests.
 
----
-
 ## What I Actually Learned
 
 I want to be honest: I vibecoded most of this. I described what I wanted, the AI wrote it, and I read through it after. Some things I understood immediately. Others I had to look up, break, fix, and look up again.
@@ -666,8 +650,6 @@ But that process gave me a genuine preview of what learning Kubernetes will be l
 
 **The heartbeat timeout constant matters more than almost anything else.** 9 seconds (3 missed beats × 3 second interval) is a judgment call. Too low: false positives, healthy nodes marked dead. Too high: slow failure detection, users wait. The real Kubernetes defaults to 5 minutes for node failure detection. Ours is 9 seconds. Both are right for their context.
 
----
-
 ## What's Missing vs Real Kubernetes
 
 A lot. Intentionally. Real Kubernetes has:
@@ -679,8 +661,6 @@ A lot. Intentionally. Real Kubernetes has:
 - **Hundreds of resource types** — Services, ConfigMaps, Secrets, Ingress...
 
 `kube-lite` is a learning project, not a production system. But the core loop — reconcile desired vs actual, heartbeat for liveness, rolling updates for deployments — that part is real. Those concepts transfer directly.
-
----
 
 ## The Bottom Line
 
@@ -694,11 +674,9 @@ Everything else is implementation details.
 
 If you're curious about Kubernetes and want to get a feel for it before diving deep, try implementing pieces of it yourself. You don't need to finish. You don't need it to be production-ready. Just build enough to feel the problems the real thing is solving.
 
----
-
 ## Connect with Me
 
-If you want to talk distributed systems, Go, Kubernetes, or just what it's like to vibe code your way to understanding something:
+If you want to talk about Web Dev, Backend Systems or just what it's like to vibe code your way to understanding something:
 
 GitHub: [github.com/Avik-creator](https://github.com/Avik-creator)
 X/Twitter: [x.com/avik744](https://x.com/avik744)
@@ -706,4 +684,4 @@ Peerlist: [peerlist.io/avik](https://peerlist.io/avik)
 LinkedIn: [linkedin.com/in/avik-mukherjee](https://linkedin.com/in/avik-mukherjee)
 Website: [avikmukherjee.com](https://avikmukherjee.com)
 
-Feedback welcome. Reconcile responsibly.
+Feedback welcome.
