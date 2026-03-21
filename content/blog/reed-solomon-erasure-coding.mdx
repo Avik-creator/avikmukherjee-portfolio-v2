@@ -12,6 +12,8 @@ I've been reading about AWS S3 for a while. I know what it is. I've used it. I c
 
 But the last time I really dug into how S3 achieves _1 petabyte per second_ of throughput on top of HDDs that haven't gotten faster in 30 years, I kept hitting this term: erasure coding. Specifically, Reed-Solomon erasure coding.
 
+This whole blog post idea came after watching [Mehul Mohan's excellent video](https://www.youtube.com/watch?v=GgZV67IQ5hA) and reading [Stanislav Kozlovski's insightful article on how S3 scales with millions of hard drives](https://bigdata.2minutestreaming.com/p/how-aws-s3-scales-with-tens-of-millions-of-hard-drives). I saw the video but generally don't like to comment, so instead I decided to build something. What you're reading is my implementation of erasure coding learned from that video, with some help from AI. [Here's my implementation on my blog](https://avikmukherjee.me/blog/reed-solomon-erasure-coding). Props to Mehul and Stanislav for making this click.
+
 Every explanation I found either hand-waved it as "basically RAID" or went straight into Galois field theory. Neither helped.
 
 So I did what I now do when I want to actually understand something: I implemented it.
