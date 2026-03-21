@@ -10,13 +10,13 @@ import { ErasureCodingDemo } from '@/components/blog/ErasureCodingDemo'
 
 I've been reading about AWS S3 for a while. I know what it is. I've used it. I can explain **what** it does.
 
-But the last time I really dug into how S3 achieves **1 petabyte per second** of throughput on top of HDDs that haven't gotten faster in 30 years, I kept hitting this term: **erasure coding**. Specifically, **Reed-Solomon** erasure coding.
+But the last time I really dug into how S3 achieves _1 petabyte per second_ of throughput on top of HDDs that haven't gotten faster in 30 years, I kept hitting this term: erasure coding. Specifically, Reed-Solomon erasure coding.
 
 Every explanation I found either hand-waved it as "basically RAID" or went straight into Galois field theory. Neither helped.
 
 So I did what I now do when I want to actually understand something: I implemented it.
 
-Not the full S3 stack. Just the **erasure coding** layer — from scratch, in Go, over a weekend. No external libraries. Just the math, made concrete.
+Not the full S3 stack. Just the erasure coding layer — from scratch, in Go, over a weekend. No external libraries. Just the math, made concrete.
 
 Here's what I actually learned.
 
@@ -28,7 +28,7 @@ Here's the insight that finally made it click:
 
 > A polynomial is uniquely defined by enough points on it. If you have a degree-4 polynomial, any 5 points on it let you perfectly reconstruct the entire curve — even if you lose some of the points.
 
-That's the whole thing. Everything else — **Reed-Solomon**, **Galois fields**, **Cauchy matrices** — is implementation detail underneath that core idea.
+That's the whole thing. Everything else — Reed-Solomon, Galois fields, Cauchy matrices — is implementation detail underneath that core idea.
 
 ### The concrete version
 
@@ -41,7 +41,7 @@ You have a file. You want to store it in a way that survives failures. Here's wh
 
 The first 5 shards are **data shards** — they directly encode the file content. The last 4 are **parity shards** — extra evaluations computed purely for redundancy.
 
-S3 uses a **5-of-9 scheme**. Any 5 shards out of 9 is enough. That means you can lose any 4 disks — or 4 entire nodes — and still recover the data perfectly.
+S3 uses a 5-of-9 scheme. Any 5 shards out of 9 is enough. That means you can lose any 4 disks — or 4 entire nodes — and still recover the data perfectly.
 
 **Try it yourself.** Click the shard buttons below to "lose" them. The green curve is the reconstruction from surviving shards — it stays perfect until you drop below 5.
 
@@ -49,33 +49,28 @@ S3 uses a **5-of-9 scheme**. Any 5 shards out of 9 is enough. That means you can
 
 Real-world analogy: if you know a straight line passes through (1, 3) and (4, 9), you can figure out its value at any other point — including points you never measured. Reed-Solomon is that idea, generalized to higher-degree polynomials and to bytes instead of real numbers.
 
-
-So far we've covered the core insight — polynomials, points, reconstruction. But there's a practical question I glossed over: **why not just store multiple copies?** Good question. Let's address it.
-
 ## Why Not Just Use Replication?
 
 Fair question. If you want to survive 4 disk failures, why not store 5 full copies of the file?
 
 Storage overhead. That's why.
 
-Five-way replication costs **5x** your original data size. S3's 5-of-9 erasure coding costs only **1.8x** — you're storing 9 shards where each is 1/5 the file size, so 9/5 = 1.8x total. You get the same fault tolerance at **64% less storage cost**.
+Five-way replication costs 5x your original data size. S3's 5-of-9 erasure coding costs only 1.8x — you're storing 9 shards where each is 1/5 the file size, so 9/5 = 1.8x total. You get the same fault tolerance at 64% less storage cost.
 
-At S3's scale — **hundreds of exabytes** — that 1.2x difference is **billions of dollars** a year.
+At S3's scale — hundreds of exabytes — that 1.2x difference is billions of dollars a year.
 
 There's a parallelism benefit too. With 5-way replication, you have 5 possible sources for any read. With 5-of-9 EC, you have 9 possible sources, and reads fan out across 5 different disks simultaneously, each transferring a small shard, summing to the full file bandwidth. That's how S3 achieves throughput that would be physically impossible on a single disk.
-
-Alright, we've got the mental model and the motivation. Now let's get uncomfortable. Here's where most people give up — the math. But I'll keep it brief and practical.
 
 ## The Math You Actually Need
 
 Here's where it gets uncomfortable. You can't implement this over regular numbers because floating point errors accumulate, and you need exact reconstruction. Lose precision at any step, your data is corrupted.
 
-Reed-Solomon works over a **finite field** — specifically **GF(2^8)**, Galois Field with 256 elements. This is a number system where:
+Reed-Solomon works over a finite field — specifically GF(2^8), Galois Field with 256 elements. This is a number system where:
 
-- **Addition is XOR**
-- **Multiplication** uses log/antilog tables over a primitive polynomial
-- Every non-zero element has an **exact inverse** (no rounding)
-- Everything wraps at 256 — exactly **one byte**
+- Addition is XOR
+- Multiplication uses log/antilog tables over a primitive polynomial
+- Every non-zero element has an exact inverse (no rounding)
+- Everything wraps at 256 — exactly one byte
 
 You don't need to understand the group theory. You need to understand what it gives you: a number system where all arithmetic is exact, and every value fits in exactly one byte. Perfect for files.
 
@@ -103,18 +98,15 @@ func gfMul(a, b byte) byte {
 }
 ```
 
-The **log/antilog tables** are the key. Multiplication in GF(2^8) becomes a table lookup and an addition. **Fast. Exact. No floats anywhere.**
-
-
-We've got the arithmetic. Now the interesting part: **how do we encode data into shards?** The answer is matrices — specifically, a special kind of matrix that guarantees recovery.
+The log/antilog tables are the key. Multiplication in GF(2^8) becomes a table lookup and an addition. Fast. Exact. No floats anywhere.
 
 ## The Encoding Matrix
 
 Once you have GF(2^8) arithmetic, encoding is just matrix multiplication.
 
-You build an **encoding matrix** that maps your 5 data shards → 9 total shards. The matrix has a special structure called a **Cauchy matrix** that guarantees any square sub-matrix is **invertible** over GF(2^8).
+You build an encoding matrix that maps your 5 data shards → 9 total shards. The matrix has a special structure called a **Cauchy matrix** that guarantees any square sub-matrix is invertible over GF(2^8).
 
-That guarantee is why EC works. If you lose 4 shards, you're left with **5 equations in 5 unknowns**. Because any 5 rows of the encoding matrix form an invertible matrix, you can always solve for the original data. **Every combination** of 5 surviving shards works. Not just some combinations — **all of them**.
+That guarantee is why EC works. If you lose 4 shards, you're left with 5 equations in 5 unknowns. Because any 5 rows of the encoding matrix form an invertible matrix, you can always solve for the original data. Every combination of 5 surviving shards works. Not just some combinations — all of them.
 
 ```go
 func buildCauchyMatrix(k, m int) [][]byte {
@@ -131,9 +123,7 @@ func buildCauchyMatrix(k, m int) [][]byte {
 }
 ```
 
-The **identity block** in the top half means data shards are just raw file chunks — no transformation. The **Cauchy block** computes parity. XOR here is addition in GF(2^8), and `gfInv()` is the **multiplicative inverse**.
-
-Encoding is matrix multiplication. Decoding? Same idea, just backwards. Let's see how reconstruction actually works.
+The identity block in the top half means data shards are just raw file chunks — no transformation. The Cauchy block computes parity. XOR here is addition in GF(2^8), and `gfInv()` is the multiplicative inverse.
 
 ## Reconstruction: Inverting the Matrix
 
@@ -171,9 +161,7 @@ func (rs *RS) Reconstruct(shards [][]byte, originalLen int) ([]byte, error) {
 }
 ```
 
-Walk through this carefully. The **Gauss-Jordan elimination** is the same algorithm you learned in linear algebra — but every arithmetic operation goes through `gfMul()` and `gfInv()` instead of regular multiply and divide. **No floats. No rounding. Exact.**
-
-Time for the payoff. Let's see this thing actually run.
+Walk through this carefully. The Gauss-Jordan elimination is the same algorithm you learned in linear algebra — but every arithmetic operation goes through `gfMul()` and `gfInv()` instead of regular multiply and divide. No floats. No rounding. Exact.
 
 ## Running It
 
@@ -197,9 +185,9 @@ The demo runs three scenarios:
   Recovered: "Reed-Solomon erasure coding allows S3 to..."
 ```
 
-**4.6 microseconds** to reconstruct from 4 lost shards. Including the matrix inversion.
+4.6 microseconds to reconstruct from 4 lost shards. Including the matrix inversion.
 
-That's the thing about EC that surprised me most. The **reconstruction cost is almost nothing**. The expensive part is the **network** — fetching 5 shards from 5 different nodes. The math at the end takes microseconds.
+That's the thing about EC that surprised me most. The reconstruction cost is almost nothing. The expensive part is the network — fetching 5 shards from 5 different nodes. The math at the end takes microseconds.
 
 ## What I Actually Learned
 
@@ -207,13 +195,13 @@ I want to be honest: some of this I understood immediately, and some I had to lo
 
 But that process gave me something an explanation couldn't. I now have a feel for the real engineering constraints.
 
-**The encoding matrix is the key decision.** Not the GF arithmetic, not the Gauss-Jordan — those are just tools. The **Cauchy matrix** is the insight. The reason any 5-of-9 works (not just specific combinations) is the Cauchy structure. If you chose a bad matrix, some loss patterns would be unrecoverable. Cauchy eliminates that class of failure entirely.
+**The encoding matrix is the key decision.** Not the GF arithmetic, not the Gauss-Jordan — those are just tools. The Cauchy matrix is the insight. The reason any 5-of-9 works (not just specific combinations) is the Cauchy structure. If you chose a bad matrix, some loss patterns would be unrecoverable. Cauchy eliminates that class of failure entirely.
 
-**The pending-shard problem is real.** In my Go demo I encode synchronously. In a real system, shards are being written to 9 different nodes **in parallel**, over a network, with failures and retries. You have to track "started but not confirmed" separately from "confirmed stored." Otherwise your system **double-writes** on retry. Same class of bug as Kubernetes over-provisioning containers between heartbeats.
+**The pending-shard problem is real.** In my Go demo I encode synchronously. In a real system, shards are being written to 9 different nodes in parallel, over a network, with failures and retries. You have to track "started but not confirmed" separately from "confirmed stored." Otherwise your system double-writes on retry. Same class of bug as Kubernetes over-provisioning containers between heartbeats.
 
-**Parallelism is the whole point.** Reading from 5 different disks simultaneously means each disk transfers only 1/5 of the data. At S3 scale, that's the difference between "physically possible" and "not." You simply cannot get **1 PB/s from one disk**. You can get it from a million disks, each doing 1 MB/s, if you parallelize correctly.
+**Parallelism is the whole point.** Reading from 5 different disks simultaneously means each disk transfers only 1/5 of the data. At S3 scale, that's the difference between "physically possible" and "not." You simply cannot get 1 PB/s from one disk. You can get it from a million disks, each doing 1 MB/s, if you parallelize correctly.
 
-**Storage overhead math matters at scale.** The 1.8x vs 3x overhead difference sounds abstract until you're talking about hundreds of exabytes. Then it's the difference between a **$10B** storage bill and a **$17B** one.
+**Storage overhead math matters at scale.** The 1.8x vs 3x overhead difference sounds abstract until you're talking about hundreds of exabytes. Then it's the difference between a $10B storage bill and a $17B one.
 
 
 ## What's Missing vs Real Reed-Solomon
@@ -222,11 +210,11 @@ A lot. Intentionally.
 
 Real production EC systems have:
 
-- **SIMD-optimized** GF multiplication (hardware XOR instructions, not table lookups)
-- **Streaming encoders** that don't need the full file in memory
+- SIMD-optimized GF multiplication (hardware XOR instructions, not table lookups)
+- Streaming encoders that don't need the full file in memory
 - Cauchy matrices optimized for specific k/m combinations
-- **Hardware acceleration** on modern storage controllers
-- **Interleaved encoding** across failure domains, not just drives
+- Hardware acceleration on modern storage controllers
+- Interleaved encoding across failure domains, not just drives
 
 My implementation uses table-lookup GF arithmetic. Fast enough to see the algorithm working. Not fast enough for production. But the math is identical.
 
@@ -236,9 +224,9 @@ Building something you don't fully understand is a legitimate way to preview wha
 
 The core insight from this whole project:
 
-> **Erasure coding is just polynomial interpolation.** Store points on a curve. Lose some points. Reconstruct the curve from what's left. Everything else is the engineering to make it work in **one byte**, at **one petabyte per second**, across **tens of millions of disks**.
+> Erasure coding is just polynomial interpolation. Store points on a curve. Lose some points. Reconstruct the curve from what's left. Everything else is the engineering to make it work in one byte, at one petabyte per second, across tens of millions of disks.
 
-If you want to build the **Go implementation** yourself, the full code is [on GitHub](https://github.com/Avik-creator/easure-coding). **No external dependencies.** ~400 lines. Runs with `go run main.go`.
+If you want to build the Go implementation yourself, the full code is [on GitHub](https://github.com/Avik-creator/erasure-coding). No external dependencies. ~400 lines. Runs with `go run main.go`.
 
 
 ## Let's Keep Talking
