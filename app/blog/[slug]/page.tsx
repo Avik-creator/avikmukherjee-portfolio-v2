@@ -17,13 +17,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       }
     }
 
+    const metaTitle = post.seoTitle ?? post.title
     const ogImage = `${baseUrl}/og?title=${encodeURIComponent(post.title)}`
 
     return {
-      title: `${post.title} | Avik Mukherjee`,
+      title: `${metaTitle} | Avik Mukherjee`,
       description: post.excerpt,
+      keywords: post.tags ?? [],
+      alternates: {
+        canonical: `${baseUrl}/blog/${slug}`,
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+        },
+      },
       openGraph: {
-        title: `${post.title} | Avik Mukherjee`,
+        title: `${metaTitle} | Avik Mukherjee`,
         description: post.excerpt,
         url: `${baseUrl}/blog/${slug}`,
         images: [
@@ -40,7 +55,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         publishedTime: post.date,
       },
       twitter: {
-        title: `${post.title} | Avik Mukherjee`,
+        title: `${metaTitle} | Avik Mukherjee`,
         card: "summary_large_image",
         creator: "@avikm744",
         images: [ogImage],

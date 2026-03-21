@@ -8,8 +8,10 @@ const postsDirectory = path.join(process.cwd(), "content/blog")
 export type Post = {
   slug: string
   title: string
+  seoTitle?: string
   date: string
   excerpt: string
+  tags?: string[]
   content: string
 }
 
@@ -29,7 +31,6 @@ function getAllMarkdownFiles(dir: string, files: string[] = []): string[] {
   return files
 }
 
-// Remove remark-html processing since we're using MDX components
 export async function getAllPosts(): Promise<Post[]> {
   const filePaths = getAllMarkdownFiles(postsDirectory)
 
@@ -45,9 +46,11 @@ export async function getAllPosts(): Promise<Post[]> {
       return {
         slug,
         title: matterResult.data.title,
+        seoTitle: matterResult.data.seoTitle ?? undefined,
         date: matterResult.data.publishDate,
         excerpt: matterResult.data.description || "",
-        content: matterResult.content, // Keep as raw MDX content
+        tags: matterResult.data.tags ?? [],
+        content: matterResult.content,
       }
     })
   )
@@ -77,9 +80,11 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     return {
       slug,
       title: matterResult.data.title,
+      seoTitle: matterResult.data.seoTitle ?? undefined,
       date: matterResult.data.publishDate,
       excerpt: matterResult.data.description || "",
-      content: matterResult.content, // Keep as raw MDX content
+      tags: matterResult.data.tags ?? [],
+      content: matterResult.content,
     }
   } catch (error) {
     console.error("Error getting post by slug:", error)
