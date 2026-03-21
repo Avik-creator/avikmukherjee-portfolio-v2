@@ -16,7 +16,7 @@ export function GET(request: Request) {
           flexDirection: 'column',
           width: '100%',
           height: '100%',
-          backgroundColor: '#ffffff',
+          backgroundColor: '#0a0a0a',
           padding: '72px 80px',
           justifyContent: 'space-between',
           fontFamily: 'monospace',
@@ -28,7 +28,7 @@ export function GET(request: Request) {
             style={{
               width: '32px',
               height: '2px',
-              backgroundColor: '#1a1a1a',
+              backgroundColor: '#ededed',
             }}
           />
           <span
@@ -59,7 +59,7 @@ export function GET(request: Request) {
             style={{
               fontSize: `${titleFontSize}px`,
               fontWeight: '600',
-              color: '#111827',
+              color: '#ededed',
               lineHeight: 1.2,
               fontFamily: 'serif',
               maxWidth: '980px',
@@ -77,7 +77,7 @@ export function GET(request: Request) {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            borderTop: '1px solid #e5e7eb',
+            borderTop: '1px solid #262626',
             paddingTop: '24px',
           }}
         >
@@ -88,11 +88,11 @@ export function GET(request: Request) {
                 width: '36px',
                 height: '36px',
                 borderRadius: '50%',
-                backgroundColor: '#1a1a1a',
+                backgroundColor: '#ededed',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#ffffff',
+                color: '#0a0a0a',
                 fontSize: '14px',
                 fontWeight: '700',
                 fontFamily: 'monospace',
@@ -104,7 +104,7 @@ export function GET(request: Request) {
               style={{
                 fontSize: '16px',
                 fontWeight: '600',
-                color: '#374151',
+                color: '#a3a3a3',
                 fontFamily: 'monospace',
               }}
             >
@@ -115,7 +115,7 @@ export function GET(request: Request) {
           <span
             style={{
               fontSize: '13px',
-              color: '#9ca3af',
+              color: '#525252',
               fontFamily: 'monospace',
               letterSpacing: '0.05em',
             }}
