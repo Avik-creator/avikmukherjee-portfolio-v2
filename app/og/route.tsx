@@ -6,120 +6,47 @@ export function GET(request: Request) {
   const url = new URL(request.url)
   const title = url.searchParams.get('title') || 'Avik Mukherjee'
 
-  const titleFontSize = title.length > 80 ? 40 : title.length > 50 ? 48 : 56
+  const titleClass =
+    title.length > 80
+      ? 'text-[40px]'
+      : title.length > 50
+        ? 'text-[48px]'
+        : 'text-[56px]'
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#0a0a0a',
-          padding: '72px 80px',
-          justifyContent: 'space-between',
-        }}
-      >
+      <div tw="flex flex-col w-full h-full bg-[#0a0a0a] justify-between px-20 py-[72px]">
+
         {/* Top: accent line + label */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div
-            style={{
-              width: '32px',
-              height: '2px',
-              backgroundColor: '#ededed',
-            }}
-          />
-          <span
-            style={{
-              fontSize: '13px',
-              color: '#6b7280',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              fontFamily: 'monospace',
-            }}
-          >
+        <div tw="flex items-center gap-3">
+          <div tw="w-8 h-[2px] bg-[#ededed]" />
+          <span tw="text-[13px] text-[#6b7280] tracking-[0.12em] uppercase">
             writing
           </span>
         </div>
 
         {/* Middle: title */}
-        <div
-          style={{
-            display: 'flex',
-            flex: 1,
-            alignItems: 'center',
-            paddingTop: '40px',
-            paddingBottom: '40px',
-          }}
-        >
-          <h1
-            style={{
-              fontSize: `${titleFontSize}px`,
-              fontWeight: '600',
-              color: '#ededed',
-              lineHeight: 1.2,
-              fontFamily: 'serif',
-              maxWidth: '980px',
-              margin: 0,
-              padding: 0,
-            }}
-          >
+        <div tw="flex flex-1 items-center py-10">
+          <h1 tw={`${titleClass} font-semibold text-[#ededed] leading-tight max-w-[980px] m-0 p-0`}>
             {title}
           </h1>
         </div>
 
         {/* Bottom: author + site */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            borderTop: '1px solid #262626',
-            paddingTop: '24px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                backgroundColor: '#ededed',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#0a0a0a',
-                fontSize: '14px',
-                fontWeight: '700',
-                fontFamily: 'monospace',
-              }}
-            >
+        <div tw="flex justify-between items-center border-t border-[#262626] pt-6">
+          <div tw="flex items-center gap-4">
+            <div tw="w-9 h-9 rounded-full bg-[#ededed] flex items-center justify-center text-[#0a0a0a] text-sm font-bold">
               AM
             </div>
-            <span
-              style={{
-                fontSize: '16px',
-                fontWeight: '600',
-                color: '#a3a3a3',
-                fontFamily: 'monospace',
-              }}
-            >
+            <span tw="text-base font-semibold text-[#a3a3a3]">
               Avik Mukherjee
             </span>
           </div>
-
-          <span
-            style={{
-              fontSize: '13px',
-              color: '#525252',
-              fontFamily: 'monospace',
-              letterSpacing: '0.05em',
-            }}
-          >
+          <span tw="text-[13px] text-[#525252] tracking-wide">
             avikmukherjee.me
           </span>
         </div>
+
       </div>
     ),
     {
