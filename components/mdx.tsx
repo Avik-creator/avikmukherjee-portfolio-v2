@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { highlight } from "sugar-high";
 import remarkGfm from "remark-gfm";
-import { Pre } from "./mdx-pre";
+import { Pre } from "./mdx-pre"
+import { ErasureCodingDemo } from "./blog/ErasureCodingDemo";
 
 const options = {
   mdxOptions: {
@@ -303,6 +304,7 @@ function TableCell({ children, ...props }: any) {
 }
 
 const components = {
+  ErasureCodingDemo,
   h1: createHeading(1),
   h2: createHeading(2),
   h3: createHeading(3),
