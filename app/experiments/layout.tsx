@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Experiments — UI Experiments by Avik Mukherjee",
     description: "Explore UI experiments built by Avik Mukherjee.",
-    url: "https://www.avikmukherjee.me/experiments",
+    url: "https://avikmukherjee.me/experiments",
     images: ["/og-image.webp"],
     siteName: "Avik Mukherjee",
     locale: "en_US",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://www.avikmukherjee.me/experiments",
+    canonical: "https://avikmukherjee.me/experiments",
   },
 };
 

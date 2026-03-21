@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Experience — Professional Work History of Avik Mukherjee",
     description: "Professional experience of Avik Mukherjee as a software engineer at SuperAlign AI, DataFoundry, Dank, and more. Full-stack development roles and achievements.",
-    url: "https://www.avikmukherjee.me/experience",
+    url: "https://avikmukherjee.me/experience",
     images: ["/og-image.webp"],
     siteName: "Avik Mukherjee",
     locale: "en_US",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://www.avikmukherjee.me/experience",
+    canonical: "https://avikmukherjee.me/experience",
   },
 };
 export default function HomeLayout({ children }: PropsWithChildren) {

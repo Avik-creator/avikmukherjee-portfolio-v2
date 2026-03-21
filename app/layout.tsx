@@ -15,7 +15,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.avikmukherjee.me/"),
+  metadataBase: new URL("https://avikmukherjee.me/"),
   title: {
     template: "%s | Avik Mukherjee",
     default: "Avik Mukherjee",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     title: "Avik Mukherjee — Full-Stack Web Developer & Software Engineer",
     description:
       "Avik Mukherjee is a full-stack software developer specializing in Next.js, React, TypeScript, and Node.js. Explore projects, experience, and technical writing.",
-    url: "https://www.avikmukherjee.me/",
+    url: "https://avikmukherjee.me/",
     siteName: "Avik Mukherjee's Portfolio",
     images: [
       {
@@ -157,8 +157,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               name: "Avik Mukherjee",
-              url: "https://www.avikmukherjee.me",
-              image: "https://www.avikmukherjee.me/og-image.webp",
+              url: "https://avikmukherjee.me",
+              image: "https://avikmukherjee.me/og-image.webp",
               sameAs: [
                 "https://x.com/avikm744",
                 "https://github.com/Avik-creator",

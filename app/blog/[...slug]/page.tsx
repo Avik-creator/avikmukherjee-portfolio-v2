@@ -25,7 +25,7 @@ export async function generateMetadata({
       openGraph: {
         title: `${post.title} | Avik Mukherjee`,
         description: post.excerpt,
-        url: `https://www.avikmukherjee.me/blog/${slugPath}`,
+        url: `https://avikmukherjee.me/blog/${slugPath}`,
         images: ["/og-image.webp"],
         siteName: "Avik Mukherjee",
         locale: "en_US",

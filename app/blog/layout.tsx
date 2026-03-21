@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Blog — Technical Writing by Avik Mukherjee",
     description: "Read technical articles about web development, Next.js, React, TypeScript, and software engineering. Insights, tutorials, and lessons learned by Avik Mukherjee.",
-    url: "https://www.avikmukherjee.me/blog",
+    url: "https://avikmukherjee.me/blog",
     images: ["/og-image.webp"],
     siteName: "Avik Mukherjee",
     locale: "en_US",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://www.avikmukherjee.me/blog",
+    canonical: "https://avikmukherjee.me/blog",
   },
 };
 

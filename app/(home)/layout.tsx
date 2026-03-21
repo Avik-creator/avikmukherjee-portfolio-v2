@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'Avik Mukherjee',
     description: 'Avik Mukherjee is a developer who loves to code and build things.',
     images: ['/og-image.webp'],
-    url: 'https://www.avikmukherjee.me',
+    url: 'https://avikmukherjee.me',
     siteName: 'Avik Mukherjee',
     locale: 'en_US',
     type: 'website',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     siteId: '@avikm744',
   },
   alternates: {
-    canonical: 'https://www.avikmukherjee.me',
+    canonical: 'https://avikmukherjee.me',
   },
 };
 

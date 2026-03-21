@@ -193,7 +193,7 @@ export async function generateMetadata({
     return { title: "Experiment Not Found" };
   }
 
-  const experimentUrl = `https://www.avikmukherjee.me/experiments/${slug}`;
+  const experimentUrl = `https://avikmukherjee.me/experiments/${slug}`;
   const featuresText = experiment.features?.join(", ") || "";
   const dependenciesText = experiment.dependencies?.join(", ") || "";
 
@@ -261,10 +261,10 @@ export default async function ExperimentPage({ params }: PageProps) {
   const componentCode = await readComponentCode(experiment.component);
 
   // Generate page URL (use .md for LLM prompts)
-  const pageUrl = `https://www.avikmukherjee.me/experiments/${slug}.md`;
+  const pageUrl = `https://avikmukherjee.me/experiments/${slug}.md`;
 
   // Generate v0 registry URL (JSON endpoint)
-  const v0RegistryUrl = `https://www.avikmukherjee.me/api/experiments/${slug}`;
+  const v0RegistryUrl = `https://avikmukherjee.me/api/experiments/${slug}`;
 
   // Generate MDX content
   const mdxContent = generateMDX(experiment, componentCode, experiment.usage);
