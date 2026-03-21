@@ -2,8 +2,10 @@ import { notFound } from "next/navigation"
 import { getAllPosts, getPostBySlug } from "@/lib/utils/mdx"
 import { CustomMDX } from "@/components/mdx";
 import BackNavigation from "@/components/back-navigation";
+import { baseUrl } from "@/app/sitemap";
+import type { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
 
   try {
@@ -15,22 +17,33 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       }
     }
 
+    const ogImage = `${baseUrl}/og?title=${encodeURIComponent(post.title)}`
+
     return {
       title: `${post.title} | Avik Mukherjee`,
       description: post.excerpt,
       openGraph: {
         title: `${post.title} | Avik Mukherjee`,
         description: post.excerpt,
-        url: `https://www.avikmukherjee.me/blog/${slug}`,
-        images: ["/og-image.jpg"],
+        url: `${baseUrl}/blog/${slug}`,
+        images: [
+          {
+            url: ogImage,
+            width: 1200,
+            height: 630,
+            alt: post.title,
+          },
+        ],
         siteName: "Avik Mukherjee",
         locale: "en_US",
         type: "article",
+        publishedTime: post.date,
       },
       twitter: {
         title: `${post.title} | Avik Mukherjee`,
         card: "summary_large_image",
-        images: ["/og-image.jpg"],
+        creator: "@avikm744",
+        images: [ogImage],
         description: post.excerpt,
       },
     }
@@ -67,6 +80,33 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
     return (
       <main className="mb-32 text-gray-900 dark:text-neutral-400">
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: post.title,
+              datePublished: post.date,
+              dateModified: post.date,
+              description: post.excerpt,
+              image: `${baseUrl}/og?title=${encodeURIComponent(post.title)}`,
+              url: `${baseUrl}/blog/${post.slug}`,
+              author: {
+                "@type": "Person",
+                name: "Avik Mukherjee",
+                url: baseUrl,
+              },
+              publisher: {
+                "@type": "Person",
+                name: "Avik Mukherjee",
+                url: baseUrl,
+              },
+            }),
+          }}
+        />
+
         <div className="animate-[slideFadeUp_0.4s_ease-out]">
           <BackNavigation href="/blog">back</BackNavigation>
         </div>
@@ -92,4 +132,3 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     )
   }
 }
-
