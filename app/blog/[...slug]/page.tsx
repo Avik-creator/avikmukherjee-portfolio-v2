@@ -1,97 +1,166 @@
-import { notFound } from "next/navigation"
-import { getAllPosts, getPostBySlug } from "@/lib/utils/mdx"
+import { notFound } from "next/navigation";
+import { getAllPosts, getPostBySlug } from "@/lib/utils/mdx";
 import { CustomMDX } from "@/components/mdx";
 import BackNavigation from "@/components/back-navigation";
+import { baseUrl } from "@/app/sitemap";
+import type { Metadata } from "next";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string[] }>;
-}) {
+}): Promise<Metadata> {
   const { slug } = await params;
+
   try {
-    const slugPath = slug.join("/")
-    const post = await getPostBySlug(slugPath)
+    const slugPath = slug.join("/");
+    const post = await getPostBySlug(slugPath);
 
     if (!post) {
-      return {
-        title: "Post Not Found",
-      }
+      return { title: "Post Not Found" };
     }
 
+    const metaTitle = post.seoTitle ?? post.title;
+    const ogImage = `${baseUrl}/og?title=${encodeURIComponent(post.title)}`;
+
     return {
-      title: `${post.title} | Avik Mukherjee`,
+      title: `${metaTitle} | Avik Mukherjee`,
       description: post.excerpt,
+      keywords: post.tags ?? [],
+      other: {
+        "og:logo": `${baseUrl}/my-favicon/web-app-manifest-192x192.png`,
+      },
+      alternates: {
+        canonical: `${baseUrl}/blog/${slugPath}`,
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+        },
+      },
       openGraph: {
-        title: `${post.title} | Avik Mukherjee`,
+        title: `${metaTitle} | Avik Mukherjee`,
         description: post.excerpt,
-        url: `https://avikmukherjee.me/blog/${slugPath}`,
-        images: ["/og-image.webp"],
+        url: `${baseUrl}/blog/${slugPath}`,
+        images: [
+          {
+            url: ogImage,
+            width: 1200,
+            height: 630,
+            alt: post.title,
+          },
+        ],
         siteName: "Avik Mukherjee",
         locale: "en_US",
         type: "article",
+        publishedTime: post.date,
       },
       twitter: {
-        title: `${post.title} | Avik Mukherjee`,
+        title: `${metaTitle} | Avik Mukherjee`,
         card: "summary_large_image",
-        images: ["/og-image.jpg"],
+        creator: "@avikm744",
+        images: [ogImage],
         description: post.excerpt,
       },
-    }
+    };
   } catch (error) {
-    console.error("Error generating metadata:", error)
-    return {
-      title: "Error",
-    }
+    console.error("Error generating metadata:", error);
+    return { title: "Error" };
   }
 }
 
 export async function generateStaticParams() {
   try {
-    const posts = await getAllPosts()
+    const posts = await getAllPosts();
 
     return posts.map((post) => ({
       slug: post.slug.split("/"),
-    }))
+    }));
   } catch (error) {
-    console.error("Error generating static params:", error)
-    return []
+    console.error("Error generating static params:", error);
+    return [];
   }
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string[] }> }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string[] }>;
+}) {
   const { slug } = await params;
 
   try {
-    const slugPath = slug.join("/")
-    const post = await getPostBySlug(slugPath)
+    const slugPath = slug.join("/");
+    const post = await getPostBySlug(slugPath);
 
     if (!post) {
-      notFound()
+      notFound();
     }
 
     return (
       <main className="mb-32 text-gray-900 dark:text-neutral-400">
-        <BackNavigation href="/blog">back</BackNavigation>
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: post.title,
+              datePublished: post.date,
+              dateModified: post.date,
+              description: post.excerpt,
+              image: `${baseUrl}/og?title=${encodeURIComponent(post.title)}`,
+              url: `${baseUrl}/blog/${post.slug}`,
+              author: {
+                "@type": "Person",
+                name: "Avik Mukherjee",
+                url: baseUrl,
+              },
+              publisher: {
+                "@type": "Person",
+                name: "Avik Mukherjee",
+                url: baseUrl,
+              },
+            }),
+          }}
+        />
 
-        <header className="mt-6 mb-8">
-          <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-medium mb-2">{post.title}</h1>
-          <p className="text-gray-500 dark:text-neutral-500 text-sm">{post.date}</p>
+        <div className="animate-[slideFadeUp_0.4s_ease-out]">
+          <BackNavigation href="/blog">back</BackNavigation>
+        </div>
+
+        <header className="mt-6 mb-8 animate-[slideFadeUp_0.5s_ease-out]">
+          <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-serif font-medium mb-2 leading-tight">
+            {post.title}
+          </h1>
+          <p className="text-gray-500 dark:text-neutral-500 text-sm mt-2">
+            {post.date}
+          </p>
         </header>
 
-        <article className="prose prose-neutral max-w-none dark:prose-invert">
+        <article className="prose prose-neutral max-w-none dark:prose-invert blog-content">
           <CustomMDX source={post.content} />
         </article>
       </main>
-    )
+    );
   } catch (error) {
-    console.error("Error in blog post page:", error)
+    console.error("Error in blog post page:", error);
     return (
       <main className="mb-32 text-gray-900 dark:text-neutral-400">
         <BackNavigation href="/blog">back</BackNavigation>
-        <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-medium mb-2">Error</h1>
-        <p>There was an error loading this blog post. Please try again later.</p>
+        <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-medium mb-2">
+          Error
+        </h1>
+        <p>
+          There was an error loading this blog post. Please try again later.
+        </p>
       </main>
-    )
+    );
   }
 }
