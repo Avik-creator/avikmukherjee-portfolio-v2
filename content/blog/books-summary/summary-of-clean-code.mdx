@@ -116,6 +116,8 @@ In practice, pure immutability is hard. You can't run a useful program with no m
 
 **Event Sourcing** — store transactions instead of state. Never update. Never delete. Just append. Derive the current state by replaying the transaction log from the beginning, or from a recent snapshot.
 
+**TypeScript Code Below**
+
 ```typescript
 // Mutable approach — threads can corrupt this
 class BankAccount {
@@ -146,7 +148,10 @@ class BankAccount {
       .reduce((sum, t) => t.kind === 'deposit' ? sum + t.amount : sum - t.amount, 0);
   }
 }
+
 ```
+
+**Golang Code Below**
 
 ```go
 type TxKind string
@@ -190,6 +195,8 @@ An *actor* is a group of stakeholders who share the same reason to request a cha
 
 The classic violation — all three in one class:
 
+**TypeScript Code Below**
+
 ```typescript
 // BAD — three actors, one class
 class Employee {
@@ -213,6 +220,8 @@ class Employee {
 }
 ```
 
+**TypeScript Code Below**
+
 ```typescript
 // GOOD — each actor owns its own type
 class PayCalculator {
@@ -230,6 +239,8 @@ class EmployeeRepository {
   save(e: Employee): void { db.save(e); }
 }
 ```
+
+**Golang Code Below**
 
 ```go
 // Go equivalent
@@ -264,6 +275,8 @@ Bertrand Meyer's principle: a software artifact should be open for extension but
 
 When requirements change, you should be adding new code — not modifying existing code. Existing code that works should stay untouched.
 
+**TypeScript Code Below**
+
 ```typescript
 // BAD — every new payment method requires reopening this function
 function processPayment(type: string, amount: number): boolean {
@@ -278,6 +291,8 @@ function processPayment(type: string, amount: number): boolean {
   return false;
 }
 ```
+
+**TypeScript Code Below**
 
 ```typescript
 // GOOD — new payment methods extend without touching existing code
@@ -302,6 +317,8 @@ function processPayment(p: PaymentProcessor, amount: number): boolean {
   return p.process(amount); // Never changes
 }
 ```
+
+**Golang Code Below**
 
 ```go
 type PaymentProcessor interface {
@@ -330,6 +347,8 @@ Barbara Liskov's rule: subtypes must be substitutable for their base types — n
 
 The canonical violation is the Square/Rectangle problem:
 
+**TypeScript Code Below**
+
 ```typescript
 // BAD — Square lies about being a Rectangle
 class Rectangle {
@@ -351,6 +370,8 @@ function test(r: Rectangle) {
 }
 ```
 
+**TypeScript Code Below**
+
 ```typescript
 // GOOD — honest interfaces, no behavioral surprises
 interface Shape { area(): number; }
@@ -365,6 +386,8 @@ class Square implements Shape {
   area() { return this.side ** 2; }
 }
 ```
+
+**Golang Code Below**
 
 ```go
 // BAD in Go — ReadOnlyFile pretends to implement ReadWriter
@@ -396,6 +419,8 @@ Note that Go's standard library is a working example of LSP done right — `io.R
 
 Don't depend on things you don't use.
 
+**TypeScript Code Below**
+
 ```typescript
 // BAD — fat interface forces all implementors to carry dead weight
 interface UserStore {
@@ -415,6 +440,8 @@ class RegisterUser {
 }
 ```
 
+**TypeScript Code Below**
+
 ```typescript
 // GOOD — focused interfaces, each use case declares exactly what it needs
 interface UserCreator   { create(u: User): Promise<void>; }
@@ -429,6 +456,8 @@ class RegisterUser {
   // Knows nothing about delete, listAll, count
 }
 ```
+
+**Golang Code Below**
 
 ```go
 // Go's implicit interfaces make ISP feel natural
@@ -462,6 +491,8 @@ The most powerful principle of the five.
 
 **The most flexible systems are those where source code dependencies refer only to abstractions, not concretions.**
 
+**TypeScript Code Below**
+
 ```typescript
 // BAD — high-level policy depends directly on low-level detail
 class OrderService {
@@ -472,6 +503,8 @@ class OrderService {
   }
 }
 ```
+
+**TypeScript Code Below**
 
 ```typescript
 // GOOD — high-level policy depends only on an abstraction it owns
@@ -501,6 +534,8 @@ class InMemoryOrderRepository implements OrderRepository {
   async findById(id: string): Promise<Order | null>  { return this.store.find(o => o.id === id) ?? null; }
 }
 ```
+
+**Golang Code Below**
 
 ```go
 // Domain layer — defines the interface it needs. Zero infrastructure imports.
@@ -705,6 +740,8 @@ The simplest boundary: a function call across an interface within a single deplo
 
 This is not "no architecture." A monolith with clean internal boundaries — proper interfaces, proper dependency directions — can be more maintainable than a distributed system with none.
 
+**Golang Code Below**
+
 ```go
 // Source-level boundary inside a monolith
 // The business layer never imports the database layer directly
@@ -776,6 +813,8 @@ Martin distinguishes between two kinds.
 
 An Entity is an object that embodies Critical Business Rules operating on Critical Business Data. It's the most stable thing in the system. It doesn't know about databases, UIs, or the web. It knows about the business.
 
+**TypeScript Code Below**
+
 ```typescript
 // Entity — knows nothing outside itself
 class Loan {
@@ -796,6 +835,8 @@ class Loan {
   }
 }
 ```
+
+**Golang Code Below**
 
 ```go
 // Same entity in Go
@@ -821,6 +862,8 @@ func (l Loan) TotalInterest() float64 {
 A Use Case contains the application-specific rules that orchestrate the flow of data to and from Entities. It describes *one thing the user does with the system.*
 
 Crucially, a Use Case accepts and returns **simple data structures** — not Entities, not HTTP request objects, not database rows. Just plain data. This prevents coupling between the inner layer and the outer layers.
+
+**TypeScript Code Below**
 
 ```typescript
 // Use case — orchestrates entities, knows nothing about HTTP or DB
@@ -914,6 +957,8 @@ When a use case needs to pass data to a presenter, it can't call the presenter d
 
 The solution: the use case calls an *output port* — an interface defined in the use case ring. The presenter implements this interface from the outer ring. The dependency flows inward (presenter → interface → use case layer). The control flow goes outward (use case triggers the interface, presenter executes).
 
+**TypeScript Code Below**
+
 ```typescript
 // Output port — defined in the use case layer
 interface OrderOutputPort {
@@ -947,6 +992,8 @@ class JsonOrderPresenter implements OrderOutputPort {
   }
 }
 ```
+
+**Golang Code Below**
 
 ```go
 // Same pattern in Go
@@ -997,6 +1044,8 @@ The **Humble Object** pattern solves a specific problem: some behaviors are hard
 - **Testable Object** — contains all the logic that was extracted. Fully testable in isolation.
 
 **The View/Presenter split:**
+
+**TypeScript Code Below**
 
 ```typescript
 // ViewModel — plain data, no framework types
@@ -1058,6 +1107,8 @@ function InvoiceCard({ vm }: { vm: InvoiceViewModel }) {
   );
 }
 ```
+
+**Golang Code Below**
 
 ```go
 // Same split in Go — HTTP handler is the humble object, presenter does the work
@@ -1144,6 +1195,8 @@ Cost: extra interfaces and DTOs. Benefit: the split costs almost nothing when th
 
 Create an interface in one direction only. The business layer depends on an abstraction. The implementation is injected. No reciprocal interface in the other direction.
 
+**TypeScript Code Below**
+
 ```typescript
 // One-dimensional boundary — interface one way only
 interface CacheStrategy {
@@ -1174,6 +1227,8 @@ class InMemoryCache implements CacheStrategy {
 }
 ```
 
+**Golang Code Below**
+
 ```go
 // Same in Go
 type CacheStrategy interface {
@@ -1203,6 +1258,8 @@ func (s *ProductService) GetProduct(ctx context.Context, id string) (Product, er
 **3. Facade Pattern**
 
 The simplest approximation: a single class that presents a stable surface over a complex or unstable subsystem. No dependency inversion at all — just encapsulation.
+
+**Golang Code Below**
 
 ```go
 // Facade — stable surface, no DIP, just encapsulation
@@ -1262,6 +1319,8 @@ Every system has a `main`. It's the entry point. Martin's claim: `main` is the d
 `main` knows everything. It imports the database driver, the web framework, the use cases, the repositories, the configuration. It's the one place where every dependency is allowed to converge — because its job is to wire the system together.
 
 And precisely because it does this dirty work, `main` is a *plugin*. The rest of the system never knows what's in `main`. The system's components don't depend on `main`. `main` depends on them.
+
+**Golang Code Below**
 
 ```go
 // main.go — the composition root. Dirtiest file, perfectly correct.
@@ -1353,6 +1412,8 @@ This is an architectural failure. The tests are depending on volatile low-level 
 
 The solution: create a specific API layer that the tests use to drive the system. This API sits just inside the service boundary — it knows about use cases and business rules, but bypasses the UI, the HTTP layer, and the database.
 
+**TypeScript Code Below**
+
 ```typescript
 // Instead of testing through the HTTP layer:
 // POST /api/users, check 201 response, parse JSON...
@@ -1380,6 +1441,8 @@ test('verified user can place order', async () => {
   expect(result.status).toBe('confirmed');
 });
 ```
+
+**Golang Code Below**
 
 ```go
 // Go equivalent — test through a TestAPI, not through HTTP
@@ -1436,6 +1499,8 @@ The problem in most embedded systems: developers write firmware when they should
 
 The solution: introduce a HAL between the software and the hardware. The software layer calls `HAL_LED_On()`. The firmware layer implements this for the specific chip.
 
+**Golang Code Below**
+
 ```go
 // HAL interface — defined in the software layer
 type HardwareAbstraction interface {
@@ -1491,6 +1556,8 @@ func TestTemperatureController_HeatsWhenCold(t *testing.T) {
 
 Same principle, applied to the RTOS. The software layer calls `OSAL_Sleep(100)` rather than calling FreeRTOS's `vTaskDelay()` directly. When the team switches RTOSes, they rewrite the OSAL — not the application.
 
+**Golang Code Below**
+
 ```go
 type OSAL interface {
     Sleep(d time.Duration)
@@ -1519,6 +1586,8 @@ The complexity of database software — indexing, query planning, transactions, 
 **What this means for architecture**
 
 Business rules should not know which database you use. Passing database rows, ORM models, or query result objects through the application is an architectural error. It couples the business rules to the relational structure of the data, which is a detail that will change for technical reasons unrelated to business needs.
+
+**TypeScript Code Below**
 
 ```typescript
 // BAD — business rule depends on database row format
@@ -1573,6 +1642,8 @@ A system whose architecture is shaped by the web will need to be restructured ev
 
 Use cases shouldn't know they're being invoked by an HTTP request. They should accept plain data and return plain data.
 
+**TypeScript Code Below**
+
 ```typescript
 // BAD — use case knows about HTTP
 class PlaceOrderUseCase {
@@ -1604,6 +1675,8 @@ app.post('/orders', async (req, res) => {
   res.status(201).json(result);
 });
 ```
+
+**Golang Code Below**
 
 ```go
 // Use case knows nothing about HTTP
@@ -1654,6 +1727,8 @@ When the framework evolves in a direction that doesn't serve you — and eventua
 
 **The solution: treat frameworks as plugins**
 
+**TypeScript Code Below**
+
 ```typescript
 // BAD — Entity inherits from framework base class
 import { BaseEntity } from 'typeorm';
@@ -1689,6 +1764,8 @@ class OrderEntity {
   }
 }
 ```
+
+**Golang Code Below**
 
 ```go
 // BAD — handler logic mixed with framework (Gin)
@@ -1811,6 +1888,8 @@ src/
     Order.ts              // internal — not exported
 ```
 
+**Golang Code Below**
+
 ```go
 // Go's package system enforces this naturally
 // internal/user/user.go
@@ -1842,6 +1921,8 @@ func (p passwordHasher) hash(plain string) string { /* ... */ return "" }
 Brown's most important point: **making every type public is an architectural anti-pattern.**
 
 If all your types are public, your packages are organizational folders, not architectural boundaries. Any developer can reach across any boundary at any time. The architecture that exists on the whiteboard doesn't exist in the compiler.
+
+**Golang Code Below**
 
 ```go
 // Without enforcement — developer bypasses the intended boundary
