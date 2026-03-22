@@ -1,13 +1,24 @@
 import type { MetadataRoute } from "next";
+import { baseUrl } from "@/app/sitemap";
 
 export default function robots(): MetadataRoute.Robots {
-    const baseURL = "https://avikmukherjee.me";
-    return {
-        rules: {
-            userAgent: "*",
-            allow: ["/", "/blog", "/projects", "/experience", "/resume", "/rss", "/about", "/experiments"],
-            disallow: [],
-        },
-        sitemap: `${baseURL}/sitemap.xml`
-    }
+  return {
+    rules: [
+      {
+        userAgent: "*",
+        allow: [
+          "/",
+          "/blog",
+          "/projects",
+          "/experience",
+          "/resume",
+          "/about",
+          "/experiments",
+          "/reading",
+        ],
+        disallow: ["/api/", "/vcard", "/_next/"],
+      },
+    ],
+    sitemap: `${baseUrl}/sitemap.xml`,
+  };
 }
