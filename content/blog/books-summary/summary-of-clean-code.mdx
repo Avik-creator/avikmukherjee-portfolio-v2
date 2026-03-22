@@ -1,0 +1,1923 @@
+---
+title: "I Started Reading Books. First One Was Clean Architecture by Uncle Bob."
+description: "A complete breakdown of Robert C. Martin's Clean Architecture — every chapter, every principle, every pattern, with TypeScript and Go code examples throughout."
+date: "2025-01-15"
+tags: ["software-architecture", "clean-architecture", "solid-principles", "software-design", "system-design", "golang", "typescript"]
+author: "Your Name"
+ogImage: "/images/clean-architecture-guide.png"
+---
+
+I've been meaning to read more. Not articles. Not threads. Actual books.
+
+First one I picked up was *Clean Architecture* by Robert C. Martin — Uncle Bob.
+
+Honestly? One of the more difficult books I've read. Not because the prose is dense or the concepts are mathematically complex — but because so much of it requires you to hold a large mental model in your head at once. Every chapter assumes the previous one. Principles reference each other. The architecture layers only make sense once you understand why the dependency boundaries exist, which only makes sense once you understand the component principles, which only makes sense once you understand SOLID. It builds. If you try to skim it, you end up with a bag of buzzwords.
+
+I've been writing software for a while. I knew what most of these principles were called. SRP, OCP, DIP — I could name them in an interview. But I'd never actually sat with them long enough to understand *why* they exist, where they came from, what problem each one was solving when someone first discovered it.
+
+This book answered that. All 34 chapters, the appendix, the case study, the archaeology section where Martin traces 45 years of his own career to show where these ideas were born from painful experience.
+
+Here's everything, chapter by chapter — laid out in a way I wish I'd had before I started.
+
+## Part I — Introduction
+
+### Chapter 1: What Is Design and Architecture?
+
+Martin opens with a provocation: design and architecture are the same thing.
+
+Not similar. The same.
+
+High-level structure decisions and low-level implementation details exist on a single continuous spectrum. There's no clean dividing line. The "architecture" is the arrangement of well-designed pieces, and the "design" is how each piece is shaped. Treating them as separate disciplines is, in Martin's word, nonsensical.
+
+The goal of both is identical:
+
+> Minimize the human resources required to build and maintain the system.
+
+That's the whole game. Every principle in this book serves that one metric.
+
+The measure of quality in a design isn't elegance. It isn't cleverness. It's **effort**. A good design keeps effort low across the lifetime of the system. A bad design lets effort grow with every release until engineers spend all their time managing the mess instead of building features.
+
+Martin calls this the Signature of a Mess. He backs it with data — productivity curves from real projects where a team starts fast, accumulates mess, and slowly grinds toward zero velocity. The solution that teams often reach for — a grand redesign — almost always reproduces the same mess, because the attitudes that created it haven't changed.
+
+The only way to go fast is to go well.
+
+### Chapter 2: A Tale of Two Values
+
+Software provides two types of value to its stakeholders:
+
+**Behavior** — the system does what it's supposed to do. It satisfies the functional requirements.
+
+**Architecture** — the system is easy to change. The "softness" in software.
+
+Most developers, managers, and product teams optimize for behavior. Sprints are built around delivering behavior. Bugs are behavior failures. But Martin argues architecture is the more important of the two.
+
+The argument: a program that works perfectly but cannot be changed becomes useless the moment requirements change — and requirements always change. A program that doesn't work but is easy to change can be fixed and remain valuable indefinitely.
+
+He maps this onto Eisenhower's urgent/important matrix:
+
+- Behavior is **urgent but not always important**
+- Architecture is **always important but never urgent**
+
+This is why architecture erodes. Nobody files a ticket for "we need better boundaries." There's always a feature that's more pressing. The importance of architecture is invisible until it's catastrophic — until the day productivity drops toward zero and nobody can explain exactly why.
+
+Martin's conclusion: developers must fight for the architecture. It won't fight for itself.
+
+## Part II — Starting With the Bricks: Programming Paradigms
+
+### Chapter 3: Paradigm Overview
+
+Three paradigms exist. Each is defined not by what it adds to the programmer, but by what it takes away.
+
+- **Structured programming** imposes discipline on direct transfer of control (removes `goto`)
+- **Object-oriented programming** imposes discipline on indirect transfer of control (removes function pointers)
+- **Functional programming** imposes discipline on assignment (removes mutable state)
+
+All three paradigms restrict programmers. None of them add new capability. Each removes a dangerous freedom that turned out to cause more problems than it solved.
+
+Martin draws the architectural consequence: these three paradigms correspond to the three big concerns of architecture — function (structured), separation of components (OO), and data management (functional). Every good architecture uses all three.
+
+
+### Chapter 4: Structured Programming
+
+Edsger Dijkstra's insight in the 1960s: unrestrained `goto` statements made it impossible to apply mathematical proof to programs. You couldn't reason about a piece of code in isolation when control could jump anywhere in the program.
+
+He proposed replacing all jumps with structured control flow — sequence, selection (if/else), and iteration (loops) — and proved that any program could be constructed from these three structures alone.
+
+The deeper architectural insight from this chapter: **software is not a mathematical endeavor, it's a scientific one.** We don't prove programs correct. We fail to prove them incorrect — through testing. Dijkstra's decomposition matters because it lets us break systems into small, independently testable units. A function that can only be entered at the top and exited at the bottom is a function you can reason about in isolation.
+
+This is still the foundation of good architectural practice today. Decompose into small, testable functions. Test them. The ones you can't prove wrong, you ship.
+
+### Chapter 5: Object-Oriented Programming
+
+OOP is typically defined by three things: encapsulation, inheritance, and polymorphism. Martin works through each.
+
+**Encapsulation** existed in C before OOP — header files and translation units provided the same mechanism. Not unique to OOP.
+
+**Inheritance** existed in C too — you could cast structs and overlay memory layouts. Awkward and manual, but present. Not unique to OOP.
+
+**Polymorphism** is where OOP makes a real architectural contribution. Before OOP, polymorphic behavior required explicit function pointers — manually set, manually managed, dangerous if wrong. OOP made polymorphism safe and implicit.
+
+The real payoff isn't just polymorphism itself. It's **dependency inversion**. In a traditional call stack, source code dependencies follow the flow of control. Module A calls Module B, so A depends on B. OOP breaks this. Through interfaces and polymorphism, you can have A call a function that B implements, with A depending only on the interface — and B depending on A's interface definition. The dependency arrow flips.
+
+This is how plugin architectures work. Business rules define an interface. The database implements it. The business rules depend on nothing in the database. The database depends on the interface defined by the business rules. You can swap the database without touching the business rules. That's the power.
+
+### Chapter 6: Functional Programming
+
+Functional programming is built on a simple constraint: variables don't vary. Once a value is assigned, it stays.
+
+This sounds like an inconvenience. The architectural implication is enormous.
+
+**All race conditions, deadlock conditions, and concurrent update problems are caused by mutable variables.** Two threads racing to update the same counter, a database transaction failing because another process modified the same row — these require mutable state. Remove mutable state and these categories of bugs become impossible.
+
+In practice, pure immutability is hard. You can't run a useful program with no mutable state whatsoever — you'd need infinite storage to keep all intermediate values. So architects apply two strategies:
+
+**Segregation of mutability** — separate the application into components that are purely functional (no state changes) and components that are allowed to mutate, keeping the mutable components as small as possible and protecting them with strict synchronization.
+
+**Event Sourcing** — store transactions instead of state. Never update. Never delete. Just append. Derive the current state by replaying the transaction log from the beginning, or from a recent snapshot.
+
+```typescript
+// Mutable approach — threads can corrupt this
+class BankAccount {
+  balance: number = 0;
+  deposit(amount: number) { this.balance += amount; }
+  withdraw(amount: number) { this.balance -= amount; }
+}
+
+// Event Sourced — append only, derive on read, nothing to race on
+type TxKind = 'deposit' | 'withdrawal';
+interface Transaction { kind: TxKind; amount: number; at: Date }
+
+class BankAccount {
+  private log: Transaction[] = [];
+
+  deposit(amount: number)  { this.log.push({ kind: 'deposit',    amount, at: new Date() }); }
+  withdraw(amount: number) { this.log.push({ kind: 'withdrawal', amount, at: new Date() }); }
+
+  get balance(): number {
+    return this.log.reduce((sum, t) =>
+      t.kind === 'deposit' ? sum + t.amount : sum - t.amount, 0
+    );
+  }
+
+  balanceAt(date: Date): number {
+    return this.log
+      .filter(t => t.at <= date)
+      .reduce((sum, t) => t.kind === 'deposit' ? sum + t.amount : sum - t.amount, 0);
+  }
+}
+```
+
+```go
+type TxKind string
+const ( Deposit TxKind = "deposit"; Withdrawal TxKind = "withdrawal" )
+
+type Tx struct { Kind TxKind; Amount int64; At time.Time }
+
+type BankAccount struct {
+    mu  sync.RWMutex
+    log []Tx
+}
+
+func (a *BankAccount) Deposit(amount int64) {
+    a.mu.Lock(); defer a.mu.Unlock()
+    a.log = append(a.log, Tx{Kind: Deposit, Amount: amount, At: time.Now()})
+}
+
+func (a *BankAccount) Balance() int64 {
+    a.mu.RLock(); defer a.mu.RUnlock()
+    var total int64
+    for _, t := range a.log {
+        if t.Kind == Deposit { total += t.Amount } else { total -= t.Amount }
+    }
+    return total
+}
+```
+
+Git works this way. Your bank statement works this way. Kafka works this way. The log is the source of truth; current state is just the log folded into a value.
+
+## Part III — Design Principles (SOLID)
+
+### Chapter 7: SRP — The Single Responsibility Principle
+
+The most misunderstood principle in software.
+
+The common version: "a class should do one thing." That's a different rule — it applies at the function level when decomposing large functions into smaller ones. The SRP operates at a higher level.
+
+**The SRP: a module should be responsible to one, and only one, actor.**
+
+An *actor* is a group of stakeholders who share the same reason to request a change. In a payroll system: the CFO's team owns compensation logic, the COO's team owns HR reporting, the CTO's team owns data persistence. These are three actors.
+
+The classic violation — all three in one class:
+
+```typescript
+// BAD — three actors, one class
+class Employee {
+  calculatePay(): number {
+    return this.regularHours() * this.payRate; // CFO's logic
+  }
+
+  reportHours(): string {
+    return `${this.regularHours()} hours worked`; // COO's logic
+  }
+
+  save(): void {
+    db.save(this); // CTO/DBA logic
+  }
+
+  private regularHours(): number {
+    // Shared by calculatePay AND reportHours.
+    // CFO changes this for payroll — COO's report silently breaks.
+    return this.hoursWorked - this.overtime;
+  }
+}
+```
+
+```typescript
+// GOOD — each actor owns its own type
+class PayCalculator {
+  calculate(e: Employee): number { return this.regularHours(e) * e.payRate; }
+  private regularHours(e: Employee): number { return e.hoursWorked - e.overtime; }
+}
+
+class HourReporter {
+  report(e: Employee): string { return `${this.regularHours(e)} hours worked`; }
+  private regularHours(e: Employee): number { return e.hoursWorked - e.overtime; }
+  // Same formula today. Will diverge. Now they can do so safely.
+}
+
+class EmployeeRepository {
+  save(e: Employee): void { db.save(e); }
+}
+```
+
+```go
+// Go equivalent
+type PayCalculator struct{}
+func (p PayCalculator) Calculate(e Employee) float64 {
+    return p.regularHours(e) * e.PayRate
+}
+func (p PayCalculator) regularHours(e Employee) float64 { return e.HoursWorked - e.Overtime }
+
+type HourReporter struct{}
+func (h HourReporter) Report(e Employee) string {
+    return fmt.Sprintf("%.1f hours worked", h.regularHours(e))
+}
+func (h HourReporter) regularHours(e Employee) float64 { return e.HoursWorked - e.Overtime }
+
+type EmployeeRepo struct{ db *sql.DB }
+func (r EmployeeRepo) Save(e Employee) error {
+    _, err := r.db.Exec(`INSERT INTO employees ...`, e.ID, e.HoursWorked)
+    return err
+}
+```
+
+Yes, `regularHours` now exists in two places. That's intentional. These two calculations look the same today and will diverge when they must — and when they do, you want them in separate rooms, not sharing a wall.
+
+Two symptoms of SRP violations: **accidental duplication** (shared code that breaks one actor when another changes it) and **merges** (multiple teams editing the same file simultaneously, producing risky conflicts).
+
+The SRP scales. At the component level it becomes the Common Closure Principle. At the architectural level it becomes the Axis of Change — the principle by which boundaries are drawn between things that change for different reasons.
+
+### Chapter 8: OCP — The Open-Closed Principle
+
+Bertrand Meyer's principle: a software artifact should be open for extension but closed for modification.
+
+When requirements change, you should be adding new code — not modifying existing code. Existing code that works should stay untouched.
+
+```typescript
+// BAD — every new payment method requires reopening this function
+function processPayment(type: string, amount: number): boolean {
+  if (type === 'credit_card') {
+    return chargeCard(amount);
+  } else if (type === 'paypal') {
+    return chargePaypal(amount);
+  } else if (type === 'crypto') {
+    // Had to open this function again to add crypto
+    return chargeCrypto(amount);
+  }
+  return false;
+}
+```
+
+```typescript
+// GOOD — new payment methods extend without touching existing code
+interface PaymentProcessor {
+  process(amount: number): boolean;
+}
+
+class CreditCardProcessor implements PaymentProcessor {
+  process(amount: number): boolean { return chargeCard(amount); }
+}
+
+class PaypalProcessor implements PaymentProcessor {
+  process(amount: number): boolean { return chargePaypal(amount); }
+}
+
+// Adding crypto required zero changes above
+class CryptoProcessor implements PaymentProcessor {
+  process(amount: number): boolean { return chargeCrypto(amount); }
+}
+
+function processPayment(p: PaymentProcessor, amount: number): boolean {
+  return p.process(amount); // Never changes
+}
+```
+
+```go
+type PaymentProcessor interface {
+    Process(amount int64) error
+}
+
+type CreditCard struct{ apiKey string }
+func (c CreditCard) Process(amount int64) error { return chargeCard(c.apiKey, amount) }
+
+type Crypto struct{ walletAddr string }
+func (c Crypto) Process(amount int64) error { return chargeCrypto(c.walletAddr, amount) }
+
+// New processors are added, never modifications to this
+func ProcessPayment(p PaymentProcessor, amount int64) error {
+    return p.Process(amount)
+}
+```
+
+The architectural version of OCP is about protecting higher-level components from lower-level ones. Partition the system into components and arrange them in a dependency hierarchy — higher-level components are protected from changes in lower-level ones.
+
+The Interactor (business rules) sits at the top. When a new report format is needed, you add a new Presenter. When a new database is needed, you add a new Repository implementation. The Interactor never opens. That's OCP at the architectural scale.
+
+### Chapter 9: LSP — The Liskov Substitution Principle
+
+Barbara Liskov's rule: subtypes must be substitutable for their base types — not just structurally, but *behaviorally*.
+
+The canonical violation is the Square/Rectangle problem:
+
+```typescript
+// BAD — Square lies about being a Rectangle
+class Rectangle {
+  protected w = 0; protected h = 0;
+  setWidth(w: number)  { this.w = w; }
+  setHeight(h: number) { this.h = h; }
+  area(): number { return this.w * this.h; }
+}
+
+class Square extends Rectangle {
+  setWidth(w: number)  { this.w = w; this.h = w; } // side effect breaks contract
+  setHeight(h: number) { this.w = h; this.h = h; } // same
+}
+
+function test(r: Rectangle) {
+  r.setWidth(5);
+  r.setHeight(10);
+  console.log(r.area()); // Expect 50. Square gives 100. Silent wrong answer.
+}
+```
+
+```typescript
+// GOOD — honest interfaces, no behavioral surprises
+interface Shape { area(): number; }
+
+class Rectangle implements Shape {
+  constructor(private w: number, private h: number) {}
+  area() { return this.w * this.h; }
+}
+
+class Square implements Shape {
+  constructor(private side: number) {}
+  area() { return this.side ** 2; }
+}
+```
+
+```go
+// BAD in Go — ReadOnlyFile pretends to implement ReadWriter
+type ReadWriter interface {
+    Read(p []byte)  (int, error)
+    Write(p []byte) (int, error)
+}
+
+type ReadOnlyFile struct{ path string }
+func (f ReadOnlyFile) Read(p []byte) (int, error)  { return 0, nil } // works
+func (f ReadOnlyFile) Write(p []byte) (int, error) {
+    return 0, errors.New("read-only") // silently breaks the contract
+}
+
+// GOOD — separate interfaces matching what's actually supported
+type Reader interface { Read(p []byte) (int, error) }
+type Writer interface { Write(p []byte) (int, error) }
+
+type ReadOnlyFile struct{ path string }
+func (f ReadOnlyFile) Read(p []byte) (int, error) { return 0, nil }
+// Never implements Writer — honest about its capabilities
+```
+
+The architectural impact of LSP violations: when subtypes don't honor contracts, callers must perform type checks and special-case logic. That defensive code accumulates at every boundary, polluting the system with `if x is Square` checks that shouldn't need to exist.
+
+Note that Go's standard library is a working example of LSP done right — `io.Reader`, `io.Writer`, `io.Closer` are tiny, composable interfaces that make no promises they can't keep.
+
+### Chapter 10: ISP — The Interface Segregation Principle
+
+Don't depend on things you don't use.
+
+```typescript
+// BAD — fat interface forces all implementors to carry dead weight
+interface UserStore {
+  create(u: User): Promise<void>;
+  update(u: User): Promise<void>;
+  delete(id: string): Promise<void>;
+  findById(id: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
+  listAll(): Promise<User[]>;
+  count(): Promise<number>;
+}
+
+// RegisterUser only needs create + findByEmail
+// But it pulls in delete, listAll, count — none of which it uses
+class RegisterUser {
+  constructor(private store: UserStore) {}
+}
+```
+
+```typescript
+// GOOD — focused interfaces, each use case declares exactly what it needs
+interface UserCreator   { create(u: User): Promise<void>; }
+interface UserByEmail   { findByEmail(email: string): Promise<User | null>; }
+interface UserDeleter   { delete(id: string): Promise<void>; }
+
+class RegisterUser {
+  constructor(
+    private creator: UserCreator,  // I need to create
+    private finder: UserByEmail    // I need to check for duplicates
+  ) {}
+  // Knows nothing about delete, listAll, count
+}
+```
+
+```go
+// Go's implicit interfaces make ISP feel natural
+type UserCreator interface {
+    Create(ctx context.Context, u User) error
+}
+
+type UserByEmail interface {
+    FindByEmail(ctx context.Context, email string) (User, error)
+}
+
+// RegisterUseCase depends on only what it needs
+type RegisterUseCase struct {
+    creator UserCreator
+    finder  UserByEmail
+}
+
+// PostgresStore satisfies both interfaces implicitly
+type PostgresStore struct{ db *sql.DB }
+func (s *PostgresStore) Create(ctx context.Context, u User) error           { /* ... */ return nil }
+func (s *PostgresStore) FindByEmail(ctx context.Context, e string) (User, error) { /* ... */ return User{}, nil }
+```
+
+Go's entire standard library is built this way — `io.Reader` is one method, `io.Writer` is one method. You compose them when you need both. ISP baked into the language philosophy.
+
+At the architectural level: depending on a module that carries unnecessary capabilities creates unnecessary coupling. When that module changes — even in ways irrelevant to your use — your component must recompile, retest, redeploy. ISP prevents that waste.
+
+### Chapter 11: DIP — The Dependency Inversion Principle
+
+The most powerful principle of the five.
+
+**The most flexible systems are those where source code dependencies refer only to abstractions, not concretions.**
+
+```typescript
+// BAD — high-level policy depends directly on low-level detail
+class OrderService {
+  private db = new PostgresDatabase(); // direct concrete dependency
+
+  placeOrder(order: Order): void {
+    this.db.save(order); // coupled to Postgres forever
+  }
+}
+```
+
+```typescript
+// GOOD — high-level policy depends only on an abstraction it owns
+interface OrderRepository {
+  save(order: Order): Promise<void>;
+  findById(id: string): Promise<Order | null>;
+}
+
+class OrderService {
+  constructor(private repo: OrderRepository) {} // depends on interface, not implementation
+
+  async placeOrder(order: Order): Promise<void> {
+    await this.repo.save(order); // no idea what's underneath
+  }
+}
+
+// Infrastructure implements the interface — depends INWARD on the domain
+class PostgresOrderRepository implements OrderRepository {
+  async save(order: Order): Promise<void>            { /* Postgres SQL */ }
+  async findById(id: string): Promise<Order | null>  { /* Postgres SQL */ return null; }
+}
+
+// Tests use a cheap in-memory version — no database needed
+class InMemoryOrderRepository implements OrderRepository {
+  private store: Order[] = [];
+  async save(order: Order): Promise<void>            { this.store.push(order); }
+  async findById(id: string): Promise<Order | null>  { return this.store.find(o => o.id === id) ?? null; }
+}
+```
+
+```go
+// Domain layer — defines the interface it needs. Zero infrastructure imports.
+// internal/order/repository.go
+package order
+
+type Repository interface {
+    Save(ctx context.Context, o Order) error
+    FindByID(ctx context.Context, id string) (Order, error)
+}
+
+type Service struct{ repo Repository }
+
+func (s *Service) PlaceOrder(ctx context.Context, o Order) error {
+    return s.repo.Save(ctx, o)
+}
+
+// Infrastructure layer — implements the interface. Imports domain, not vice versa.
+// infrastructure/postgres/order_repo.go
+package postgres
+
+import "myapp/internal/order" // dependency points INWARD
+
+type OrderRepository struct{ db *sql.DB }
+
+func (r *OrderRepository) Save(ctx context.Context, o order.Order) error {
+    _, err := r.db.ExecContext(ctx, `INSERT INTO orders ...`, o.ID)
+    return err
+}
+
+func (r *OrderRepository) FindByID(ctx context.Context, id string) (order.Order, error) {
+    // query and scan
+    return order.Order{}, nil
+}
+```
+
+The dependency arrow now points inward — `PostgresOrderRepository` depends on `order.Repository`, which lives in the domain. The domain knows nothing about Postgres. If you delete the entire `infrastructure/` package, the domain compiles fine.
+
+This is the mechanism that makes the entire Clean Architecture possible. DIP is not just a coding guideline — it's the hinge on which the Dependency Rule turns.
+
+Practical rules:
+- Don't refer to volatile concrete classes — refer to abstract interfaces
+- Don't derive from volatile concrete classes
+- Don't override concrete functions
+- Use Abstract Factory to create concrete objects without depending on their concrete type
+
+## Part IV — Component Principles
+
+### Chapter 12: Components
+
+Components are the units of deployment. In Java, a `.jar` file. In Go, a compiled binary or a package boundary. In .NET, a `.dll`. They're the smallest entities that can be deployed independently.
+
+Martin gives a brief history of how we got here: in the early days, programs were small enough that everything was linked at compile time. As systems grew, developers invented relocatable binaries, then dynamic linking, then load-time linking. The modern result: components can be deployed individually and composed at runtime — the plugin architecture that makes large systems manageable.
+
+The architectural consequence: once components can be independently deployed, they can also be independently developed. Different teams can own different components, release on different schedules, and evolve without stepping on each other — provided the component boundaries are well-designed.
+
+This chapter sets up the next two: the principles for deciding which classes belong in which component, and the principles for managing how components relate to each other.
+
+### Chapter 13: Component Cohesion
+
+Which classes belong in which component? Three principles answer this.
+
+**REP — Reuse/Release Equivalence Principle**
+
+The granule of reuse is the granule of release. If you want a component to be reusable, it must be managed and tracked through a formal release process — version numbers, changelogs, compatibility guarantees. Classes that aren't part of a releasable unit can't really be reused by external teams, because there's no way to depend on a specific version of them.
+
+The implication: group classes into components along the lines of what gets released and versioned together.
+
+**CCP — Common Closure Principle**
+
+Gather into one component all the classes that change for the same reasons and at the same times. Separate classes that change for different reasons at different times.
+
+This is the SRP applied at the component level. When a requirement changes, you want it to affect exactly one component, not five. If your "add a new payment method" change touches the payments component, the notifications component, the reporting component, and the database schema component — those components have violated the CCP.
+
+**CRP — Common Reuse Principle**
+
+Don't force users of a component to depend on things they don't need. Classes that aren't reused together shouldn't be in the same component.
+
+This is the ISP applied at the component level. If component A depends on component B, and B contains ten classes but A only uses two of them, then A is forced to redeploy whenever any of the other eight classes change — even though A doesn't care about them.
+
+**The Tension Triangle**
+
+These three principles pull in different directions:
+
+- REP and CCP are **inclusive** — they want components to be larger, grouping more classes together
+- CRP is **exclusive** — it wants components to be smaller, splitting unused things apart
+
+You can't optimize for all three simultaneously. If you focus on REP and CCP, you get large components that force unnecessary redeployments on users. If you focus only on CRP, you get small components that require touching many of them for every change.
+
+The right balance shifts over a project's lifecycle. Early on, when no one outside the team depends on your components, optimize for CCP — minimize the number of components affected by each change. As the project matures and external teams start depending on specific components, shift toward REP and CRP.
+
+### Chapter 14: Component Coupling
+
+How should components relate to each other? Three more principles.
+
+**ADP — Acyclic Dependencies Principle**
+
+Allow no cycles in the component dependency graph.
+
+A cycle means components A, B, and C all depend on each other in a loop. The consequences are severe: you can't build any of them in isolation (they all need each other to compile), you can't test any of them without the others, and you can't release any of them independently.
+
+```
+// Cycle — impossible to build or test in isolation
+A → B → C → A
+
+// Broken cycle — now each can be built, tested, released independently
+A → B → C
+        ↑
+        D (new component that A and C both depend on)
+```
+
+When you find a cycle, break it one of two ways: introduce a new component that the cyclic components both depend on (extracting the shared dependency), or apply DIP to invert one of the dependencies.
+
+**SDP — Stable Dependencies Principle**
+
+Depend in the direction of stability.
+
+A component is stable when many other components depend on it — it's hard to change because any change ripples through all its dependents. A component is unstable when it depends on many others and few things depend on it — easy to change.
+
+Never let a stable component depend on an unstable one. If you do, a change in the unstable component forces a change in the stable one, rippling through everything that depends on the stable component.
+
+Martin defines metrics for this: *fan-in* (incoming dependencies, promoting stability) and *fan-out* (outgoing dependencies, promoting instability). The instability metric I = fan-out / (fan-in + fan-out). I=0 is maximally stable; I=1 is maximally unstable. Depend in the direction of decreasing I.
+
+**SAP — Stable Abstractions Principle**
+
+A component should be as abstract as it is stable.
+
+Stable components — the ones everything depends on — should consist primarily of interfaces and abstract classes. This way, they're stable (hard to change) but extensible (new implementations can be added without modifying the stable component). The OCP applied to components.
+
+Unstable components — the ones that change frequently — should be concrete. They contain the implementation details that need to adapt.
+
+**The Main Sequence**
+
+Plotting stability (x-axis) against abstractness (y-axis) gives a graph. The ideal position for any component is the diagonal line running from (0 abstract, 1 unstable) to (1 abstract, 0 stable) — the *Main Sequence*.
+
+Components far from this line are either in the **Zone of Pain** (highly stable but concrete — hard to change and impossible to extend) or the **Zone of Uselessness** (highly abstract but unstable — nobody depends on them and they serve no purpose).
+
+
+## Part V — Architecture
+
+### Chapter 15: What Is Architecture?
+
+Martin's definition of the architect's goal might surprise you:
+
+> A good architect maximizes the number of decisions not yet made.
+
+Architecture is not about choosing the right database upfront. It's not about picking the framework on day one. It's about designing the system in such a way that those decisions can be deferred — kept open — until you have enough real information to make them wisely.
+
+The goal of architecture is to support the system through its lifetime: facilitate development, facilitate deployment, facilitate operation, and facilitate maintenance — in roughly that priority order. A system that can't be developed can never be deployed. A system that can't be maintained gets replaced.
+
+**Device Independence — the lesson that keeps coming up**
+
+Martin returns to a story from the 1960s: programs written for specific IO devices. When the device changed — magnetic tape replaced punch cards — the program had to be rewritten. The fix was an OS abstraction layer. Programs became device-independent. Architecture is that kind of abstraction, applied everywhere.
+
+A good architecture makes the system independent of the delivery mechanism, independent of the database, independent of the framework — not because those things don't matter, but because they change, and you want the core to survive those changes.
+
+### Chapter 16: Independence
+
+A good architecture must support the system's *use cases* — the things the system needs to do for its users. It must also allow *independent development* by different teams and *independent deployment* of different components.
+
+**Decoupling layers horizontally**
+
+Every system has horizontal layers: UI, application-specific business rules, enterprise-wide business rules, database. A good architecture keeps these layers decoupled so that changes in one don't force changes in the others.
+
+**Decoupling use cases vertically**
+
+Within each horizontal layer, a good architecture partitions by use case — placing all the code for "place order" together rather than scattering it across files organized by technical type.
+
+**Duplication — true vs. accidental**
+
+Martin draws a critical distinction. Some duplication is **true** — two pieces of code that exist for the same reason and need to stay in sync. Deduplicate this. Some duplication is **accidental** — two pieces of code that happen to look the same today but exist for different reasons and will diverge. Don't deduplicate this. Premature unification creates coupling between things that should evolve independently.
+
+**Decoupling modes**
+
+A good architecture can shift between deployment modes without fundamental restructuring. The same codebase can start as a monolith (fast to develop), evolve to separate services (when scaling or team independence demands it), and potentially consolidate back — because the internal component boundaries were clean throughout.
+
+### Chapter 17: Boundaries — Drawing Lines
+
+Architecture is the art of drawing lines — *boundaries* — between things that matter and things that are details.
+
+**Policy** is what matters: business rules, use cases, the computations that make money.
+
+**Details** are the things that don't matter to the policy: which database, which web framework, which IO device, which communication protocol.
+
+The core argument: the UI should be a plugin to the business rules. The database should be a plugin to the business rules. Not the other way around.
+
+Martin illustrates with a cautionary tale: a system where the business rules were tightly coupled to the database schema from day one. Every time the schema changed, the business rules changed too. When the team tried to optimize queries, they had to restructure business logic. The database was supposed to be a detail. Instead it had become the master.
+
+The correct structure: business rules define interfaces. The database implements those interfaces. The UI implements those interfaces. The dependency arrows all point toward the business rules. The business rules are blissfully unaware of the database and UI.
+
+**Axis of change**
+
+Boundaries are drawn along *axes of change* — places where things change at different rates and for different reasons. Business rules change when business decisions change. The database changes when the DBA wants a new index or schema. The UI changes when the design team wants a new look. These are different axes. Draw boundaries between them.
+
+### Chapter 18: Boundary Anatomy
+
+Boundaries come in multiple forms depending on the level of separation needed. Martin walks through them from cheapest to most expensive.
+
+**Source-level boundaries (monolith)**
+
+The simplest boundary: a function call across an interface within a single deployable unit. No network latency, no serialization. Just a compiler-enforced separation. The boundary exists in source code only — the entire system deploys together.
+
+This is not "no architecture." A monolith with clean internal boundaries — proper interfaces, proper dependency directions — can be more maintainable than a distributed system with none.
+
+```go
+// Source-level boundary inside a monolith
+// The business layer never imports the database layer directly
+package order // domain
+
+type Repository interface { // boundary defined here, in the domain
+    Save(ctx context.Context, o Order) error
+}
+
+package postgres // infrastructure, imports domain — not vice versa
+
+type Repo struct{ db *sql.DB }
+func (r *Repo) Save(ctx context.Context, o order.Order) error { /* ... */ return nil }
+```
+
+**Deployment-level boundaries**
+
+Components compiled and deployed separately but running in the same process — dynamically linked libraries, plugins. They communicate through function calls but can be updated independently.
+
+**Local process boundaries**
+
+Separate operating system processes on the same machine. Communication via sockets, message queues, or shared memory. More overhead than a function call, but full isolation. A crash in one process doesn't crash the other.
+
+**Service boundaries**
+
+The most expensive boundary: separate processes on separate machines communicating over a network. Services have full physical isolation, independent deployment, and independent scaling. They also have the highest communication cost (network latency, serialization, failure modes), the highest operational cost, and the most complex development workflow.
+
+**The cost spectrum**
+
+Every boundary has a cost. Source-level boundaries are cheap to create and maintain. Service boundaries are expensive. A common mistake: jumping to microservices because they feel architecturally rigorous, when source-level boundaries would provide the same design benefits at a fraction of the cost.
+
+The decision of which boundary form to use for each separation should be driven by the need for independent deployment or independent development — not by architectural fashion.
+
+### Chapter 19: Policy and Level
+
+Software systems are descriptions of *policy* — statements of how inputs should be transformed into outputs. Architecture is about grouping policies correctly.
+
+**Level** is the key concept. The level of a policy is defined by its *distance from the inputs and outputs of the system*. A policy that sits close to an input (reading keystrokes, receiving HTTP requests) is low-level. A policy that applies enterprise-wide business rules, far from any specific IO, is high-level.
+
+Source code dependencies should be decoupled from data flow and coupled to level. They should point toward the higher-level policies — away from inputs and outputs.
+
+```
+Low level          →→→ data flows this way →→→          Low level
+(input: keystrokes)                               (output: screen)
+        ↓                                                ↑
+        ↓                                                ↑
+     [Translation]                              [Translation]
+        ↓       source code deps point up         ↑
+        ↓                    ↑                    ↑
+        └──────→ [High-Level Policy] ←────────────┘
+```
+
+The high-level policy doesn't know it's reading from a keyboard or writing to a screen. It only knows it receives data and produces data. Its source code has no dependency on the input or output mechanisms. Those are low-level details that point toward it.
+
+This is why the Dependency Rule works. By always pointing inward (toward higher-level policy), we ensure that high-level policies are protected from changes in low-level details. The core business logic is insulated from churn in the IO layer.
+
+
+### Chapter 20: Business Rules
+
+Business rules are the family jewels of the system. They are the reason the system exists. Everything else — UI, database, frameworks — is in service of the business rules.
+
+Martin distinguishes between two kinds.
+
+**Critical Business Rules** — rules that would exist even if there were no computer. A loan has an interest rate. The interest rate must be calculated correctly. This is a rule of the business, not of the software. These rules belong in *Entities*.
+
+**Application-specific business rules** — rules that define how the system's use cases operate. "A user must be authenticated before placing an order." This doesn't exist in the abstract business — it exists because this application has users and sessions. These belong in *Use Cases*.
+
+**Entities**
+
+An Entity is an object that embodies Critical Business Rules operating on Critical Business Data. It's the most stable thing in the system. It doesn't know about databases, UIs, or the web. It knows about the business.
+
+```typescript
+// Entity — knows nothing outside itself
+class Loan {
+  constructor(
+    private readonly principal: number,
+    private readonly annualRate: number,
+    private readonly termMonths: number
+  ) {}
+
+  monthlyPayment(): number {
+    const r = this.annualRate / 12 / 100;
+    const n = this.termMonths;
+    return this.principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  }
+
+  totalInterest(): number {
+    return this.monthlyPayment() * this.termMonths - this.principal;
+  }
+}
+```
+
+```go
+// Same entity in Go
+type Loan struct {
+    Principal   float64
+    AnnualRate  float64
+    TermMonths  int
+}
+
+func (l Loan) MonthlyPayment() float64 {
+    r := l.AnnualRate / 12 / 100
+    n := float64(l.TermMonths)
+    return l.Principal * (r * math.Pow(1+r, n)) / (math.Pow(1+r, n) - 1)
+}
+
+func (l Loan) TotalInterest() float64 {
+    return l.MonthlyPayment()*float64(l.TermMonths) - l.Principal
+}
+```
+
+**Use Cases**
+
+A Use Case contains the application-specific rules that orchestrate the flow of data to and from Entities. It describes *one thing the user does with the system.*
+
+Crucially, a Use Case accepts and returns **simple data structures** — not Entities, not HTTP request objects, not database rows. Just plain data. This prevents coupling between the inner layer and the outer layers.
+
+```typescript
+// Use case — orchestrates entities, knows nothing about HTTP or DB
+interface LoanRepository { findById(id: string): Promise<Loan | null>; }
+interface LoanNotifier   { sendApproval(email: string, loan: Loan): Promise<void>; }
+
+interface ApproveLoanRequest  { loanId: string; officerId: string; }
+interface ApproveLoanResponse { approved: boolean; monthlyPayment: number; }
+
+class ApproveLoan {
+  constructor(private loans: LoanRepository, private notifier: LoanNotifier) {}
+
+  async execute(req: ApproveLoanRequest): Promise<ApproveLoanResponse> {
+    const loan = await this.loans.findById(req.loanId);
+    if (!loan) throw new Error('Loan not found');
+    if (loan.monthlyPayment() > 10_000) throw new Error('Exceeds policy limit');
+    await this.notifier.sendApproval('officer@bank.com', loan);
+    return { approved: true, monthlyPayment: loan.monthlyPayment() };
+  }
+}
+```
+
+## Part VI — Details (The Architecture Itself)
+
+### Chapter 21: Screaming Architecture
+
+When you look at the blueprints for a house, they scream "house." You see bedrooms, bathrooms, a kitchen. You don't see "load-bearing wall management system."
+
+When you look at the top-level structure of most codebases, what do they scream?
+
+```
+src/
+  controllers/
+  services/
+  repositories/
+  models/
+  middleware/
+```
+
+They scream Rails. They scream Spring. They scream "we used MVC." The architecture announces the framework, not the purpose.
+
+A well-structured codebase should scream its use cases:
+
+```
+src/
+  users/
+    register-user/
+    authenticate-user/
+    update-profile/
+    delete-account/
+  orders/
+    place-order/
+    cancel-order/
+    track-shipment/
+    generate-invoice/
+  payments/
+    charge-card/
+    issue-refund/
+    schedule-payment/
+```
+
+This screams "e-commerce system." A new developer can understand the domain before reading a single line of code.
+
+The framework doesn't disappear — it recedes to where it belongs. The HTTP router, the ORM, the dependency injection container are all in the outermost layer where they belong. What's visible at the top level is *what the system does for its users*.
+
+Martin's test: if someone unfamiliar with the codebase looks at the directory structure, can they tell you what the system is for? If the answer is "it uses Spring Boot," the architecture is failing its job.
+
+### Chapter 22: The Clean Architecture
+
+This chapter is the centerpiece. It synthesizes Hexagonal Architecture (Alistair Cockburn), DCI (Data, Context, and Interaction), and BCE (Boundary-Control-Entity) into a single actionable model.
+
+The model is concentric circles. The overriding rule:
+
+**The Dependency Rule: source code dependencies must always point inward, toward higher-level policy.**
+
+Nothing in an inner circle may know anything about something in an outer circle. Not the name. Not the type. Not a reference to it in any form.
+
+**The four layers, from inside out:**
+
+**Entities** — enterprise-wide critical business rules and data. The `Loan` class above is an Entity. These change only when fundamental business policy changes. They have no knowledge of the application, the database, or the web.
+
+**Use Cases** — application-specific business rules. The `ApproveLoan` class above is a Use Case. These orchestrate data flow to and from entities to achieve user goals. They change when application requirements change — when a new workflow is needed or an existing one is modified.
+
+**Interface Adapters** — converters. This layer converts data from the form most convenient for use cases into the form most convenient for external agencies (web, database), and vice versa. Controllers live here. Presenters live here. Gateways live here.
+
+**Frameworks and Drivers** — everything external: the web framework, the database, the UI, device drivers. This outermost ring is where all the volatile details live. It's allowed to know about the inner circles. The inner circles know nothing about it.
+
+**Crossing boundaries**
+
+When a use case needs to pass data to a presenter, it can't call the presenter directly — the presenter is in an outer ring. Calling it would create an inward-to-outward dependency.
+
+The solution: the use case calls an *output port* — an interface defined in the use case ring. The presenter implements this interface from the outer ring. The dependency flows inward (presenter → interface → use case layer). The control flow goes outward (use case triggers the interface, presenter executes).
+
+```typescript
+// Output port — defined in the use case layer
+interface OrderOutputPort {
+  presentOrder(order: { id: string; total: number; status: string }): void;
+}
+
+// Use case — depends only on abstractions in its own layer
+class GetOrderUseCase {
+  constructor(
+    private repo: OrderRepository,    // input port
+    private output: OrderOutputPort   // output port
+  ) {}
+
+  async execute(orderId: string): Promise<void> {
+    const order = await this.repo.findById(orderId);
+    if (!order) throw new Error('Not found');
+    // Call the output port — doesn't know it's talking to a JSON presenter
+    this.output.presentOrder({ id: order.id, total: order.total, status: order.status });
+  }
+}
+
+// Presenter — in the Interface Adapters layer, implements the output port
+class JsonOrderPresenter implements OrderOutputPort {
+  result: object = {};
+  presentOrder(order: { id: string; total: number; status: string }): void {
+    this.result = {
+      orderId: order.id,
+      total: `$${(order.total / 100).toFixed(2)}`,
+      status: order.status.toUpperCase(),
+    };
+  }
+}
+```
+
+```go
+// Same pattern in Go
+// internal/order/ports.go — use case layer
+package order
+
+type OutputPort interface {
+    PresentOrder(id string, totalCents int64, status string)
+}
+
+type GetOrderUseCase struct {
+    repo   Repository
+    output OutputPort
+}
+
+func (uc *GetOrderUseCase) Execute(ctx context.Context, id string) error {
+    o, err := uc.repo.FindByID(ctx, id)
+    if err != nil { return err }
+    uc.output.PresentOrder(o.ID, o.TotalCents, o.Status)
+    return nil
+}
+
+// adapters/json_presenter.go — interface adapters layer
+package adapters
+
+import "myapp/internal/order"
+
+type JSONOrderPresenter struct{ Result map[string]any }
+
+func (p *JSONOrderPresenter) PresentOrder(id string, totalCents int64, status string) {
+    p.Result = map[string]any{
+        "order_id": id,
+        "total":    fmt.Sprintf("$%.2f", float64(totalCents)/100),
+        "status":   strings.ToUpper(status),
+    }
+}
+```
+
+**Data that crosses boundaries** should always be simple, independent data structures — plain structs, DTOs, not Entity objects. This prevents the outer layer's data format from leaking into the inner layer's model.
+
+### Chapter 23: Presenters and Humble Objects
+
+The **Humble Object** pattern solves a specific problem: some behaviors are hard to test (GUIs, database queries, network calls) and some are easy to test (pure logic). The pattern splits them at every architectural boundary.
+
+**The split:**
+
+- **Humble Object** — stripped to bare minimum interaction with the hard-to-test thing. No logic. Just the interface. Often doesn't need testing.
+- **Testable Object** — contains all the logic that was extracted. Fully testable in isolation.
+
+**The View/Presenter split:**
+
+```typescript
+// ViewModel — plain data, no framework types
+interface InvoiceViewModel {
+  invoiceId: string;
+  customerName: string;
+  lineItems: { description: string; amountFormatted: string }[];
+  subtotalFormatted: string;
+  taxFormatted: string;
+  totalFormatted: string;
+  dueDate: string;
+  isOverdue: boolean;
+  overdueWarning: string | null;
+}
+
+// PRESENTER — the testable object. Zero UI or HTTP imports.
+class InvoicePresenter {
+  present(invoice: Invoice): InvoiceViewModel {
+    const now = new Date();
+    const isOverdue = invoice.dueDate < now && invoice.status !== 'paid';
+    return {
+      invoiceId:      invoice.id,
+      customerName:   `${invoice.customer.firstName} ${invoice.customer.lastName}`,
+      lineItems:      invoice.items.map(i => ({
+        description:    i.description,
+        amountFormatted: this.formatMoney(i.amountCents),
+      })),
+      subtotalFormatted: this.formatMoney(invoice.subtotalCents),
+      taxFormatted:      this.formatMoney(invoice.taxCents),
+      totalFormatted:    this.formatMoney(invoice.totalCents),
+      dueDate:           invoice.dueDate.toLocaleDateString('en-US', { dateStyle: 'long' }),
+      isOverdue,
+      overdueWarning: isOverdue
+        ? `Overdue by ${this.daysDiff(invoice.dueDate, now)} days`
+        : null,
+    };
+  }
+
+  private formatMoney(cents: number): string {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
+  }
+
+  private daysDiff(from: Date, to: Date): number {
+    return Math.floor((to.getTime() - from.getTime()) / 86_400_000);
+  }
+}
+
+// VIEW — the humble object. Just renders what it's given. Zero logic.
+function InvoiceCard({ vm }: { vm: InvoiceViewModel }) {
+  return (
+    <div>
+      <h2>Invoice #{vm.invoiceId}</h2>
+      <p>{vm.customerName}</p>
+      {vm.lineItems.map(i => <div key={i.description}>{i.description}: {i.amountFormatted}</div>)}
+      <p>Total: {vm.totalFormatted}</p>
+      <p>Due: {vm.dueDate}</p>
+      {vm.isOverdue && <p style={{color: 'red'}}>{vm.overdueWarning}</p>}
+    </div>
+  );
+}
+```
+
+```go
+// Same split in Go — HTTP handler is the humble object, presenter does the work
+
+type InvoiceViewModel struct {
+    InvoiceID    string
+    Customer     string
+    Total        string
+    DueDate      string
+    IsOverdue    bool
+    OverdueDays  int
+}
+
+// PRESENTER — fully testable, zero net/http imports
+type InvoicePresenter struct{}
+
+func (p InvoicePresenter) Present(inv Invoice) InvoiceViewModel {
+    overdue := inv.DueDate.Before(time.Now()) && inv.Status != "paid"
+    days := 0
+    if overdue {
+        days = int(time.Since(inv.DueDate).Hours() / 24)
+    }
+    return InvoiceViewModel{
+        InvoiceID:   inv.ID,
+        Customer:    inv.Customer.FirstName + " " + inv.Customer.LastName,
+        Total:       fmt.Sprintf("$%.2f", float64(inv.TotalCents)/100),
+        DueDate:     inv.DueDate.Format("January 2, 2006"),
+        IsOverdue:   overdue,
+        OverdueDays: days,
+    }
+}
+
+// HTTP HANDLER — humble object, zero formatting logic
+func (h *Handler) GetInvoice(w http.ResponseWriter, r *http.Request) {
+    inv, err := h.getInvoice.Execute(r.Context(), r.PathValue("id"))
+    if err != nil {
+        http.Error(w, "not found", http.StatusNotFound)
+        return
+    }
+    vm := h.presenter.Present(inv)
+    json.NewEncoder(w).Encode(vm)
+}
+
+// TEST — no HTTP server, runs in nanoseconds
+func TestInvoicePresenter_OverdueCalculation(t *testing.T) {
+    p := InvoicePresenter{}
+    inv := Invoice{
+        ID:         "INV-001",
+        TotalCents: 50000,
+        DueDate:    time.Now().AddDate(0, 0, -5), // 5 days ago
+        Status:     "unpaid",
+    }
+    vm := p.Present(inv)
+    if !vm.IsOverdue             { t.Error("should be overdue") }
+    if vm.OverdueDays != 5       { t.Errorf("expected 5 days, got %d", vm.OverdueDays) }
+    if vm.Total != "$500.00"     { t.Errorf("expected $500.00, got %s", vm.Total) }
+}
+```
+
+**Database gateways** follow the same pattern. The Use Case calls an interface (testable). The concrete SQL implementation is the Humble Object (hard to test, doesn't need much testing). Swap the implementation with an in-memory stub in tests.
+
+**Service listeners** — when receiving events from external services, the listener is the Humble Object (just receives and deserializes). The handler is the testable object (applies business logic to the deserialized data).
+
+Every architectural boundary is an opportunity to apply the Humble Object split. The result: complex business logic that's testable without any infrastructure.
+
+
+### Chapter 24: Partial Boundaries
+
+Full architectural boundaries are expensive. Each one needs:
+- Interfaces on both sides
+- Input and output data structures (DTOs)
+- Dependency inversion plumbing
+- Independent build and deployment configuration
+
+Sometimes this cost isn't justified yet. Martin offers three ways to approximate a boundary at lower cost.
+
+**1. Skip the Last Step**
+
+Do all the design work for a full boundary — separate interfaces, separate data structures — but compile and deploy everything as one unit. The seam exists in the code. The physical separation doesn't exist yet. If you need to split it later, the seam is already there to cut along.
+
+Cost: extra interfaces and DTOs. Benefit: the split costs almost nothing when the time comes.
+
+**2. One-Dimensional Boundary (Strategy Pattern)**
+
+Create an interface in one direction only. The business layer depends on an abstraction. The implementation is injected. No reciprocal interface in the other direction.
+
+```typescript
+// One-dimensional boundary — interface one way only
+interface CacheStrategy {
+  get(key: string): string | null;
+  set(key: string, value: string, ttlSeconds: number): void;
+}
+
+class ProductService {
+  constructor(private cache: CacheStrategy) {} // protected from Redis, Memcached, etc.
+
+  async getProduct(id: string): Promise<Product> {
+    const cached = this.cache.get(`product:${id}`);
+    if (cached) return JSON.parse(cached);
+    const product = await this.db.findProduct(id);
+    this.cache.set(`product:${id}`, JSON.stringify(product), 300);
+    return product;
+  }
+}
+
+// In production
+class RedisCache implements CacheStrategy { /* ... */ }
+
+// In tests
+class InMemoryCache implements CacheStrategy {
+  private store = new Map<string, { value: string; expires: number }>();
+  get(key: string) { const e = this.store.get(key); return e && e.expires > Date.now() ? e.value : null; }
+  set(key: string, value: string, ttl: number) { this.store.set(key, { value, expires: Date.now() + ttl * 1000 }); }
+}
+```
+
+```go
+// Same in Go
+type CacheStrategy interface {
+    Get(key string) (string, bool)
+    Set(key string, value string, ttl time.Duration)
+}
+
+type ProductService struct {
+    db    ProductDB
+    cache CacheStrategy
+}
+
+func (s *ProductService) GetProduct(ctx context.Context, id string) (Product, error) {
+    if cached, ok := s.cache.Get("product:" + id); ok {
+        var p Product
+        _ = json.Unmarshal([]byte(cached), &p)
+        return p, nil
+    }
+    p, err := s.db.FindProduct(ctx, id)
+    if err != nil { return Product{}, err }
+    b, _ := json.Marshal(p)
+    s.cache.Set("product:"+id, string(b), 5*time.Minute)
+    return p, nil
+}
+```
+
+**3. Facade Pattern**
+
+The simplest approximation: a single class that presents a stable surface over a complex or unstable subsystem. No dependency inversion at all — just encapsulation.
+
+```go
+// Facade — stable surface, no DIP, just encapsulation
+type PaymentFacade struct {
+    fraud   *FraudDetector
+    tax     *TaxCalculator
+    gateway *StripeGateway
+    audit   *AuditLogger
+}
+
+func (f *PaymentFacade) Charge(userID string, cents int64) error {
+    if err := f.fraud.Check(userID, cents); err != nil { return err }
+    tax := f.tax.Calculate(cents)
+    if err := f.gateway.Charge(userID, cents+tax); err != nil { return err }
+    f.audit.Record(userID, cents+tax)
+    return nil
+}
+```
+
+The downside: callers of `PaymentFacade` are transitively coupled to everything inside it. Change Stripe's API and everything that uses `PaymentFacade` might need to recompile. A full boundary (with DIP) would prevent that. The Facade trades some coupling for simplicity.
+
+**The decision**
+
+Martin's advice: don't apply full boundaries everywhere by default — that's over-engineering. Don't apply no boundaries either. Recognize the need, use judgment, and be willing to promote a partial boundary to a full one when the cost-benefit shifts.
+
+### Chapter 25: Layers and Boundaries
+
+The four canonical layers (Entities, Use Cases, Interface Adapters, Frameworks) are a starting point, not a ceiling. Real systems usually have more boundaries.
+
+Martin uses *Hunt the Wumpus* — a simple text adventure game — to show this. Even a trivial system has multiple axes of change:
+
+- The **game rules** change when game designers make decisions
+- The **language/text** changes when you localize to a new locale
+- The **delivery mechanism** changes when you support SMS vs console vs web
+
+```
+Input (Text command from user)
+       ↓
+  [Text Delivery]     ← axis: console vs. SMS vs. web
+       ↓
+  [Language Layer]    ← axis: English vs. Spanish vs. French
+       ↓
+  [Game Rules]        ← highest-level policy, furthest from IO
+       ↑ (all deps point up)
+```
+
+Each layer is separated from the next because they change for different reasons at different rates.
+
+The key principle: **the highest-level policy owns the boundary interfaces.** The game rules define the interface the language layer must implement. The language layer defines the interface the delivery mechanism must implement. The dependencies point inward — toward the higher-level policy — even though data flows in both directions.
+
+This is the Dependency Rule applied not just to four circles, but to however many natural axes of change the system has. Good architecture asks: what are the real axes of change here? Then draws a boundary at each one.
+
+### Chapter 26: The Main Component
+
+Every system has a `main`. It's the entry point. Martin's claim: `main` is the dirtiest, lowest-level component in the entire system — and it's the most powerful.
+
+`main` knows everything. It imports the database driver, the web framework, the use cases, the repositories, the configuration. It's the one place where every dependency is allowed to converge — because its job is to wire the system together.
+
+And precisely because it does this dirty work, `main` is a *plugin*. The rest of the system never knows what's in `main`. The system's components don't depend on `main`. `main` depends on them.
+
+```go
+// main.go — the composition root. Dirtiest file, perfectly correct.
+func main() {
+    cfg := config.Load()
+
+    // Infrastructure — concrete implementations
+    db         := postgres.Connect(cfg.DatabaseURL)
+    mailer     := sendgrid.New(cfg.SendgridKey)
+    hasher     := bcrypt.NewHasher(12)
+    cache      := redis.NewClient(cfg.RedisURL)
+
+    // Repositories — infrastructure implementing domain interfaces
+    userRepo   := postgresrepo.NewUserRepository(db)
+    orderRepo  := postgresrepo.NewOrderRepository(db)
+    productRepo := postgresrepo.NewProductRepository(db, cache)
+
+    // Use cases — pure domain, knows none of the above by concrete name
+    registerUser := user.NewRegisterUseCase(userRepo, hasher, mailer)
+    placeOrder   := order.NewPlaceOrderUseCase(orderRepo, productRepo, mailer)
+    getInvoice   := invoice.NewGetInvoiceUseCase(orderRepo)
+
+    // Presenters
+    invoicePres := &adapters.InvoicePresenter{}
+
+    // HTTP handlers
+    mux := http.NewServeMux()
+    mux.Handle("POST /users",          handlers.Register(registerUser))
+    mux.Handle("POST /orders",         handlers.PlaceOrder(placeOrder))
+    mux.Handle("GET  /invoices/{id}",  handlers.GetInvoice(getInvoice, invoicePres))
+
+    log.Printf("listening on %s", cfg.Addr)
+    log.Fatal(http.ListenAndServe(cfg.Addr, mux))
+}
+```
+
+**Multiple mains**
+
+Because `main` is a plugin, you can have multiple entry points for the same application:
+
+- `cmd/server/main.go` — production server, wires Postgres, Redis, real email
+- `cmd/integration_test/main.go` — wires in-memory repositories, fake mailer
+- `cmd/cli/main.go` — command-line interface for the same use cases
+- `cmd/worker/main.go` — background job runner using the same business logic
+
+The domain doesn't change. The wiring changes. The ability to do this is a direct consequence of proper dependency inversion throughout the codebase.
+
+### Chapter 27: Services: Great and Small
+
+Microservices are not an architecture. They're a deployment strategy.
+
+Martin challenges the conventional wisdom about services head-on.
+
+**The Decoupling Fallacy**
+
+Services are often justified on the grounds that they're decoupled — they run in separate processes, deploy independently. But services that communicate by passing data records are coupled to the structure of those records. Add a field to the `Order` struct that crosses a service boundary, and every service that sends or receives `Order` objects potentially needs to change.
+
+Physical separation is not the same as architectural decoupling.
+
+**The Kitty Problem**
+
+Imagine a ride-sharing app built as microservices: Trips, Billing, Driver, Notifications, User. The product team wants to add kitten delivery — a new feature using existing drivers.
+
+Where does the change go? It touches the Trips service (new trip type), the Billing service (new pricing), the Driver service (new eligibility rules), the Notifications service (new message templates), the User service (new preferences). Every service changes for one new feature.
+
+These services weren't architecturally decoupled. They were just deployed separately. The coupling was hidden, not eliminated.
+
+**True service architecture**
+
+A service is well-designed when it has clean internal architecture — proper use case boundaries, SOLID components, Dependency Rule adherence — and the service boundary coincides with a natural axis of change.
+
+A service that bundles together code that changes for different reasons will still be a mess, even as a microservice. A monolith with well-drawn internal boundaries can outperform a poorly-designed microservice fleet in every dimension that matters.
+
+The size of a component (monolith vs. service) is not the same question as whether the architecture is clean.
+
+### Chapter 28: The Test Boundary
+
+Tests are part of the system. They belong inside the architecture, not outside it.
+
+Tests are the most isolated component in any system: nothing in production depends on them, but they depend on everything. This makes them fragile by default, and fragile tests are a real architectural problem.
+
+**The Fragile Test Problem**
+
+When tests are coupled to the GUI, to the specific database schema, to the HTTP response format — any change to those things breaks the tests. Tests that break when nothing logically changed are tests that slow down development, erode trust, and eventually get deleted or ignored.
+
+This is an architectural failure. The tests are depending on volatile low-level details instead of stable high-level policies.
+
+**The Testing API**
+
+The solution: create a specific API layer that the tests use to drive the system. This API sits just inside the service boundary — it knows about use cases and business rules, but bypasses the UI, the HTTP layer, and the database.
+
+```typescript
+// Instead of testing through the HTTP layer:
+// POST /api/users, check 201 response, parse JSON...
+
+// Test through the business layer directly:
+class TestUserFixtures {
+  constructor(
+    private registerUser: RegisterUser,
+    private repo: InMemoryUserRepository
+  ) {}
+
+  async createVerifiedUser(email: string): Promise<string> {
+    const result = await this.registerUser.execute({ email, password: 'test-password' });
+    // Directly manipulate the in-memory repo to set verified state
+    await this.repo.setVerified(result.userId);
+    return result.userId;
+  }
+}
+
+// Test — exercises business logic, not HTTP plumbing
+test('verified user can place order', async () => {
+  const fixtures = new TestUserFixtures(registerUser, userRepo);
+  const userId = await fixtures.createVerifiedUser('user@test.com');
+  const result = await placeOrder.execute({ userId, productId: 'prod-1', quantity: 2 });
+  expect(result.status).toBe('confirmed');
+});
+```
+
+```go
+// Go equivalent — test through a TestAPI, not through HTTP
+type TestAPI struct {
+    RegisterUser *user.RegisterUseCase
+    PlaceOrder   *order.PlaceOrderUseCase
+    UserRepo     *memory.UserRepository
+    OrderRepo    *memory.OrderRepository
+}
+
+func NewTestAPI() *TestAPI {
+    userRepo  := memory.NewUserRepository()
+    orderRepo := memory.NewOrderRepository()
+    return &TestAPI{
+        RegisterUser: user.NewRegisterUseCase(userRepo, &fakehash.Hasher{}),
+        PlaceOrder:   order.NewPlaceOrderUseCase(orderRepo, userRepo),
+        UserRepo:     userRepo,
+        OrderRepo:    orderRepo,
+    }
+}
+
+func TestPlaceOrder_VerifiedUser(t *testing.T) {
+    api := NewTestAPI()
+
+    // Register and verify a user — no HTTP, no database, no email
+    res, err := api.RegisterUser.Execute(ctx, user.RegisterRequest{Email: "u@test.com", Password: "pw"})
+    require.NoError(t, err)
+    api.UserRepo.SetVerified(res.UserID) // direct manipulation, no HTTP
+
+    // Place an order
+    order, err := api.PlaceOrder.Execute(ctx, order.PlaceRequest{UserID: res.UserID, ProductID: "p1"})
+    require.NoError(t, err)
+    assert.Equal(t, "confirmed", order.Status)
+}
+```
+
+**Decoupling test structure from app structure**
+
+When the testing API is stable, test code can evolve independently of application code. Refactoring the HTTP handlers, changing the database schema, restructuring the controllers — none of this breaks tests that drive the system through use cases.
+
+### Chapter 29: Clean Embedded Architecture
+
+Embedded systems have a specific version of the architecture problem: the code often runs only on physical hardware — a specific microcontroller, a specific sensor array — making it untestable without that hardware present.
+
+Martin calls this the **target-hardware bottleneck**. If your embedded code can only run on the target device, your development loop is: write code → flash to device → observe behavior → repeat. This is slow, and it makes automated testing essentially impossible.
+
+**Software vs. Firmware**
+
+Martin draws a sharp distinction between *software* (which should have a long life, surviving many hardware generations) and *firmware* (which is intrinsically tied to specific hardware and becomes obsolete when the hardware changes).
+
+The problem in most embedded systems: developers write firmware when they should be writing software. Business logic, application rules, algorithms — these should all live in software that could theoretically run on any hardware. But they're often written directly against hardware APIs, register addresses, and vendor SDKs.
+
+**The Hardware Abstraction Layer (HAL)**
+
+The solution: introduce a HAL between the software and the hardware. The software layer calls `HAL_LED_On()`. The firmware layer implements this for the specific chip.
+
+```go
+// HAL interface — defined in the software layer
+type HardwareAbstraction interface {
+    LEDOn(pin int) error
+    LEDOff(pin int) error
+    ReadSensor(channel int) (float64, error)
+    WriteActuator(channel int, value float64) error
+}
+
+// Application logic — no hardware imports, fully testable off-target
+type TemperatureController struct {
+    hal     HardwareAbstraction
+    setPoint float64
+}
+
+func (c *TemperatureController) Control() error {
+    temp, err := c.hal.ReadSensor(0) // channel 0: temperature sensor
+    if err != nil { return err }
+    if temp > c.setPoint + 0.5 {
+        return c.hal.WriteActuator(0, 0.0) // turn off heater
+    }
+    if temp < c.setPoint - 0.5 {
+        return c.hal.WriteActuator(0, 1.0) // turn on heater
+    }
+    return nil
+}
+
+// Test implementation — runs on your laptop, no hardware needed
+type MockHAL struct {
+    SensorValues  map[int]float64
+    ActuatorCalls []struct{ Channel int; Value float64 }
+}
+
+func (m *MockHAL) ReadSensor(ch int) (float64, error)       { return m.SensorValues[ch], nil }
+func (m *MockHAL) WriteActuator(ch int, v float64) error    {
+    m.ActuatorCalls = append(m.ActuatorCalls, struct{Channel int; Value float64}{ch, v})
+    return nil
+}
+func (m *MockHAL) LEDOn(pin int) error  { return nil }
+func (m *MockHAL) LEDOff(pin int) error { return nil }
+
+func TestTemperatureController_HeatsWhenCold(t *testing.T) {
+    hal := &MockHAL{SensorValues: map[int]float64{0: 18.0}} // 18°C, setpoint 20°C
+    ctrl := &TemperatureController{hal: hal, setPoint: 20.0}
+    err := ctrl.Control()
+    require.NoError(t, err)
+    require.Len(t, hal.ActuatorCalls, 1)
+    assert.Equal(t, 1.0, hal.ActuatorCalls[0].Value) // heater on
+}
+```
+
+**The Operating System Abstraction Layer (OSAL)**
+
+Same principle, applied to the RTOS. The software layer calls `OSAL_Sleep(100)` rather than calling FreeRTOS's `vTaskDelay()` directly. When the team switches RTOSes, they rewrite the OSAL — not the application.
+
+```go
+type OSAL interface {
+    Sleep(d time.Duration)
+    CreateTask(name string, fn func())
+    SendMessage(queue string, msg any) error
+    ReceiveMessage(queue string) (any, error)
+}
+```
+
+The embedded lesson generalizes: **program to interfaces at every hardware and OS boundary.** Maintain testability off-target. Write software that outlives the hardware it currently runs on.
+
+### Chapter 30: The Database Is a Detail
+
+From an architectural standpoint, the database is not part of the architecture. It's a detail — a mechanism for long-term storage of data.
+
+**The distinction that matters: data model vs. database**
+
+The *data model* — how business data is structured, what entities exist, what their relationships are — is architecturally significant. It reflects business concepts.
+
+The *database software* — MySQL, PostgreSQL, MongoDB, DynamoDB — is not architecturally significant. It's a utility for moving data between a disk and RAM. It's an IO device.
+
+**The disk argument**
+
+The complexity of database software — indexing, query planning, transactions, caching — exists entirely because rotating magnetic disks are many orders of magnitude slower than processors. If all data lived in RAM, you wouldn't use SQL. You'd use hash maps and linked lists. The database is an elaborate workaround for a hardware limitation, not a business requirement.
+
+**What this means for architecture**
+
+Business rules should not know which database you use. Passing database rows, ORM models, or query result objects through the application is an architectural error. It couples the business rules to the relational structure of the data, which is a detail that will change for technical reasons unrelated to business needs.
+
+```typescript
+// BAD — business rule depends on database row format
+class PricingService {
+  async calculateDiscount(userId: string): Promise<number> {
+    const row = await db.query('SELECT * FROM users WHERE id = $1', [userId]);
+    // Directly using database column names in business logic
+    if (row.total_purchases_cents > 100_000) return 0.20;
+    if (row.account_age_days > 365) return 0.10;
+    return 0;
+  }
+}
+
+// GOOD — business rule depends on domain model
+interface Customer {
+  totalPurchasesInCents: number;
+  accountAgeDays: number;
+}
+
+class PricingService {
+  calculateDiscount(customer: Customer): number {
+    if (customer.totalPurchasesInCents > 100_000) return 0.20;
+    if (customer.accountAgeDays > 365) return 0.10;
+    return 0;
+  }
+}
+
+// The repository converts database rows to domain models — outside the business logic
+class PostgresCustomerRepository implements CustomerRepository {
+  async findById(id: string): Promise<Customer | null> {
+    const row = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    if (!row) return null;
+    return {
+      totalPurchasesInCents: row.total_purchases_cents,
+      accountAgeDays: row.account_age_days,
+    };
+  }
+}
+```
+
+Treat the database as a plugin. The business rules define a `CustomerRepository` interface. The Postgres implementation satisfies it. The business rules never import a database library.
+
+### Chapter 31: The Web Is a Detail
+
+The web is just another IO device — another delivery mechanism.
+
+Martin traces the history of computing architectures: mainframes with dumb terminals → minicomputers → PCs → client-server → the web browser → mobile. The location of computation has swung back and forth between centralized and distributed models repeatedly, and there's no reason to think this pendulum has stopped.
+
+A system whose architecture is shaped by the web will need to be restructured every time the pendulum swings. A system whose business rules are independent of the delivery mechanism just needs a new adapter.
+
+**What "web is a detail" means in practice**
+
+Use cases shouldn't know they're being invoked by an HTTP request. They should accept plain data and return plain data.
+
+```typescript
+// BAD — use case knows about HTTP
+class PlaceOrderUseCase {
+  async execute(req: express.Request): Promise<express.Response> {
+    const userId = req.body.userId;
+    const productId = req.query.productId as string;
+    // ... business logic mixed with HTTP parsing
+    return res.json({ orderId: '...' });
+  }
+}
+
+// GOOD — use case is delivery-mechanism agnostic
+interface PlaceOrderRequest  { userId: string; productId: string; quantity: number; }
+interface PlaceOrderResponse { orderId: string; total: number; estimatedDelivery: string; }
+
+class PlaceOrderUseCase {
+  async execute(req: PlaceOrderRequest): Promise<PlaceOrderResponse> {
+    // Pure business logic. Could be called from HTTP, CLI, gRPC, queue consumer.
+  }
+}
+
+// Adapter — translates between HTTP and use case
+app.post('/orders', async (req, res) => {
+  const result = await placeOrder.execute({
+    userId:    req.body.userId,
+    productId: req.body.productId,
+    quantity:  req.body.quantity,
+  });
+  res.status(201).json(result);
+});
+```
+
+```go
+// Use case knows nothing about HTTP
+type PlaceOrderRequest  struct { UserID string; ProductID string; Qty int }
+type PlaceOrderResponse struct { OrderID string; TotalCents int64 }
+
+type PlaceOrderUseCase struct{ /* ports */ }
+func (uc *PlaceOrderUseCase) Execute(ctx context.Context, req PlaceOrderRequest) (PlaceOrderResponse, error) {
+    // business logic only
+    return PlaceOrderResponse{}, nil
+}
+
+// HTTP handler is a thin adapter
+func (h *Handler) PlaceOrder(w http.ResponseWriter, r *http.Request) {
+    var body struct{ UserID string `json:"user_id"`; ProductID string `json:"product_id"`; Qty int `json:"qty"` }
+    if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+        http.Error(w, "bad request", 400); return
+    }
+    res, err := h.placeOrder.Execute(r.Context(), order.PlaceOrderRequest{
+        UserID: body.UserID, ProductID: body.ProductID, Qty: body.Qty,
+    })
+    if err != nil { http.Error(w, err.Error(), 500); return }
+    w.WriteHeader(201)
+    json.NewEncoder(w).Encode(res)
+}
+```
+
+The use case works identically whether called from the HTTP handler, a CLI command, a background job processor, or a gRPC handler. That's delivery-mechanism independence.
+
+### Chapter 32: Frameworks Are Details
+
+Frameworks are powerful tools. But the relationship between developer and framework is asymmetric, and developers consistently underestimate this.
+
+**The asymmetric marriage**
+
+You commit deeply to the framework. The framework commits nothing to you.
+
+You derive from its base classes. You structure your code around its conventions. You adopt its idioms. The framework has now permeated your codebase at every level. Meanwhile the framework authors are under no obligation to maintain compatibility, preserve your patterns, or care about the direction you want to go.
+
+When the framework evolves in a direction that doesn't serve you — and eventually it will — you're the one who pays the cost.
+
+**The risks**
+
+- The framework requires you to couple core business classes to framework base classes. Now your Entities depend on a framework detail.
+- The framework dictates architectural decisions (folder structure, class naming, coupling patterns) that may not match your needs.
+- The framework may be abandoned, become unmaintained, or receive a major breaking version.
+- Your application outgrows the framework's assumptions.
+
+**The solution: treat frameworks as plugins**
+
+```typescript
+// BAD — Entity inherits from framework base class
+import { BaseEntity } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
+class Order extends BaseEntity { // your core domain class now depends on TypeORM
+  @PrimaryGeneratedColumn() id: number;
+  @Column() total: number;
+}
+
+// GOOD — Entity is pure, framework lives only in the adapter layer
+// domain/order.ts
+class Order {
+  constructor(
+    public readonly id: string,
+    public readonly total: number,
+    public readonly status: 'pending' | 'confirmed' | 'shipped'
+  ) {}
+
+  canBeCancelled(): boolean { return this.status === 'pending'; }
+}
+
+// infrastructure/typeorm/order-entity.ts — only the adapter layer knows TypeORM
+@Entity('orders')
+class OrderEntity {
+  @PrimaryColumn() id: string;
+  @Column()        total: number;
+  @Column()        status: string;
+
+  toDomain(): Order {
+    return new Order(this.id, this.total, this.status as Order['status']);
+  }
+}
+```
+
+```go
+// BAD — handler logic mixed with framework (Gin)
+r.POST("/orders", func(c *gin.Context) {
+    var body struct{ UserID string; Total int64 }
+    c.ShouldBindJSON(&body)
+    // business logic directly in framework handler
+    if body.Total > 1_000_000 { c.JSON(400, gin.H{"error": "limit exceeded"}); return }
+    // ...
+    c.JSON(201, gin.H{"order_id": "..."})
+})
+
+// GOOD — use case is framework-agnostic, Gin is an adapter
+// Use case tested without Gin ever being imported in the test file
+func TestPlaceOrder_ExceedsLimit(t *testing.T) {
+    uc := order.NewPlaceOrderUseCase(memory.NewOrderRepo())
+    _, err := uc.Execute(ctx, order.PlaceOrderRequest{UserID: "u1", TotalCents: 1_000_001})
+    require.ErrorContains(t, err, "limit exceeded")
+}
+
+// Gin adapter in the outermost layer
+r.POST("/orders", handlers.PlaceOrder(placeOrderUseCase))
+```
+
+Martin's summary: "Don't marry the framework." Use it. Keep it in the outer rings. Don't let it into your entities. Get the milk without buying the cow.
+
+### Chapter 33: Case Study — Video Sales
+
+Martin applies every principle in the book to a concrete example: an online video sales system.
+
+**Identifying actors and use cases**
+
+The first step is identifying who uses the system and what they do:
+- **Authors** upload videos, track royalties
+- **Purchasers** browse and buy videos, view purchases
+- **Admins** manage catalog, pricing, user accounts
+- **Viewers** stream purchased videos
+
+Each actor is a potential source of architectural change. The SRP (at the architectural level) says: changes for one actor shouldn't affect components used by other actors.
+
+**Partitioning use cases**
+
+Use cases are identified for each actor and grouped by the component they belong to. The key insight: use cases that change for different reasons belong in different components, even if they operate on the same data.
+
+A Purchaser's "browse catalog" and an Admin's "manage catalog" both touch the video catalog. But they change for different reasons — one for UX decisions, the other for content management decisions. Different components.
+
+**The component structure**
+
+```
+[Views]  ←→  [Presenters]  ←→  [Interactors]  ←→  [Controllers]
+         ↑                    ↑
+    (per actor)          (per use case group)
+
+Dependencies point inward — all arrows point toward Interactors
+```
+
+The Interactors (Use Cases) sit at the center. Views and Controllers are in the outer rings. All source code dependencies point toward the Interactors.
+
+**The dependency rule applied**
+
+When a Purchaser's UI flow needs to navigate to a new screen — an action controlled by a Presenter — the Interactor calls an output port interface to signal the result. The Presenter implements this interface. The dependency flows inward; the control flows outward.
+
+This means you can change the entire UI — how screens look, how navigation works, what framework renders them — without changing a single Interactor. The business logic is protected.
+
+### Chapter 34: The Missing Chapter
+
+Simon Brown's contribution examines a problem Martin's book mostly leaves implicit: even with perfect architectural intention, implementation details can undermine everything.
+
+**The four packaging strategies**
+
+**Package by Layer** — horizontal slicing by technical role.
+
+```
+src/
+  controllers/     // UserController, OrderController, PaymentController
+  services/        // UserService, OrderService, PaymentService
+  repositories/    // UserRepo, OrderRepo, PaymentRepo
+  models/          // User, Order, Payment
+```
+
+Easy to start. The packages tell you nothing about what the system does. Domain concepts scatter across all layers. Every new feature touches every layer.
+
+**Package by Feature** — vertical slicing by domain concept.
+
+```
+src/
+  users/           // User, UserController, UserService, UserRepo
+  orders/          // Order, OrderController, OrderService, OrderRepo
+  payments/        // Payment, PaymentController, PaymentService, PaymentRepo
+```
+
+Better. The structure communicates the domain. But all classes are still public — any code can reach across package boundaries.
+
+**Ports and Adapters (Hexagonal)** — inside vs. outside.
+
+```
+src/
+  domain/
+    users/         // User (entity), UserRepository (interface), RegisterUser (use case)
+    orders/        // Order (entity), OrderRepository (interface), PlaceOrder (use case)
+  infrastructure/
+    persistence/   // PostgresUserRepository, PostgresOrderRepository
+    web/           // UserController, OrderController
+    email/         // SendgridEmailService
+```
+
+Clean separation of domain from infrastructure. Dependencies point inward. The domain package has zero infrastructure imports.
+
+**Package by Component** — Brown's preferred approach. Groups related functionality behind a clean public interface.
+
+```
+src/
+  users/
+    index.ts              // Public API: export { RegisterUser, UserRepository }
+    User.ts               // internal — not exported
+    UserValidator.ts      // internal — not exported
+    UserPasswordHasher.ts // internal — not exported
+  orders/
+    index.ts              // Public API: export { PlaceOrder, OrderRepository }
+    Order.ts              // internal — not exported
+```
+
+```go
+// Go's package system enforces this naturally
+// internal/user/user.go
+package user
+
+// Exported — public interface
+type User struct {
+    ID    string
+    Email string
+}
+
+func NewUser(email, hash string) (User, error) {
+    if !strings.Contains(email, "@") {
+        return User{}, errors.New("invalid email")
+    }
+    return User{ID: newID(), Email: email}, nil
+}
+
+// unexported — implementation detail, unreachable from outside
+type validator struct{}
+func (v validator) validate(u User) error { /* ... */ return nil }
+
+type passwordHasher struct{}
+func (p passwordHasher) hash(plain string) string { /* ... */ return "" }
+```
+
+**The encapsulation crisis**
+
+Brown's most important point: **making every type public is an architectural anti-pattern.**
+
+If all your types are public, your packages are organizational folders, not architectural boundaries. Any developer can reach across any boundary at any time. The architecture that exists on the whiteboard doesn't exist in the compiler.
+
+```go
+// Without enforcement — developer bypasses the intended boundary
+import "myapp/internal/order"
+import "myapp/infrastructure/postgres" // should NEVER be imported by business code
+
+func someBusinessFunc() {
+    // Direct database access from business layer — boundary violated
+    repo := &postgres.OrderRepository{DB: db}
+}
+
+// With enforcement — Go's internal/ directory makes this a compiler error
+// Code outside myapp cannot import myapp/internal/...
+// Code in myapp/infrastructure cannot import myapp/internal/domain
+// The compiler enforces what the architecture diagram intended
+```
+
+The compiler catches what code reviews miss. Design boundaries should be physically enforced — through access modifiers, module systems, or Go's `internal/` directory — not just documented in a README.
+
+## Appendix A: Architecture Archaeology
+
+Martin closes with 45 years of personal projects, showing where each principle was first learned from painful experience.
+
+**1972 — Union Accounting System**
+
+Early lesson: device independence. Programs written for specific punched-card hardware had to be rewritten when the hardware changed. The fix — an abstraction layer between the program and the device — was the first architectural boundary Martin encountered. The lesson has never stopped being relevant.
+
+**Late 1970s — Telecom Systems**
+
+Learned the value of separation between policy and mechanism. Switching programs had to be portable across hardware. The business rules (call routing policies) had to be separated from the mechanisms (specific hardware registers, timing circuits). Violating this made porting expensive. Respecting it made it tractable.
+
+**1980s — The CDS and ER Projects**
+
+Early experiments with service-oriented architecture — before that term existed. Externalizing state (the precursor to modern event sourcing) allowed system flow to be configured without modifying code. Open-Closed Principle in practice, years before Meyer named it.
+
+**The VRS Project — cautionary tale**
+
+A system coupled so deeply to UNIFY, a proprietary database, that the database could never be replaced. Every query, every schema assumption, every vendor-specific extension was baked into the application code. When the vendor's support ended, the system was effectively stranded. The lesson: third-party tools must be kept at the outermost boundary. They must be plugins, not foundations.
+
+**1990s — ROSE and the Framework Dilemma**
+
+Building reusable frameworks taught Martin that frameworks only become truly reusable when they're built alongside the applications that use them. A framework built in isolation, around imagined use cases, is almost never what real applications need. The lesson: you can't design for reuse in a vacuum. Usability comes from real friction with real use cases.
+
+**The Common Thread**
+
+Looking across 45 years, Martin identifies what killed projects: not algorithmic complexity, not performance, not hardware constraints. The structural failures — wrong dependencies, wrong ownership, wrong coupling — that weren't anyone's fault on day one but became everyone's prison by year three.
+
+Every principle in the book traces to a project where the principle's absence caused a real, expensive problem.
+
+## The Bottom Line
+
+After 34 chapters, here's what actually stuck.
+
+**Architecture is about managing change.** Every principle — SOLID, component design, the Dependency Rule, the layers — exists to make change cheap. Change in requirements, change in technology, change in team.
+
+**Details should be plugins.** Database, web, framework, IO — all details. All swappable. The core business rules should be unaware of their existence. If you can't swap your database without touching a use case, you have a coupling problem. If you can't test a business rule without spinning up a server, you have an architecture problem.
+
+**The Dependency Rule is the mechanism.** Source code dependencies point inward, always. Everything else follows from following that one rule consistently. It's not complicated. It's just easy to violate when you're in a hurry.
+
+**Your architecture should scream its purpose.** A new developer should look at the folder structure and understand what the business does — not what framework you used.
+
+**The compiler is your best enforcer.** Conventions in READMEs get ignored. Access modifiers, module boundaries, and Go's `internal/` directory don't. Use the type system to make the wrong thing hard.
+
+**The only way to go fast is to go well.** The "clean it up later" promise is a lie. Market pressure never abates. The mess accumulates. The only path to sustained velocity is maintaining the architecture throughout, not recovering it later.
+
+If something here clicked — or if you've seen these principles applied badly in ways I haven't covered — I'd love to hear about it. I'm still figuring a lot of this out. Next book is [Database Design by Alexey Makhotkin](). Ask me about it in a few weeks.
+
+## Let's Keep Talking
+
+I've walked you through what I learned. Now I want to hear from you.
+
+What distributed systems concept have you been trying to understand? What's that piece of infrastructure you keep hearing about but can't quite grasp?
+
+Do [Share this](https://x.com/intent/tweet?text=Check%20out%20my%20new%20post%20on%20Reed-Solomon%20erasure%20coding%20%E2%80%94%20how%20it%20works%20and%20why%20it%20matters.%20https%3A%2F%2Favikmukherjee.me%2Fblog%2Freed-solomon-erasure-coding), or reach out on [GitHub](https://github.com/Avik-creator). I'm always curious about what problems people are trying to solve — and honestly, writing about it is how I figure things out too.
+
+If you vibecoded something interesting recently — or if you're thinking about it — I'd love to hear about it. There's something valuable about building to understand that I think gets overlooked in favor of "proper" learning.
+
+Also: if you spotted any math mistakes or oversimplifications, call them out. I'd rather be corrected than stay wrong.
+
+Until next time.
