@@ -1,29 +1,36 @@
-import { notFound } from "next/navigation"
-import { getAllPosts, getPostBySlug } from "@/lib/utils/mdx"
+import { notFound } from "next/navigation";
+import { getAllPosts, getPostBySlug } from "@/lib/utils/mdx";
 import { CustomMDX } from "@/components/mdx";
 import BackNavigation from "@/components/back-navigation";
 import { baseUrl } from "@/app/sitemap";
 import type { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
 
   try {
-    const post = await getPostBySlug(slug)
+    const post = await getPostBySlug(slug);
 
     if (!post) {
       return {
         title: "Post Not Found",
-      }
+      };
     }
 
-    const metaTitle = post.seoTitle ?? post.title
-    const ogImage = `${baseUrl}/og?title=${encodeURIComponent(post.title)}`
+    const metaTitle = post.seoTitle ?? post.title;
+    const ogImage = `${baseUrl}/og?title=${encodeURIComponent(post.title)}`;
 
     return {
       title: `${metaTitle} | Avik Mukherjee`,
       description: post.excerpt,
       keywords: post.tags ?? [],
+      other: {
+        "og:logo": `${baseUrl}/my-favicon/web-app-manifest-192x192.png`,
+      },
       alternates: {
         canonical: `${baseUrl}/blog/${slug}`,
       },
@@ -61,36 +68,40 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         images: [ogImage],
         description: post.excerpt,
       },
-    }
+    };
   } catch (error) {
-    console.error("Error generating metadata:", error)
+    console.error("Error generating metadata:", error);
     return {
       title: "Error",
-    }
+    };
   }
 }
 
 export async function generateStaticParams() {
   try {
-    const posts = await getAllPosts()
+    const posts = await getAllPosts();
 
     return posts.map((post) => ({
       slug: post.slug,
-    }))
+    }));
   } catch (error) {
-    console.error("Error generating static params:", error)
-    return []
+    console.error("Error generating static params:", error);
+    return [];
   }
 }
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPost({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
 
   try {
-    const post = await getPostBySlug(slug)
+    const post = await getPostBySlug(slug);
 
     if (!post) {
-      notFound()
+      notFound();
     }
 
     return (
@@ -127,23 +138,31 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         </div>
 
         <header className="mt-6 mb-8 animate-[slideFadeUp_0.5s_ease-out]">
-          <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-serif font-medium mb-2 leading-tight">{post.title}</h1>
-          <p className="text-gray-500 dark:text-neutral-500 text-sm mt-2">{post.date}</p>
+          <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-serif font-medium mb-2 leading-tight">
+            {post.title}
+          </h1>
+          <p className="text-gray-500 dark:text-neutral-500 text-sm mt-2">
+            {post.date}
+          </p>
         </header>
 
         <article className="prose prose-neutral max-w-none dark:prose-invert blog-content">
           <CustomMDX source={post.content} />
         </article>
       </main>
-    )
+    );
   } catch (error) {
-    console.error("Error in blog post page:", error)
+    console.error("Error in blog post page:", error);
     return (
       <main className="mb-32 text-gray-900 dark:text-neutral-400">
         <BackNavigation href="/blog">back</BackNavigation>
-        <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-medium mb-2">Error</h1>
-        <p>There was an error loading this blog post. Please try again later.</p>
+        <h1 className="text-gray-900 dark:text-neutral-100 text-xl font-medium mb-2">
+          Error
+        </h1>
+        <p>
+          There was an error loading this blog post. Please try again later.
+        </p>
       </main>
-    )
+    );
   }
 }
