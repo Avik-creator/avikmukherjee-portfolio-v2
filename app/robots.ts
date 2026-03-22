@@ -9,6 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: [
           "/",
           "/blog",
+          "/blog/",
           "/projects",
           "/experience",
           "/resume",
