@@ -1,0 +1,593 @@
+---
+title: "Second Book. Minimal Modeling by Alexey Makhotkin."
+seoTitle: "Minimal Modeling Book Summary: Every Chapter and Principle Explained"
+publishDate: "28 March 2026"
+description: "A complete breakdown of Alexey Makhotkin's Database Design Book — every chapter, every principle, every pattern, from logical models to physical schemas."
+tags: ["database-design", "sql", "system-design", "postgresql", "mysql", "data-modeling", "backend"]
+slug: "summary-of-minimal-modeling"
+author: "Avik Mukherjee"
+---
+
+Uncle Bob's book kept pointing me back to the same problem: once you've drawn your clean architectural layers — Entities, Use Cases, Interface Adapters — you still have to actually design the database. And that part, most architecture books hand-wave.
+
+So I picked up *Database Design Book* by Alexey Makhotkin. He calls his approach **Minimal Modeling**.
+
+It's a short book. Focused. No detours into database theory, no extended discussions of normal forms. Just a systematic process for going from a free-form business description to a physical table schema — with enough rigor that you can defend every decision you made.
+
+I found it a useful complement to Clean Architecture. Uncle Bob tells you to treat the database as a detail, a plugin, something your business rules shouldn't know about. Makhotkin's book is the answer to: *okay, but how do you design that detail well?*
+
+Here's everything, chapter by chapter.
+
+## Chapter 1: Introduction
+
+Makhotkin opens by naming the real problem: most database design happens in the gap between vague business requirements and physical tables — and that gap is where the mistakes live.
+
+The fix isn't more theory. Normal forms, ER diagrams, relational algebra — these are tools that assume you already know what you're modeling. What most designers lack is a process for *figuring out* what they're modeling in the first place.
+
+**The primary principle:** Think separately about the *logical model* (how the business works) and the *physical schema* (how data is stored). One at a time. Don't conflate them.
+
+This is the same separation Uncle Bob advocates with Entities vs. database-as-detail. The difference is that Makhotkin gives you specific steps for executing it.
+
+The book splits into two parts:
+
+- Part one: database-agnostic. Just you and the business requirements.
+- Part two: physical implementation in relational databases like MySQL or PostgreSQL.
+
+You don't need to understand normal forms to follow it. You need to understand the business you're modeling.
+
+**Key learning outcomes:**
+- Extract a structured logical model from informal text
+- Validate the model before writing a single line of SQL
+- Translate the model into physical tables with a predictable, repeatable strategy
+- Defend your design to stakeholders or interviewers because you can show your work
+
+Makhotkin has over 25 years of experience with databases. This book is the distillation of building dozens of schemas and watching where they broke.
+
+## Chapter 2: Building a Logical Model
+
+This is the methodological heart of the book. Everything else builds on it.
+
+A logical model has exactly three kinds of elements:
+
+**Anchors** — the nouns. Things that can be counted and added. *User*, *Order*, *Product*. If you can say "We have 10,000 of these" and "Clicking this button adds another one," you have an anchor.
+
+**Attributes** — the data that describes an anchor. *User's email*, *Order's total*, *Product's price*. Each attribute belongs to exactly one anchor.
+
+**Links** — the relationships between two anchors. *User placed an Order*. *Order contains a Product.*
+
+The validation techniques are where this chapter earns its place.
+
+**Validating anchors:** Use counting and adding sentences. "We have 1,000 Posts" and "Clicking this button adds another Post." If both sentences work, it's an anchor.
+
+**Validating attributes:** Write each one as a human-readable question with an example answer.
+
+```
+What is the date of birth of this User? → 1990-04-15
+What is the email address of this User? → alex@example.com
+```
+
+This sounds tedious. It isn't. Writing the question forces you to check that the attribute actually belongs to *this* anchor and not some other one. It catches misplacements before they become schema migrations.
+
+**Validating links and cardinality:** Write two sentences that define the relationship from each direction.
+
+```
+A Customer places several Orders.
+An Order is placed by only one Customer. (1:N)
+```
+
+```
+A Student enrolls in several Courses.
+A Course has several Students enrolled. (M:N)
+```
+
+The sentences also expose **false links** — the most dangerous design error in this chapter.
+
+A "Customer buys an Item" link seems obvious. But if the same customer can buy the same item twice, this fails the uniqueness test: you can't identify which "purchase" you mean. The correct model introduces an intermediate anchor — *Order* — that represents a single transaction. The link becomes *Customer places an Order* and *Order contains an Item*.
+
+If you've ever wondered why e-commerce databases have an `order_items` table instead of just a `customer_items` table, this is why.
+
+**Handling time — the most important principle in the book:**
+
+> Use UTC for things that happened. Use local time (and store the timezone) for things scheduled to happen.
+
+If a user submitted a form, that event happened at a fixed moment in universal time. Store it in UTC. No ambiguity.
+
+If a train departs at 09:00 next Tuesday, that departure is defined in local time. Governments change Daylight Saving Time rules. If you store the UTC equivalent of "09:00 local time" and the government announces a DST change tomorrow, your stored UTC value is now wrong. Store the local time and the timezone name separately. Let the application recalculate UTC at query time.
+
+This distinction prevents a class of bugs that are deeply confusing to debug because they only appear twice a year, around DST transitions.
+
+**The eight-step process:**
+
+1. Begin with requirements
+2. Find anchors
+3. Find attributes
+4. (Iterate) — add missed anchors
+5. Find links
+6. (Iterate) — add missed anchors again
+7. Cross-check: highlight every word in the requirements and confirm it's covered by an anchor, attribute, or link
+8. Translate the model into a physical schema
+
+The iteration steps aren't optional. Finding links almost always surfaces anchors you missed. The cross-check in step seven is the most valuable step: any unhighlighted word is a gap.
+
+## Chapter 3: Hello World — Podcast Catalog
+
+This chapter applies the process to a real example: a podcast hosting platform. Small enough to follow in one sitting, realistic enough to encounter genuine design decisions.
+
+**Requirements (from an MVP screenshot):**
+
+- Cover images, air dates, episode numbers, runtimes, titles, show names, descriptions
+- Audio file storage
+- Users can sign up, add shows, and upload episodes
+
+**Finding anchors:**
+
+The mental trick offered here: imagine bragging about your business. "Our system has 20,000 users!" — *User* is an anchor. "We host 500 shows!" — *Show* is an anchor. "We have 2 million episodes!" — *Episode* is an anchor.
+
+**Finding attributes:**
+
+The question for each piece of information in the requirements: *where is it stored?*
+
+- Cover image → stored on the Episode. Attribute: `cover_image` (binary blob)
+- Air date → stored on the Episode. Attribute: `air_date` (local date)
+- Upload date → stored on the Episode. Attribute: `upload_date` (UTC timestamp — this already happened)
+- Runtime → stored on the Episode. Attribute: `runtime_seconds` (integer)
+
+Key principle introduced here: **at the logical level, files are binary blob attributes.** Whether the MP3 ends up in the database or in Amazon S3 is a physical implementation decision made later. The logical model doesn't care.
+
+**Finding links — using a square matrix:**
+
+Check every possible pair of anchors systematically. With three anchors, that's a 3×3 matrix (nine cells, six unique pairs plus three self-links that are typically irrelevant).
+
+| | User | Show | Episode |
+|---|---|---|---|
+| **User** | — | 1:N | 1:N |
+| **Show** | — | — | 1:N |
+| **Episode** | — | — | — |
+
+- *User : Show (1:N)* — A user owns several shows; a show is owned by one user
+- *User : Episode (1:N)* — A user uploads several episodes; an episode is uploaded by one user
+- *Show : Episode (1:N)* — A show includes several episodes; an episode belongs to one show
+
+The design decision about the User:Episode link is explicit: the MVP limits each episode to one uploader. That's a business decision. If you wanted team uploads, you'd change it to M:N and add a join table. The model forces you to make this choice consciously instead of discovering it as a bug six months later.
+
+**Cross-checking:**
+
+Go back to the requirements text. Highlight every word that maps to an anchor, attribute, or link. Unhighlighted words are gaps. This step catches the things you forgot.
+
+**Handoff:**
+
+A completed logical model gives a developer enough information to implement the physical schema. They know what tables exist, what data each one holds, and how they relate. The developer makes the technical decisions (data types, indexes, storage engines) based on expected load. The designer made the business decisions.
+
+## Chapter 4: Building a Physical Schema
+
+The transition point. Makhotkin's claim: once your logical model is complete, 75% of the design work is done. The physical schema falls out of it mechanically.
+
+The key insight of this chapter: **there is no single correct physical representation.** A logical model is a specification. Multiple physical schemas can satisfy the same specification. Different teams, different databases, different performance requirements — different schemas.
+
+A **table design strategy** is a set of rules prescribing how to map anchors, attributes, and links to physical storage.
+
+The strategies covered in the book:
+
+| Strategy | Summary |
+|---|---|
+| **Table-per-anchor** | One table per anchor; M:N links get their own table |
+| **Side tables** | Extensions of table-per-anchor; split large anchor tables |
+| **Table-per-attribute** | Each attribute gets its own table (very granular) |
+| **JSON-based schema** | Multiple attributes stored in a single JSON column |
+| **Entity-Attribute-Value (EAV)** | Attributes of the same type stored in one generic table |
+
+The rest of the book focuses primarily on table-per-anchor as the baseline, with chapters on when and why to deviate.
+
+Real systems are hybrids. A production database might use table-per-anchor for most anchors, side tables for a few large ones, and a JSON column for a flexible metadata field. The strategies are tools, not religions.
+
+## Chapter 5: Table-Per-Anchor Strategy
+
+The most straightforward mapping. Four rules:
+
+1. **One table per anchor.** The `User` anchor becomes a `users` table.
+2. **Attributes become columns.** Every logical attribute maps to a physical column.
+3. **1:N links become columns.** The foreign key lives on the "many" side of the relationship.
+4. **M:N links become tables.** A join table with columns referencing both anchors.
+
+**Naming conventions:**
+
+- Tables: plural noun of the anchor (`users`, `shows`, `episodes`)
+- Columns: concise, typed by hand frequently, no SQL reserved words (`air_date` not `date`)
+- Boolean columns: question-like names (`is_active`, `is_verified`, `is_done`)
+
+**Data type selection — the practical guide:**
+
+| Logical Type | Physical Type | Notes |
+|---|---|---|
+| Short text | `VARCHAR(N) NOT NULL DEFAULT ""` | Prefer empty string over NULL for text |
+| Long text | `TEXT` | For descriptions, bios |
+| Integer | `INTEGER` | Fits up to ~2.1 billion |
+| Money | `DECIMAL(15, 2)` | Never use `FLOAT` — rounding errors |
+| Either/or (enum) | `VARCHAR(24)` | Store the label, not a number |
+| Timestamp (past) | `DATETIME` UTC | Already happened |
+| Timestamp (future) | `DATETIME` + timezone name | Scheduled events |
+| Binary file | `BLOB` or `BYTEA` | Or store path to S3 |
+
+**ID design — the trade-offs:**
+
+This section is more nuanced than most books bother to be.
+
+`INTEGER` IDs are 4 bytes. They fit ~2.1 billion records. They're dense, cache-friendly, and fast. But if your table grows past 2.1 billion rows, you face a table rewrite to upgrade to `BIGINT` — a painful operation on a live production database.
+
+`BIGINT` IDs are 8 bytes. Twice the storage. You'll probably never hit the limit, but every record costs more memory.
+
+`UUID` IDs are 16 bytes. Randomly generated, globally unique, useful for distributed systems where multiple nodes generate IDs without coordinating. But random UUIDs fragment B-tree indexes because inserts can't be appended — they land at random positions in the index, causing page splits.
+
+**Well-known anchors** — countries, currencies, languages — should use their standardized string codes (`"US"`, `"EUR"`, `"en"`) rather than sequential integers. The codes are meaningful, stable, and portable. An integer ID for the US dollar adds nothing but indirection.
+
+**Implementing links:**
+
+```sql
+-- 1:N: foreign key on the "many" side
+CREATE TABLE shows (
+  id          INTEGER PRIMARY KEY,
+  name        VARCHAR(255) NOT NULL DEFAULT "",
+  owner_user_id INTEGER NOT NULL  -- the link
+);
+
+-- M:N: dedicated join table
+CREATE TABLE project_developers (
+  project_id   INTEGER NOT NULL,
+  developer_id INTEGER NOT NULL,
+  PRIMARY KEY (project_id, developer_id)
+);
+
+-- Multiple M:N links between the same anchors: include the verb
+CREATE TABLE post_likes    (user_id INTEGER, post_id INTEGER, PRIMARY KEY (user_id, post_id));
+CREATE TABLE post_bookmarks(user_id INTEGER, post_id INTEGER, PRIMARY KEY (user_id, post_id));
+```
+
+If you have multiple links between the same pair of anchors, the table name must include the verb. `post_likes` and `post_bookmarks` are different relationships even though they connect the same two anchors.
+
+## Chapter 6: Other Table Design Strategies
+
+Before introducing alternatives, the chapter establishes four criteria for evaluating any strategy:
+
+**1. Completeness** — can the tables store everything the logical model defines?
+
+**2. Effort to evolve** — how hard is it to add a new anchor, attribute, or link? What's the operational risk?
+
+**3. Read query performance** — four tiers:
+- Naturally performant (primary key lookups)
+- Easily optimizable (add an index)
+- Specifically optimized (secondary representations, caches)
+- Ad-hoc arbitrary (unforeseeable queries)
+
+**4. Insert performance** — matters at 10+ inserts per second. At low volume, largely irrelevant.
+
+### Side Tables
+
+The problem: a mature anchor accumulates attributes. A `users` table might eventually have 200 columns — personal info, preferences, billing details, privacy settings, notification settings. A single wide table becomes hard to reason about, and `SELECT *` becomes expensive.
+
+Side tables distribute attributes into separate tables that share the same primary key as the main table.
+
+```sql
+-- Main anchor table
+CREATE TABLE users (
+  id    INTEGER PRIMARY KEY,
+  email VARCHAR(255) NOT NULL DEFAULT ""
+);
+
+-- Side table: PII, kept separate for regulatory reasons
+CREATE TABLE user_pii (
+  user_id      INTEGER PRIMARY KEY REFERENCES users(id),
+  full_name    VARCHAR(255) NOT NULL DEFAULT "",
+  date_of_birth DATE
+);
+
+-- Side table: billing, owned by a different team
+CREATE TABLE user_billing (
+  user_id       INTEGER PRIMARY KEY REFERENCES users(id),
+  stripe_cust_id VARCHAR(64) NOT NULL DEFAULT ""
+);
+```
+
+Reasons to use side tables:
+- **Human readability** — group attributes by topic
+- **PII isolation** — keep personally identifiable information in a separate table for GDPR/CCPA compliance, with restricted access controls
+- **Different physical locations** — images stored in S3 with only the URL in the side table
+- **Department ownership** — billing team owns `user_billing`, content team owns `user_content`
+- **Frequency of use** — hot columns in the main table, cold columns in a side table to keep the main table narrow
+
+**Stopgap tables** — a specific variant. You need to add one attribute to a 500-million-row table and can't afford the table rewrite right now. Create a new single-attribute side table instantly (no rewrite) and migrate properly later.
+
+### JSON Columns
+
+For anchors with unpredictable, flexible attributes that vary by instance.
+
+```sql
+CREATE TABLE restaurants (
+  id               INTEGER PRIMARY KEY,
+  name             VARCHAR(255) NOT NULL DEFAULT "",
+  extra_attributes JSON
+  -- extra_attributes: $.michelin_stars → integer
+  -- extra_attributes: $.outdoor_seating → boolean
+  -- extra_attributes: $.signature_dish → string
+);
+```
+
+The logical model documents JSON attributes using JSON Path notation. This tells anyone reading the model exactly where the data lives.
+
+The key benefit: **no ALTER TABLE for new attributes.** Adding `$.pet_friendly` to some restaurants requires only application code changes. No database migration. No ops risk.
+
+The trade-off: JSON columns are harder to index, harder to query with SQL, and harder to enforce constraints on. They're a good fit for sparse, unpredictable attributes. They're a bad fit for attributes you need to filter, sort, or aggregate frequently.
+
+## Chapter 7: Dealing with Absent Data
+
+Not all attributes are always present. A user might not provide their date of birth. An order might not have a tracking number yet. A restaurant might not have a Michelin star.
+
+In a table-per-anchor strategy, every row must have a value for every column. For missing data, you use a **sentinel value** — a fake value that means "not set."
+
+**NULL** is the standard sentinel and works for almost any type. But it has complications.
+
+For strings: prefer `NOT NULL DEFAULT ""`. An empty string is unambiguous. `NULL` in a string column creates a three-valued logic situation (`IS NULL`, `= ""`, has a value) that's easy to get wrong in queries.
+
+For integers and monetary amounts: `NULL` is appropriate, because `0` might be a valid value. A `0%` tax rate is real. A tax rate of `NULL` means "we don't know."
+
+For booleans and enums: avoid `NULL` if possible. A `NULL` boolean creates an implicit third state that isn't in your logical model. If you need to represent "not answered yet," add an explicit `"pending"` value to your enum. Make the state visible.
+
+**Tangled attributes** handle the case where a business needs to know *why* data is missing:
+
+```
+User's favorite_movie_status: "pending" | "submitted" | "refused"
+User's favorite_movie_name: (only valid when status = "submitted")
+```
+
+`favorite_movie_name` only makes sense when `favorite_movie_status` is `"submitted"`. The status attribute controls the validity of the data attribute. In SQL, any query touching `favorite_movie_name` must first check `favorite_movie_status`.
+
+**The key principle:** sentinel values are a physical-level tool. At the logical level, data is either *set* or *unset*. The sentinel is how you represent "unset" in a system that requires every cell to hold something.
+
+In side tables and JSON columns, absent data is represented structurally — by the absence of a row or a key. No sentinel needed.
+
+## Chapter 8: Secondary Data
+
+Not all data in a database is primary. Some of it is derived.
+
+**Primary data** is the source of truth. Anchors, attributes, links. If it's lost, it's gone. The system no longer knows those entities or their history.
+
+**Secondary data** is copied, reorganized, or pre-computed from primary data. If it's lost, it can be recalculated. Examples:
+
+- Cached (pre-computed) columns
+- Pre-aggregated tables
+- Denormalized flat tables
+- Full-text indexes
+- In-memory caches (Redis, Memcached)
+- ML models derived from existing data
+
+**The canonical example:** a social network's post count.
+
+```sql
+-- Primary data: the posts themselves
+SELECT COUNT(*) FROM posts WHERE user_id = 42;
+-- Correct, but runs a COUNT on every profile view
+
+-- Secondary data: a cached column
+SELECT posts_count FROM users WHERE id = 42;
+-- Fast, but now you must maintain it
+```
+
+Every time a post is added or deleted, you must update `posts_count`. If a bug prevents that update, the count drifts. You need a reconciliation job to detect and fix drift. That's extra code, extra risk, extra operational overhead.
+
+**The "no free lunch" principle:** secondary data always has a cost. Extra storage. Extra CPU. Extra code. Extra potential for inconsistency. These costs are real and must be weighed against the performance gain.
+
+**A cached column is not an attribute.** This distinction matters. An attribute (like a tracking number) can be changed directly — you just update it. A cached value (like a post count) cannot be changed directly — it only changes as a consequence of changes to the underlying primary data. If someone changes `posts_count` without adding or deleting a post, the value is wrong. The model must reflect this difference.
+
+**The documentation problem:** secondary data is often invisible to new team members. They write a heavy aggregation query against primary data, unaware that a pre-computed column exists for exactly this purpose. Documenting secondary data structures is essential. Without it, you either duplicate the optimization or miss it entirely.
+
+## Chapter 9: Evolving Your Database
+
+Databases change. Requirements change. The schema must follow.
+
+Any database evolution touches three areas in coordination:
+
+1. **Logical schema** — update the documentation. Cheapest step.
+2. **Application code** — update the software. Medium cost.
+3. **Physical database** — modify the actual tables. Potentially very expensive.
+
+**Elementary migrations** — the atomic units of change:
+
+- Add or remove an anchor, attribute, or link
+- Change a physical ID type (INTEGER → BIGINT)
+- Change an attribute's type or semantics
+- Change an enum definition
+- Change link cardinality (1:N → M:N)
+- Add or remove secondary data (cached columns, indexes)
+- Strictly physical changes (compression, sharding)
+
+**The table rewrite problem:**
+
+When you add a column to a large table, most relational databases (MySQL, PostgreSQL) rebuild the entire table. For a small table, this is instant. For a 500-million-row table, this can take hours — during which the table may be locked for writes.
+
+The table rewrite requires:
+- Enough free disk space to hold a full copy of the table during the process
+- Either a maintenance window, an online schema change tool, or a workaround
+
+**The case study — adding `date_of_birth` to `users`:**
+
+```sql
+-- Step 1: Update logical model (documentation change)
+
+-- Step 2: Run migration
+ALTER TABLE users ADD COLUMN date_of_birth DATE;
+-- On a large table: this may trigger a table rewrite
+
+-- Step 3: Update application code to collect and display the field
+```
+
+**The decoupling principle:** make the new column nullable. The application can continue running during the migration without providing a value for the new column. Database migration and code deployment are decoupled — safer rollout, no emergency coordination required.
+
+**Strategies to avoid rewrites:**
+
+- **Online schema change tools** — pt-online-schema-change, gh-ost, pglogical. Manage the copy-without-blocking process.
+- **Side tables** — add the new attribute to a new table (instant, no rewrite). Migrate to the main table later when you have a maintenance window.
+- **JSON columns** — add new attributes to a JSON field with zero schema changes.
+
+The right strategy depends on table size, traffic volume, and how much downtime you can tolerate.
+
+## Chapter 10: Movie Tickets — Repeated Sales Pattern
+
+The book's first domain-specific pattern: selling or assigning a specific resource for a specific time slot. Applies to cinemas, flights, trains, hotels, conference rooms, sports events, anything with capacity constraints.
+
+The chapter introduces a technique for handling complex domains: **per-department modeling**.
+
+Instead of trying to model everything at once (which leads to getting tangled in a top-level "Ticket" anchor before you understand what a ticket even is), you model independent departments first, then dependent ones.
+
+**Dependency graph for a cinema:**
+
+```
+Movies          Maintenance
+(Independent)   (Independent)
+     \               /
+      Movie Schedule
+      (Dependent on both)
+           |
+         Tickets
+    (Dependent on Schedule)
+```
+
+**Department by department:**
+
+**Movies department:**
+- Anchor: `Movie`
+- Attributes: `name`, `runtime_minutes`
+
+**Maintenance department:**
+- Anchors: `Auditorium`, `Chair`
+- Attributes: auditorium `name`; chair `row`, `seat_number`
+- Link: Auditorium : Chair (1:N) — one auditorium has many chairs
+
+**Movie Schedule department:**
+- Anchor: `Timeslot`
+- Attributes: `local_datetime` (local time — this is a scheduled future event)
+- Links: Auditorium : Timeslot (1:N), Movie : Timeslot (1:N)
+
+**Tickets department:**
+- Anchor: `Ticket`
+- Attributes: `is_assigned` (yes/no), `ticket_number` (unique)
+- Links: Timeslot : Ticket (1:N), Chair : Ticket (1:N)
+
+**The linguistic precision principle:**
+
+The word "chair" means different things to different people. To a maintenance worker, a chair is a physical object with a row and seat number. To a ticket agent, a "chair" is a slot that can be sold for a particular screening. These are different concepts. The model separates them: `Chair` is the physical object; `Ticket` is the assignment of a chair to a timeslot.
+
+Confusing these two leads to schemas that either can't model historical sales (a chair can only be sold once) or require awkward workarounds (a nullable `timeslot_id` on the chair record).
+
+**Verb selection:**
+
+Avoid the verb "has" in link sentences. "A Timeslot has several Tickets" is valid English but tells you almost nothing about the relationship. "A Timeslot generates several Tickets" or "A Chair is assigned via several Tickets" is more descriptive and harder to misread. Better verbs make the model self-documenting.
+
+## Chapter 11: Books and Washing Machines — Polymorphic Data Pattern
+
+The problem: an e-commerce site sells books, washing machines, and bicycles. All items share some attributes (price, weight). Each category has unique attributes (books have authors; washing machines have energy labels).
+
+**Generic vs. specific anchors:**
+
+From the perspective of the fulfillment department, everything is an `Item`. From the perspective of the books department, a product is a `Book` with an `author` and a `cover_type`. From the perspective of the appliances department, a product is a `WashingMachine` with a `capacity_kg` and an `energy_label`.
+
+The model represents this with 1:1 links between the generic anchor and each specific anchor.
+
+```
+Item (generic)
+  ├─ Book (specific, 1:1)
+  ├─ WashingMachine (specific, 1:1)
+  └─ Bicycle (specific, 1:1)
+```
+
+An `Item` can be exactly one `Book`. A `Book` is exactly one `Item`. The 1:1 link is validated the same way as any other link — two sentences, one from each direction.
+
+**Multiplexing on item type:**
+
+The `Item` anchor gets an `item_type` attribute: `"book"`, `"washing_machine"`, `"bicycle"`. This tells the application which specific anchor/table to join when you need category-specific attributes.
+
+**Tangled links:** The link between `Item` and `Book` is only valid when `item_type = "book"`. This is a tangled link — its validity depends on another attribute's value. Queries must check the type before joining.
+
+**The polymorphic table design strategy — using JSON:**
+
+The standard table-per-anchor approach works but creates organizational friction: every new product category requires a new physical table (a schema migration) or adding nullable columns.
+
+The JSON alternative:
+
+```sql
+CREATE TABLE items (
+  id          INTEGER PRIMARY KEY,
+  item_type   VARCHAR(24) NOT NULL DEFAULT "",
+  price_cents INTEGER NOT NULL DEFAULT 0,
+  weight_g    INTEGER NOT NULL DEFAULT 0,
+  item_data   JSON
+  -- item_data: $.title          → string  (books)
+  -- item_data: $.author_ids     → array   (books)
+  -- item_data: $.cover_type     → string  (books)
+  -- item_data: $.energy_label   → string  (washing machines)
+  -- item_data: $.capacity_kg    → number  (washing machines)
+  -- item_data: $.gear_count     → integer (bicycles)
+);
+```
+
+Adding a new product category — `Furniture` — requires only application code changes and an update to the logical model. No `ALTER TABLE`. No migration risk. The `items` table is effectively self-contained.
+
+The documentation discipline is critical here: every JSON path must be documented in the logical model with its type and which `item_type` it applies to. Without this, the JSON blob becomes an undocumented bag of surprise.
+
+
+## Chapter 12: Practicalities
+
+The final chapter covers tools and philosophy — how much documentation to produce and why.
+
+**Tools:** Any tool works. Google Docs for formatted tables. Google Sheets with tabs for anchors, attributes, and links. A whiteboard. Paper. The medium doesn't matter. The content does.
+
+**How much to write:**
+
+The goal of the logical schema is to find and fix mistakes while editing a document is still cheap — before schema migrations, before deployed code, before coordinated rollbacks.
+
+Each element earns its documentation:
+
+- **Attribute questions** — writing the question forces you to verify the attribute belongs to the right anchor. Skip if you're experienced; the example values are more important.
+- **Example values** — never skip. They are the fastest way to spot inconsistencies. A question can be ambiguous; an example value cannot.
+- **Link sentences** — never skip. Cardinality mistakes are the most expensive to fix later. Two sentences, written out, catch them before they're permanent.
+- **Logical data types** — pay attention to UTC vs. local time and monetary vs. floating-point. These distinctions prevent common design errors before you even choose a database.
+- **Physical column names and types** — optional if you're the only implementer. Essential for team collaboration to prevent constant back-and-forth.
+
+**This is not waterfall design:**
+
+The Minimal Modeling approach is not an enterprise upfront design process. You can apply it to just the piece of the system you're struggling with. You can discard the document once you understand the design. The goal is to internalize the process — to build the habit of separating logical questions from physical ones, validating before implementing, and making cardinality decisions explicitly.
+
+**Customization:** The catalog can be extended. Add a column tracking whether an attribute contains PII. Add a column for which team owns which anchor. Add a column for regulatory classification. The structure adapts to whatever the team needs to track.
+
+
+## Closing Thoughts
+
+The two books complement each other well.
+
+Clean Architecture tells you to treat the database as a plugin — a detail that the business rules shouldn't depend on. Makhotkin's book tells you how to design that detail rigorously, before you write SQL, in a way that reduces expensive mistakes.
+
+The Minimal Modeling process is worth internalizing even if you never write the full document for every system. The core habits are:
+
+**Name things precisely.** The difference between a `Chair` (physical object) and a `Ticket` (assignment of a chair to a timeslot) is the difference between a schema that models reality and one that fights you.
+
+**Separate logical from physical.** Decide what exists before deciding how to store it. These are different questions.
+
+**Validate cardinality explicitly.** Write both sentences for every link. Cardinality mistakes are the most expensive to fix later.
+
+**Handle time carefully.** UTC for the past. Local time plus timezone name for the future. This rule prevents a category of bugs that show up twice a year at the worst possible moment.
+
+**Treat secondary data as second-class.** Document it, but know it's not your source of truth. It can drift. It needs maintenance. It should be the last thing you add, not the first.
+
+The book is short. The process is repeatable. Both are features.
+
+## Let's Keep Talking
+
+That's both books from the last few weeks done and written up.
+
+The Clean Architecture post covered the why and how of architectural boundaries. This one covered what actually goes into the database once you've drawn those boundaries.
+
+If you're designing schemas and want to talk through a specific modeling problem — or if you've applied these patterns and found places they break down — I'd love to hear about it.
+
+[Share this](https://x.com/intent/tweet?text=Check%20out%20my%20new%20post%20on%20Minimal%20Modeling%20by%20Alexey%20Makhotkin%20—%20every%20chapter%2C%20every%20principle%2C%20every%20pattern%20explained.%20https%3A%2F%2Favikmukherjee.me%2Fblog%2Fbooks-summary%2Fsummary-of-minimal-modeling), or find me on [GitHub](https://github.com/Avik-creator).
+
+_Feedback welcome. Call out mistakes. I'd rather be corrected than stay wrong._
+
+_Reach me on [GitHub](https://github.com/Avik-creator), [X](https://x.com/avikm744), [Peerlist](https://peerlist.io/avikmukherjee), or [LinkedIn](https://www.linkedin.com/in/avik-mukherjee-8ab9911bb)._
