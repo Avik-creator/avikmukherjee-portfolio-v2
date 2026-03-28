@@ -10,8 +10,11 @@ export default async function BlogList({ length }: Props) {
   const displayPosts = posts.slice(0, length ?? posts.length);
 
   // Group posts by year on the server
+  type Post = (typeof displayPosts)[number];
+  type PostWithIndex = Post & { _index: number };
+
   interface GroupedPosts {
-    [year: string]: typeof displayPosts;
+    [year: string]: PostWithIndex[];
   }
 
   const groupedPosts: GroupedPosts = {};

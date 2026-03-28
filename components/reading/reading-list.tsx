@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { readingList } from "@/lib/data/reading";
 import ReadingItemCard from "@/components/reading/reading-item";
+import CornerMarkers from "@/components/CornerMarkers";
 import { GenericDropdown } from "@/components/experiments/mdx-dropdown";
 import { cn } from "@/lib/utils";
 import { Search, X } from "lucide-react";
@@ -64,38 +65,39 @@ export default function ReadingList() {
   return (
     <div className="space-y-6 relative">
       {/* ── Filters ────────────────────────────────────────────────────── */}
-      <div className="flex flex-row gap-3 items-center relative z-10 overflow-visible">
+      <div className="flex flex-row gap-4 items-center relative z-10 overflow-visible justify-between">
         {/* Search Input */}
-        <div className="relative flex-1">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-neutral-500"
-            width={13}
-            height={13}
-          />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="search titles, authors, tags…"
-            className={cn(
-              "w-full pl-8 pr-9 py-2 text-[13px]",
-              "bg-gray-50 dark:bg-neutral-900",
-              "border border-gray-200 dark:border-neutral-800",
-              "text-gray-800 dark:text-neutral-200",
-              "placeholder:text-gray-400 dark:placeholder:text-neutral-600",
-              "rounded-sm outline-none",
-              "focus:border-gray-400 dark:focus:border-neutral-600",
-              "transition-colors duration-200"
+        <div className="group relative flex-1 max-w-lg">
+          <CornerMarkers variant="static" />
+          <div className="relative">
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-neutral-500 group-hover:text-gray-600 dark:group-hover:text-neutral-300 transition-colors duration-300"
+              width={13}
+              height={13}
+            />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="search titles, authors, tags…"
+              className={cn(
+                "w-full pl-7 pr-8 py-1.5 text-[12px]",
+                "bg-transparent",
+                "text-gray-800 dark:text-neutral-200",
+                "placeholder:text-gray-400 dark:placeholder:text-neutral-600",
+                "rounded-sm outline-none",
+                "transition-colors duration-300"
+              )}
+            />
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-neutral-500 hover:text-gray-600 dark:hover:text-neutral-300 transition-colors"
+              >
+                <X width={12} height={12} />
+              </button>
             )}
-          />
-          {search && (
-            <button
-              onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-neutral-500 hover:text-gray-600 dark:hover:text-neutral-300 transition-colors"
-            >
-              <X width={12} height={12} />
-            </button>
-          )}
+          </div>
         </div>
 
         {/* Year Dropdown */}
