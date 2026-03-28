@@ -8,7 +8,7 @@ import CornerMarkers from "@/components/CornerMarkers";
 
 interface DropdownAction {
   label: string;
-  icon: ReactNode;
+  icon?: ReactNode;
   onClick: () => void;
 }
 
@@ -52,7 +52,7 @@ export function GenericDropdown({
         className={cn(
           "group flex items-center gap-2",
           "relative transition-all duration-300 ease-out",
-          "hover:-translate-x-0.5"
+          "hover:-translate-x-0.5 cursor-pointer"
         )}
       >
         <CornerMarkers />
@@ -68,7 +68,7 @@ export function GenericDropdown({
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 py-2 z-50 animate-[slideFadeUp_0.2s_ease-out]">
+        <div className="absolute right-0 mt-2 w-64 py-2 z-50 animate-[slideFadeUp_0.2s_ease-out] overflow-visible pointer-events-auto">
           <div className="relative group bg-black dark:bg-black">
             {/* Dot grid background pattern */}
             <div
@@ -94,12 +94,14 @@ export function GenericDropdown({
                   className={cn(
                     "group flex items-center gap-2 w-full",
                     "relative transition-all duration-300 ease-out px-3 py-2",
-                    "hover:-translate-x-0.5"
+                    "hover:-translate-x-0.5 cursor-pointer"
                   )}
                 >
-                  <div className="w-4 h-4 text-white relative z-10">
-                    {action.icon}
-                  </div>
+                  {action.icon && (
+                    <div className="w-4 h-4 text-white relative z-10 flex-shrink-0">
+                      {action.icon}
+                    </div>
+                  )}
                   <span className="text-sm font-medium text-white underline decoration-white/50 underline-offset-4 transition-all duration-300 group-hover:underline-offset-[6px] group-hover:decoration-white relative z-10">
                     {action.label}
                   </span>
