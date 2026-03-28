@@ -1,6 +1,7 @@
 'use client';
 
 import BlogItem from '@/components/blog/blog-item';
+import CornerMarkers from '@/components/CornerMarkers';
 import { useState } from 'react';
 
 interface Post {
@@ -39,22 +40,27 @@ export default function BlogListClient({ groupedPosts, sortedYears }: Props) {
       {/* Year Navigation */}
       <div className="flex flex-wrap gap-2 pb-4 border-b border-gray-200 dark:border-neutral-800 animate-[slideFadeUp_0.25s_ease-out]" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
         {sortedYears.map((year, idx) => (
-          <button
+          <div
             key={year}
-            onClick={() => handleYearClick(year)}
-            className={`px-3 py-1.5 text-sm rounded-md transition-all duration-200
-              cursor-pointer ${
-                selectedYear === year
-                  ? 'bg-gray-800 dark:bg-neutral-200 text-white dark:text-gray-900 font-medium'
-                  : 'text-gray-600 dark:text-neutral-400 hover:bg-gray-100 dark:hover:bg-neutral-900 hover:text-gray-800 dark:hover:text-neutral-200'
-              } active:scale-95`}
+            className="group relative"
             style={{
               animation: 'slideFadeUp 0.25s ease-out both',
               animationDelay: `${0.15 + idx * 0.05}s`,
             }}
           >
-            {year}
-          </button>
+            <button
+              onClick={() => handleYearClick(year)}
+              className={`px-3 py-1.5 text-sm rounded-none transition-all duration-200
+                cursor-pointer ${
+                  selectedYear === year
+                    ? 'text-gray-900 dark:text-neutral-100 font-medium'
+                    : 'text-gray-600 dark:text-neutral-400 hover:text-gray-800 dark:hover:text-neutral-200'
+                } active:scale-95`}
+            >
+              {year}
+            </button>
+            <CornerMarkers />
+          </div>
         ))}
       </div>
 
