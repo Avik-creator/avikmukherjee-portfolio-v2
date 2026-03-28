@@ -39,7 +39,7 @@ export default function CornerMarkers({
       >
         <div
           className={cn(
-            "absolute left-0 top-0 h-2.5[0.5px]",
+            "absolute left-0 top-0 h-2.5 w-[0.5px]",
             lineClasses,
             "origin-top"
           )}

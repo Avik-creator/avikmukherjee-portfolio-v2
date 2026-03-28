@@ -80,7 +80,7 @@ export default function BlogListClient({ groupedPosts, sortedYears }: Props) {
       {/* ── Filters ────────────────────────────────────────────────────── */}
       <div className="flex flex-row gap-4 items-center animate-[slideFadeUp_0.25s_ease-out] relative z-10 overflow-visible justify-between" style={{ animationDelay: '0.05s', animationFillMode: 'both' }}>
         {/* Search Input */}
-        <div className="group relative flex-1 max-w-lg">
+        <div className="group relative flex-1 max-w-lg overflow-visible">
           <CornerMarkers variant="static" />
           <div className="relative">
             <Search
@@ -94,7 +94,7 @@ export default function BlogListClient({ groupedPosts, sortedYears }: Props) {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="search posts…"
               className={cn(
-                "w-full pl-7 pr-8 py-1.5 text-[12px]",
+                "w-full pl-7 pr-8 py-2 text-[12px]",
                 "bg-transparent",
                 "text-gray-800 dark:text-neutral-200",
                 "placeholder:text-gray-400 dark:placeholder:text-neutral-600",
