@@ -87,6 +87,19 @@ export const readingList: ReadingItem[] = [
         dateAdded: "2026-03-30",
         tags: ["databases", "sql", "engineering", "distributed-systems"],
     },
+ {
+        id: "book-5",
+        title: "Database Internals: A Deep Dive into How Distributed Data Systems Work",
+        author: "Alex Petrov",
+        year: 2019,
+        type: "book",
+        status: "planning-to-read",
+        url: "https://www.oreilly.com/library/view/database-internals/9781492040330",
+        description: "An in-depth exploration of the inner workings of distributed data systems, covering topics such as storage engines, replication, sharding, and consistency models. It provides insights into the design and implementation of modern databases and distributed systems.",
+        dateAdded: "2026-03-30",
+        tags: ["databases", "sql", "engineering", "distributed-systems"],
+    },
+
 
     {
         id: "article-1",
