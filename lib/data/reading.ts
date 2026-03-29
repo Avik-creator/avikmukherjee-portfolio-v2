@@ -39,19 +39,6 @@ export const statusConfig: Record<
 export const readingList: ReadingItem[] = [
     {
         id: "book-1",
-        title: "Designing Data-Intensive Applications — Part 1",
-        author: "Martin Kleppmann",
-        year: 2017,
-        type: "book",
-        status: "finished",
-        url: "https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/",
-        description:
-            "Foundations of data systems — reliable, scalable, and maintainable applications. Part 1 covers data models, storage engines, encoding, and replication.",
-        dateAdded: "2026-02-01",
-        tags: ["systems", "databases", "engineering"],
-    },
-    {
-        id: "book-2",
         title: "Refactoring UI",
         author: "Adam Wathan & Steve Schoger",
         year: 2018,
@@ -64,7 +51,7 @@ export const readingList: ReadingItem[] = [
         tags: ["design", "ui", "css"],
     },
     {
-        id: "book-3",
+        id: "book-2",
         title: "Clean Architecture",
         author: "Robert C. Martin",
         year: 2017,
@@ -76,6 +63,31 @@ export const readingList: ReadingItem[] = [
         dateAdded: "2026-03-22",
         tags: ["design-patterns", "oop", "engineering"],
     },
+    {
+        id: "book-3",
+        title: "Database Design Book",
+        author: "Alexey Makhotkin",
+        year: 2025,
+        type: "book",
+        status: "finished",
+        url: "https://databasedesignbook.com",
+        description: "A practical guide to designing clean, scalable databases using solid data modeling fundamentals.",
+        dateAdded: "2026-03-30",
+        tags: ["databases", "sql", "engineering"],
+    },
+    {
+        id: "book-4",
+        title: "Designing Data-Intensive Applications, 2nd Edition",
+        author: "Martin Kleppmann",
+        year: 2026,
+        type: "book",
+        status: "reading",
+        url: "https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/",
+        description: "An updated edition of the classic book on data systems, covering the latest developments in databases, distributed systems, and data processing. It provides a comprehensive overview of the design principles and trade-offs involved in building data-intensive applications.",
+        dateAdded: "2026-03-30",
+        tags: ["databases", "sql", "engineering", "distributed-systems"],
+    },
+
     {
         id: "article-1",
         title: "In-Built App Notifications in Avenue Ticketing",
