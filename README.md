@@ -2,7 +2,7 @@
 
 A modern, performant portfolio website built with Next.js 16, featuring interactive experiments, a blog, project showcases, and professional experience timeline. Built with clarity, performance, and shipping in mind.
 
-## ✨ Features
+## ✨ Featuress
 
 - 🎨 **Modern Design** - Clean, minimalist interface with smooth animations
 - 📝 **MDX Blog** - Write blog posts with MDX support for interactive content
