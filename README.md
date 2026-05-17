@@ -13,7 +13,6 @@ A modern, performant portfolio website built with Next.js 16, featuring interact
 - 🌐 **SEO Optimized** - Built-in sitemap, robots.txt, and metadata
 - 📱 **Responsive Design** - Mobile-first approach with Tailwind CSS
 - 🎯 **Analytics** - Integrated Vercel Analytics and Speed Insights
-- 🤖 **LLM Ready** - Special `/llms.txt` endpoints for AI crawlers
 - 📧 **vCard Export** - Download contact information
 
 ## 🛠️ Tech Stack
