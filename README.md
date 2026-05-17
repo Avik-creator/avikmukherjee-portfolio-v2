@@ -1,7 +1,5 @@
 # Avik Mukherjee - Portfolio v2
 
-![Portfolio Preview](https://avikmukherjee.me/og-image.webp)
-
 A modern, performant portfolio website built with Next.js 16, featuring interactive experiments, a blog, project showcases, and professional experience timeline. Built with clarity, performance, and shipping in mind.
 
 ## ✨ Features
