@@ -176,7 +176,3 @@ This project is open source and available under the [MIT License](LICENSE).
 - Styled with [Tailwind CSS](https://tailwindcss.com/)
 - Deployed on [Vercel](https://vercel.com)
 - Animations powered by [Motion](https://motion.dev/)
-
----
-
-⭐ Star this repo if you find it helpful!
