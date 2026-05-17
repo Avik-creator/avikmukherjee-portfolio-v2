@@ -15,7 +15,6 @@ A modern, performant portfolio website built with Next.js 16, featuring interact
 - 🎯 **Analytics** - Integrated Vercel Analytics and Speed Insights
 - 📧 **vCard Export** - Download contact information
 
-
 ## 🛠️ Tech Stack
 
 - **Framework:** [Next.js 16](https://nextjs.org/) (App Router)
