@@ -17,6 +17,7 @@ A modern, performant portfolio website built with Next.js 16, featuring interact
 
 ## 🛠️ Tech Stack
 
+
 - **Framework:** [Next.js 16](https://nextjs.org/) (App Router)
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
 - **Styling:** [Tailwind CSS 4](https://tailwindcss.com/)
